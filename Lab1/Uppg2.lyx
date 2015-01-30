@@ -4,6 +4,8 @@
 \begin_header
 \textclass article
 \begin_preamble
+% Erik Öhrn, Paula Eriksson
+
 \usepackage{listings} 
 \usepackage{color} 
 \usepackage{textcomp}
@@ -102,15 +104,15 @@ extendedchars=true,
 \begin_body
 
 \begin_layout Title
-Laboration 1 i Datastrukturer 
+Laboration 1, uppgift 2 i TDA416 
 \end_layout
 
 \begin_layout Author
-Erik Öhrn, Paula Eriksson Imable
+Grupp 7: Erik Öhrn, Paula Eriksson Imable
 \end_layout
 
 \begin_layout Date
-2015-01-29
+2015-01-30
 \end_layout
 
 \begin_layout Standard
@@ -205,6 +207,21 @@ Vi räknar med avseende på aritmetiska operationer, inklusive
  Se bilagor för uträkning.
  Angående for-loopar: de räknas som 1 (initialeringen i början) + summan
  av de inneslutna operationerna + 1 (jämförelsen körs en sista gång).
+ Math.com
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+http://www.math.com/tables/expansion/power.htm
+\end_layout
+
+\end_inset
+
+ användes för att få en formel för 
+\begin_inset Formula $\stackrel[i=0]{n}{\sum}i^{2}$
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Enumerate
@@ -3091,6 +3108,107 @@ rad skala
 
 \begin_layout Standard
 Denna graf liknar den för de uppmätta värdena.
+\end_layout
+
+\begin_layout Part*
+Bilagor
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename Grafik/New Doc 14.pdf
+	width 80page%
+	BoundingBox 0bp 20bp 595bp 842bp
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Matematisk uträkning för algoritm 1
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename Grafik/New Doc 13.pdf
+	width 80page%
+	rotateAngle 90
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Matematisk uträkning för algoritm 2
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename Grafik/New Doc 12.pdf
+	width 80page%
+	rotateAngle 90
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Matematisk uträkning för algoritm 3
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \end_body

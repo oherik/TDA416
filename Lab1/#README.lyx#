@@ -1,0 +1,148 @@
+#LyX 2.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 474
+\begin_document
+\begin_header
+\textclass article
+\use_default_options true
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_math auto
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Laboration 1, uppgift 1 i TDA416 
+\end_layout
+
+\begin_layout Author
+Grupp 7: Erik Öhrn, Paula Eriksson Imable
+\end_layout
+
+\begin_layout Date
+2015-01-30
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+thispagestyle{empty}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+newpage
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+setcounter{page}{1}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Filen som lämnas in är src/Uppg1.java
+\end_layout
+
+\begin_layout Standard
+Valfri double kan skrivas in i terminalen när programmet startats för att
+ ta kvadratroten ur.
+\end_layout
+
+\begin_layout Standard
+your labgroupnumber and your names, what files belong to each subproblem,
+ what is the compilation/execution commands for each subproblem (this is
+ not needed in the case of "javac file.java" but only if compilation command
+ is nonstandard) other useful information for the grader,
+\end_layout
+
+\begin_layout Standard
+and answers to questions and things that are not well contained in the source
+ code (figures, explanations of the solutions (if needed), UML diagrams,
+ references etc) and answers to posible questions.
+ It also includes reference to all your sources of information that helped
+ you solve the problems, books, magazines, web, alive or dead and so on.
+ The only exception is the coursebook, course slides and irrelevant sources
+ (like your boy/girl-friends continuous support) which you don't need to
+ mention and of course you don't need to mention that you were helped by
+ an assistant on the course.
+ Preferably you submit this as a pdf or postscript file.
+ If that's not possible you can hand in handwritten pages on paper directly
+ to the examiner.
+ Be prepared to motivate why you can't make a pdf file.
+ In that case; make a README.txt (text file) and say so in your README-file.
+ 
+\end_layout
+
+\end_body
+\end_document
