@@ -1,0 +1,2 @@
+a) För fälten måste alla punkter under den man tas bort flyttas upp ett snäpp. Finns många punkter tar detta mycket beräkningskraft. (rita figur).
+	För LinkedList: man kan inte gå bak. När man tagit bort en punkt måste man därför gå runt ett varv.
