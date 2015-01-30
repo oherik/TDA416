@@ -2,6 +2,7 @@ package U3;
 
 import java.util.PriorityQueue;
 import java.util.Scanner;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.awt.Point;
 import java.awt.Color;
@@ -22,7 +23,7 @@ public class DimpLinkedList {
 	private static class Node implements Comparable<Node> {
 		Point p = null;
 		double imp = infinity; // importance of the point
-		int nbr = -1; // original position in list, only for debug
+		int nbr = -1; // original position in list, only for debugs
 
 		private Node next = null; // The link to the next node.
 		private Node prev = null; // The link to the previous node.
@@ -97,19 +98,29 @@ public class DimpLinkedList {
 	 */
 
 	public int readShape() {
-	
+
+		// File file = new File("fig1.txt");
 		Scanner sc = new Scanner(System.in);
 		int n = 0;
-		while (sc.hasNext()) { // antag 2 korrekta tal per rad
-			int n1 = sc.nextInt();
-			int n2 = sc.nextInt();
-			this.addLast(new Point(n1, n2));
+		int[] test = { 2, 1, 3, 1, 4, 2, 4, 3, 4, 4, 5, 4, 6, 4, 7, 4, 8, 4, 9,
+				4, 10, 5, 10, 6, 10, 7, 9, 8, 8, 8, 7, 8, 6, 7, 5, 8, 4, 9, 3,
+				8, 3, 7, 3, 7, 2, 5, 1, 4, 2, 3, 2, 2 };
+		// System.out.println(sc.hasNext());
+		for (int i = 0; i < test.length - 1; i = i + 2) {
+			System.out.println(test[i] + "    " + test[i + 1]);
+			this.addLast(new Point(test[i], test[i + 1]));
 			n++;
-		}
+
+		}/*
+		 * while (sc.hasNext()) { // antag 2 korrekta tal per rad int n1 =
+		 * sc.nextInt(); int n2 = sc.nextInt(); System.out.println(n);
+		 * this.addLast(new Point(n1, n2)); n++; }
+		 */
 		// sc.close();
-		
+		System.out.println("går vidare");
 		this.calcInitialImportance();
 		return n;
+
 	}
 
 	// primitive output used for debugging
@@ -160,7 +171,10 @@ public class DimpLinkedList {
 		}
 		shape.clearLayer(l);
 		Node ptr = head;
+		System.out.println(ptr.next.p.getX());
+
 		Point p1 = ptr.p;
+
 		ptr = ptr.next;
 		while (ptr != null) {
 			Point p2 = ptr.p;
@@ -181,13 +195,27 @@ public class DimpLinkedList {
 	 *            point to add
 	 */
 	public void addLast(Point p) {
-		System.out.println("aL");
-		Node n = head;
-		while (n.next != null) {
-			n = n.next;
+		if (head == null) {
+			head = new Node(p, -1);
+			System.out.println("Skapar huvud");
+			size++;
 		}
-		n.next = new Node(p, 0);
+		else{
+		addLast(head, p);
+		}
+
 	} // end addLast
+
+	private void addLast(Node head, Point p) {
+		if (head.next == null) {
+			head.next = new Node(p, 0);
+			head.next.prev=head;
+			size++;
+		} else {
+			addLast(head.next, p);
+		}
+
+	}
 
 	/**
 	 * Reduces the list to the sought-after k most important points.
@@ -196,7 +224,7 @@ public class DimpLinkedList {
 	 *            the number of remaining points
 	 */
 	public void importanceRemoveList(int k) {
-		System.out.println("iRL");
+		System.out.println("iRL" + k + " sajs: " + size);
 		if (k < 3 || k > size) {
 			throw new IndexOutOfBoundsException(
 					"importanceRemoveList: k måste vara minst 3, annars är programmet meningslöst, och inte större än antalet punkter");
@@ -204,15 +232,25 @@ public class DimpLinkedList {
 		Node n = head;
 		Node minImpNode = n;
 		double minImp = n.imp;
-		while(n.next!=null){
-			if(n.imp<minImp){
+		while (n.next != null) {
+			if (n.imp < minImp) {
+				minImp = n.imp;
 				minImpNode = n;
+				//System.out.println(minImpNode.imp);
 			}
-			n=n.next;
+			n = n.next;
 		}
-		minImpNode.prev.next=minImpNode.next;
+		System.out.println(minImpNode.prev.p.getX());
+		if(minImpNode.prev.imp!=infinity&&minImpNode.next.imp!=infinity){
+			
+		minImpNode.prev.imp = importanceOfP(minImpNode.prev.prev.p, minImpNode.prev.p,minImpNode.next.p);
+		minImpNode.next.imp = importanceOfP(minImpNode.prev.p, minImpNode.next.p,minImpNode.next.next.p);
+		}
+		minImpNode.next.prev=minImpNode.prev;
+		minImpNode.prev.next = minImpNode.next;
 		size--;
-		if(k<size){
+		
+		if (k < size) {
 			importanceRemoveList(k);
 		}
 	}
@@ -223,14 +261,17 @@ public class DimpLinkedList {
 	 */
 	public void calcInitialImportance() {
 		System.out.println("cII");
-		Node tjafs = head;
-		tjafs.imp = infinity;
-		tjafs = tjafs.next;
-		while (tjafs.next != null) {
-			tjafs.imp = importanceOfP(tjafs.prev.p, tjafs.p, tjafs.next.p);
-			tjafs = tjafs.next;
+		Node n = head;
+		System.out.println(n.p.getX());
+		n.imp = infinity;
+		n = n.next;
+		//System.out.println(n.prev.p.getX());
+		while (n.next != null) {
+			//System.out.println(n.prev.p.getX());
+			n.imp = importanceOfP(n.prev.p, n.p, n.next.p);
+			n = n.next;
 		}
-		tjafs.imp = infinity;
+		n.imp = infinity;
 	}
 
 	/**

@@ -8,7 +8,7 @@ public class Main {
 	public static void main(String[] args) {
 
 		DimpLinkedList outline;
-		int size = 0; //n number of points in shape
+		int size = 0; //n numsber of points in shape
 System.out.println("r12");
 		int j = -1; // count arguments
 		int w = 15; // width
