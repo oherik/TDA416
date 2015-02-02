@@ -8,6 +8,7 @@
 
 */bin/
 *.class
+*.pdf
 
 # Windows image file caches
 Thumbs.db
