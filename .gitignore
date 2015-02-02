@@ -1,14 +1,19 @@
-*.lyx*
+#Eclipse
+*/.settings/
 
-/Lab1/Grafik/
+*/Grafik/
+*/bin/
+*.class
+*.project
+*.classpath
+
+#Project
+*.lyx*
 
 *.tar
 
-/Lab1/.settings/
-
-*/bin/
-*.class
 *.pdf
+*.xlsx
 
 # Windows image file caches
 Thumbs.db
