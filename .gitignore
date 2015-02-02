@@ -1,10 +1,10 @@
 *.lyx*
 
-/TDA416/Grafik/
+/Lab1/Grafik/
 
 *.tar
 
-/TDA416/.settings/
+/Lab1/.settings/
 
 */bin/
 
