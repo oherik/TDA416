@@ -1,3 +1,13 @@
+*.lyx*
+
+.TDA416/Grafik/
+
+*.tar
+
+.TDA416/settings/
+
+*/bin/
+
 # Windows image file caches
 Thumbs.db
 ehthumbs.db
