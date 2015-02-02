@@ -9,7 +9,6 @@ public class Main {
 
 		DimpLinkedList outline;
 		int size = 0; //n numsber of points in shape
-System.out.println("r12");
 		int j = -1; // count arguments
 		int w = 15; // width
 		int h = 15; // heigth

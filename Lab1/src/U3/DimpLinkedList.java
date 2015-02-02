@@ -105,19 +105,16 @@ public class DimpLinkedList {
 		int[] test = { 2, 1, 3, 1, 4, 2, 4, 3, 4, 4, 5, 4, 6, 4, 7, 4, 8, 4, 9,
 				4, 10, 5, 10, 6, 10, 7, 9, 8, 8, 8, 7, 8, 6, 7, 5, 8, 4, 9, 3,
 				8, 3, 7, 3, 7, 2, 5, 1, 4, 2, 3, 2, 2 };
-		// System.out.println(sc.hasNext());
 		for (int i = 0; i < test.length - 1; i = i + 2) {
-			System.out.println(test[i] + "    " + test[i + 1]);
 			this.addLast(new Point(test[i], test[i + 1]));
 			n++;
 
 		}/*
 		 * while (sc.hasNext()) { // antag 2 korrekta tal per rad int n1 =
-		 * sc.nextInt(); int n2 = sc.nextInt(); System.out.println(n);
-		 * this.addLast(new Point(n1, n2)); n++; }
+		 * sc.nextInt(); int n2 = sc.nextInt(); this.addLast(new Point(n1, n2));
+		 * n++; }
 		 */
 		// sc.close();
-		System.out.println("går vidare");
 		this.calcInitialImportance();
 		return n;
 
@@ -171,7 +168,6 @@ public class DimpLinkedList {
 		}
 		shape.clearLayer(l);
 		Node ptr = head;
-		System.out.println(ptr.next.p.getX());
 
 		Point p1 = ptr.p;
 
@@ -180,8 +176,6 @@ public class DimpLinkedList {
 			Point p2 = ptr.p;
 			shape.drawLine((int) p1.getX(), (int) p1.getY(), (int) p2.getX(),
 					(int) p2.getY(), c, 2.0, l);
-			// System.out.println( (int)p1.getX()+" "+ (int)p1.getY()+" "+
-			// (int)p2.getX()+" "+ (int)p2.getY()); // debug
 			p1 = p2;
 			ptr = ptr.next;
 		}
@@ -195,26 +189,22 @@ public class DimpLinkedList {
 	 *            point to add
 	 */
 	public void addLast(Point p) {
-		if (head == null) {
-			head = new Node(p, -1);
-			System.out.println("Skapar huvud");
-			size++;
+		if (p == null) {
+			throw new NullPointerException("addLast: Point is null");
 		}
-		else{
-		addLast(head, p);
+		if (tail == null) {
+			tail = new Node(p, size);
+			head = tail;
+		} else {
+			addLastHelp(tail, p);
 		}
-
+		size++;
 	} // end addLast
 
-	private void addLast(Node head, Point p) {
-		if (head.next == null) {
-			head.next = new Node(p, 0);
-			head.next.prev=head;
-			size++;
-		} else {
-			addLast(head.next, p);
-		}
-
+	private void addLastHelp(Node n, Point p) {
+		n.next = new Node(p, size);
+		n.next.prev = n;
+		tail = n.next;
 	}
 
 	/**
@@ -224,54 +214,49 @@ public class DimpLinkedList {
 	 *            the number of remaining points
 	 */
 	public void importanceRemoveList(int k) {
-		System.out.println("iRL" + k + " sajs: " + size);
-		if (k < 3 || k > size) {
+		if (k < 2 || k > size) {
 			throw new IndexOutOfBoundsException(
-					"importanceRemoveList: k måste vara minst 3, annars är programmet meningslöst, och inte större än antalet punkter");
+					"importanceRemoveList: k måste vara minst 2 och inte större än antalet punkter");
 		}
 		Node n = head;
 		Node minImpNode = n;
-		double minImp = n.imp;
 		while (n.next != null) {
-			if (n.imp < minImp) {
-				minImp = n.imp;
+			if (n.imp < minImpNode.imp) {
 				minImpNode = n;
-				//System.out.println(minImpNode.imp);
 			}
 			n = n.next;
 		}
-		System.out.println(minImpNode.prev.p.getX());
-		if(minImpNode.prev.imp!=infinity&&minImpNode.next.imp!=infinity){
-			
-		minImpNode.prev.imp = importanceOfP(minImpNode.prev.prev.p, minImpNode.prev.p,minImpNode.next.p);
-		minImpNode.next.imp = importanceOfP(minImpNode.prev.p, minImpNode.next.p,minImpNode.next.next.p);
-		}
-		minImpNode.next.prev=minImpNode.prev;
-		minImpNode.prev.next = minImpNode.next;
+		rebindPointersForRemoval(minImpNode);
+		newImportance(minImpNode.prev);
+		newImportance(minImpNode.next);
 		size--;
-		
-		if (k < size) {
+		if (k < size){
 			importanceRemoveList(k);
 		}
 	}
+
+	private void rebindPointersForRemoval(Node n) {
+		n.next.prev = n.prev;
+		n.prev.next = n.next;
+	} // hjälpmetod till importanceRemoveList
+
+	private void newImportance(Node n) {
+		if (n.imp != infinity){
+			n.imp = importanceOfP(n.prev.p, n.p, n.next.p);
+		}
+	} // hjälpmetod till importacneRemoveList
 
 	/**
 	 * Calculates the initial important measure for all nodes. Assume there are
 	 * at least 3 nodes otherwise it's all meaningless.
 	 */
 	public void calcInitialImportance() {
-		System.out.println("cII");
-		Node n = head;
-		System.out.println(n.p.getX());
-		n.imp = infinity;
-		n = n.next;
-		//System.out.println(n.prev.p.getX());
+		head.imp = tail.imp = infinity;
+		Node n = head.next;
 		while (n.next != null) {
-			//System.out.println(n.prev.p.getX());
 			n.imp = importanceOfP(n.prev.p, n.p, n.next.p);
 			n = n.next;
 		}
-		n.imp = infinity;
 	}
 
 	/**
@@ -286,12 +271,14 @@ public class DimpLinkedList {
 		double l1 = l.distance(p); // use Points distance function :-)
 		double l2 = p.distance(r);
 		double l3 = l.distance(r);
+
 		/*
-		 * debug System.out.println("punkterna (l: p: r): " + l + ": " + p +
-		 * ": " + r); System.out.println("l-p= " + String.format( "%5.2f ", l1)
-		 * + " p-r= " + String.format( "%5.2f ", l2) + " l-r= " + String.format(
-		 * "%5.2f ", l3) + " (l1+l2-l3)= " + String.format( "%5.2f ",
-		 * (l1+l2-l3)) ); System.out.println(); // end debug
+		 * debugSystem.out.println("punkterna (l: p: r): " + l + ": " + p + ": "
+		 * + r);System.out.println("l-p= " + String.format("%5.2f ", l1) +
+		 * " p-r= " + String.format("%5.2f ", l2) + " l-r= " +
+		 * String.format("%5.2f ", l3) + " (l1+l2-l3)= " +
+		 * String.format("%5.2f ", (l1 + l2 - l3)));System.out.println(); // end
+		 * debug
 		 */
 		return l1 + l2 - l3;
 	}
