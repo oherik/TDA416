@@ -1,6 +1,6 @@
 package U3;
 
-//import java.util.PriorityQueue;
+import java.util.PriorityQueue;
 import java.util.Scanner;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -18,7 +18,7 @@ public class DimpLinkedList {
 	private static final double infinity = 1.0E300;
 	private DrawGraph shape;
 
-	// private PriorityQueue<Node> q = new PriorityQueue<Node>();
+	private PriorityQueue<Node> q = new PriorityQueue<Node>();
 
 	/** this Node is the building block for our list. */
 	private static class Node implements Comparable<Node> {
@@ -197,12 +197,14 @@ public class DimpLinkedList {
 			addLastHelp(tail, p);
 		}
 		size++;
+
 	} // end addLast
 
 	private void addLastHelp(Node n, Point p) {
 		n.next = new Node(p, size);
 		n.next.prev = n;
 		tail = n.next;
+		
 	} // helper function for addLast
 
 	/**
@@ -216,29 +218,42 @@ public class DimpLinkedList {
 			throw new IndexOutOfBoundsException(
 					"importanceRemoveList: k måste vara minst 2 och inte större än antalet punkter");
 		}
-		Node n = head;
-		Node minImpNode = n;
-		while (n.next != null) {
-			if (n.imp < minImpNode.imp) {
-				minImpNode = n;
+		//TODO: nu testar vi
+		while (size > k){
+			Node minImpNode = q.poll();
+			rebindPointersForRemoval(minImpNode);
+			newImportanceOfNode(minImpNode.prev);
+			newImportanceOfNode(minImpNode.next);
+			size--;
+			q.remove(minImpNode.prev);
+			q.remove(minImpNode.next);
+			q.add(minImpNode.prev);
+			q.add(minImpNode.next);
+		}
+		/*
+		while (size > k) {
+			Node n = head;
+			Node minImpNode = n;
+			while (n.next != null) {
+				if (n.imp < minImpNode.imp) {
+					minImpNode = n;
+				}
+				n = n.next;
 			}
-			n = n.next;
-		}
-		rebindPointersForRemoval(minImpNode);
-		newImportance(minImpNode.prev);
-		newImportance(minImpNode.next);
-		size--;
-		if (k < size) {
-			importanceRemoveList(k);
-		}
-	}
+			rebindPointersForRemoval(minImpNode);
+			newImportanceOfNode(minImpNode.prev);
+			newImportanceOfNode(minImpNode.next);
+			size--;
 
+		}*/
+	}
+	
 	private void rebindPointersForRemoval(Node n) {
 		n.next.prev = n.prev;
 		n.prev.next = n.next;
 	} // hjälpmetod till importanceRemoveList
 
-	private void newImportance(Node n) {
+	private void newImportanceOfNode(Node n) {
 		if (n.imp != infinity) {
 			n.imp = importanceOfP(n.prev.p, n.p, n.next.p);
 		}
@@ -253,6 +268,7 @@ public class DimpLinkedList {
 		Node n = head.next;
 		while (n.next != null) {
 			n.imp = importanceOfP(n.prev.p, n.p, n.next.p);
+			q.add(n); //TODO: ska det vara så?
 			n = n.next;
 		}
 	}
