@@ -4,7 +4,7 @@
 */Grafik/
 */bin/
 *.class
-*.project
+#*.project
 *.classpath
 
 #Project
