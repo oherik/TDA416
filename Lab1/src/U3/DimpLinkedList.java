@@ -1,13 +1,13 @@
 package U3;
 
-import java.util.PriorityQueue;
+//import java.util.PriorityQueue;
 import java.util.Scanner;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.awt.Point;
 import java.awt.Color;
 //import java.util.*;
-import java.text.DecimalFormat;
+//import java.text.DecimalFormat;
 
 // EH 2015 01 28
 // även den här koden är återanvänd från andra uppgifter så det finns 
@@ -17,7 +17,8 @@ public class DimpLinkedList {
 	// 1.0E300 is almost infinity (approx. = Double.MAX_VALUE
 	private static final double infinity = 1.0E300;
 	private DrawGraph shape;
-	private PriorityQueue<Node> q = new PriorityQueue<Node>();
+
+	// private PriorityQueue<Node> q = new PriorityQueue<Node>();
 
 	/** this Node is the building block for our list. */
 	private static class Node implements Comparable<Node> {
@@ -82,7 +83,6 @@ public class DimpLinkedList {
 		// int[] x = {0, 1, 3, 4, 5, 6, 9, 10, 9, 7, 5, 4, 2};
 		// int[] y = {0, 3, 3, 4, 4, 5, 5, 3, 1, 1, 1, 0, 0};
 		for (int i = 0; i < x.length; i++) {
-
 			this.addLast(new Point(x[i], y[i]));
 			n++;
 		}
@@ -98,26 +98,24 @@ public class DimpLinkedList {
 	 */
 
 	public int readShape() {
-
-		// File file = new File("fig1.txt");
-		Scanner sc = new Scanner(System.in);
 		int n = 0;
-		int[] test = { 2, 1, 3, 1, 4, 2, 4, 3, 4, 4, 5, 4, 6, 4, 7, 4, 8, 4, 9,
-				4, 10, 5, 10, 6, 10, 7, 9, 8, 8, 8, 7, 8, 6, 7, 5, 8, 4, 9, 3,
-				8, 3, 7, 3, 7, 2, 5, 1, 4, 2, 3, 2, 2 };
-		for (int i = 0; i < test.length - 1; i = i + 2) {
-			this.addLast(new Point(test[i], test[i + 1]));
-			n++;
-
-		}/*
-		 * while (sc.hasNext()) { // antag 2 korrekta tal per rad int n1 =
-		 * sc.nextInt(); int n2 = sc.nextInt(); this.addLast(new Point(n1, n2));
-		 * n++; }
-		 */
-		// sc.close();
-		this.calcInitialImportance();
+		System.out.println("Please enter filename (for example ./fig1.txt)");
+		Scanner input = new Scanner(System.in);
+		File file = new File(input.nextLine());
+		try {
+			Scanner sc = new Scanner(file);
+			while (sc.hasNext()) { // antag 2 korrekta tal per rad
+				int n1 = sc.nextInt();
+				int n2 = sc.nextInt();
+				this.addLast(new Point(n1, n2));
+				n++;
+			}
+			sc.close();
+			this.calcInitialImportance();
+		} catch (FileNotFoundException e) {
+			System.out.println("readShape: File not found.");
+		}
 		return n;
-
 	}
 
 	// primitive output used for debugging
@@ -205,7 +203,7 @@ public class DimpLinkedList {
 		n.next = new Node(p, size);
 		n.next.prev = n;
 		tail = n.next;
-	}
+	} // helper function for addLast
 
 	/**
 	 * Reduces the list to the sought-after k most important points.
@@ -230,7 +228,7 @@ public class DimpLinkedList {
 		newImportance(minImpNode.prev);
 		newImportance(minImpNode.next);
 		size--;
-		if (k < size){
+		if (k < size) {
 			importanceRemoveList(k);
 		}
 	}
@@ -241,7 +239,7 @@ public class DimpLinkedList {
 	} // hj�lpmetod till importanceRemoveList
 
 	private void newImportance(Node n) {
-		if (n.imp != infinity){
+		if (n.imp != infinity) {
 			n.imp = importanceOfP(n.prev.p, n.p, n.next.p);
 		}
 	} // hj�lpmetod till importacneRemoveList
