@@ -8,7 +8,7 @@ public class Main {
 	public static void main(String[] args) {
 
 		DimpLinkedList outline;
-		int size = 0; //n numsber of points in shape
+		int size = 0; //n number of points in shape
 		int j = -1; // count arguments
 		int w = 15; // width
 		int h = 15; // heigth
@@ -17,6 +17,10 @@ public class Main {
 		while  ( j+1 < args.length && args[j+1].charAt(0) == '-' )  {
 			
 			j = j+1;
+			/*
+			 * Är följande vår felutskrit eller ErLands?
+			 */
+			
 			//System.out.println("j= " + j + " " + args[j] );
 			switch ( args[j].charAt(1) ) {
 				case 'k': {
