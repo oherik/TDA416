@@ -17,10 +17,7 @@ public class Main {
 		while  ( j+1 < args.length && args[j+1].charAt(0) == '-' )  {
 			
 			j = j+1;
-			/*
-			 * Är följande vår felutskrit eller ErLands?
-			 */
-			
+
 			//System.out.println("j= " + j + " " + args[j] );
 			switch ( args[j].charAt(1) ) {
 				case 'k': {
