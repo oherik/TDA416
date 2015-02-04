@@ -1,3 +1,5 @@
+//Grupp 7 - Erik Öhrn & Paula Eriksson Imable
+
 package U3;
 
 import java.util.PriorityQueue;
@@ -86,7 +88,12 @@ public class DimpLinkedList {
 			this.addLast(new Point(x[i], y[i]));
 			n++;
 		}
-		calcInitialImportance();
+		try {
+			calcInitialImportance();
+		} catch (NullPointerException e) {
+			System.err.println(e.getMessage() + "\nExiting");
+			System.exit(0);
+		}
 		return n;
 	}
 
@@ -111,10 +118,18 @@ public class DimpLinkedList {
 				n++;
 			}
 			sc.close();
-			this.calcInitialImportance();
+			try {
+				this.calcInitialImportance();
+			} catch (NullPointerException e) {
+				System.err.println(e + "\nExiting");
+				System.exit(0);
+			}
 		} catch (FileNotFoundException e) {
-			System.out.println("readShape: File not found.");
+			System.err.println(this.getClass().getName()
+					+ " in readShape: File not found. Exiting.");
+			System.exit(0);
 		}
+		input.close();
 		return n;
 	}
 
@@ -181,97 +196,125 @@ public class DimpLinkedList {
 	}
 
 	/**
-	 * Adds a point to the end of the list
+	 * Adds a point to the end of the list and sets the size as one larger than
+	 * before.
 	 * 
 	 * @param p
 	 *            point to add
+	 * @throws NullPointerException
+	 *             if p is null
 	 */
-	public void addLast(Point p) {
+	public void addLast(Point p) throws NullPointerException {
 		if (p == null) {
-			throw new NullPointerException("addLast: Point is null");
+			throw new NullPointerException(this.getClass().getName()
+					+ " in addLast: Point is null");
 		}
+		Node newNode = new Node(p, size);
 		if (tail == null) {
-			tail = new Node(p, size);
-			head = tail;
+			head = newNode;
 		} else {
-			addLastHelp(tail, p);
+			tail.next = newNode;
+			newNode.prev = tail;
 		}
+		tail = newNode;
 		size++;
-
 	} // end addLast
-
-	private void addLastHelp(Node n, Point p) {
-		n.next = new Node(p, size);
-		n.next.prev = n;
-		tail = n.next;
-		
-	} // helper function for addLast
 
 	/**
 	 * Reduces the list to the sought-after k most important points.
 	 * 
 	 * @param k
 	 *            the number of remaining points
+	 * @throws IndexOutOfBoundsException
+	 * @throws IllegalArgumentException
 	 */
-	public void importanceRemoveList(int k) {
+	public void importanceRemoveList(int k) throws IndexOutOfBoundsException,
+			RuntimeException {
 		if (k < 2 || k > size) {
 			throw new IndexOutOfBoundsException(
-					"importanceRemoveList: k måste vara minst 2 och inte större än antalet punkter");
+					this.getClass().getName()
+							+ " in importanceRemoveList: the number of points desired needs to be at least 2 and not larger than the number of initial points.");
+		} else if (q.isEmpty()	) {
+			throw new IllegalArgumentException(
+					this.getClass().getName()
+							+ " in importanceRemoveList: you need to calculate the initial importance first.");
 		}
-		//TODO: nu testar vi
-		while (size > k){
-			Node minImpNode = q.poll();
-			rebindPointersForRemoval(minImpNode);
-			newImportanceOfNode(minImpNode.prev);
-			newImportanceOfNode(minImpNode.next);
-			size--;
-			q.remove(minImpNode.prev);
-			q.remove(minImpNode.next);
-			q.add(minImpNode.prev);
-			q.add(minImpNode.next);
-		}
-		/*
+		Node minImpNode;
 		while (size > k) {
-			Node n = head;
-			Node minImpNode = n;
-			while (n.next != null) {
-				if (n.imp < minImpNode.imp) {
-					minImpNode = n;
-				}
-				n = n.next;
-			}
+			minImpNode = q.poll();
 			rebindPointersForRemoval(minImpNode);
-			newImportanceOfNode(minImpNode.prev);
-			newImportanceOfNode(minImpNode.next);
+			updateNodeInQueue(minImpNode.prev);
+			updateNodeInQueue(minImpNode.next);
 			size--;
+		}
+	}// end importanceRemoveList
 
-		}*/
-	}
-	
+	/**
+	 * Removes the pointers to a node
+	 * 
+	 * @param n
+	 *            The node that is to be removed
+	 */
 	private void rebindPointersForRemoval(Node n) {
 		n.next.prev = n.prev;
 		n.prev.next = n.next;
-	} // hjälpmetod till importanceRemoveList
+	} // end rebindPointers
 
-	private void newImportanceOfNode(Node n) {
-		if (n.imp != infinity) {
-			n.imp = importanceOfP(n.prev.p, n.p, n.next.p);
-		}
-	} // hjälpmetod till importacneRemoveList
+	/**
+	 * Updates a node in the priority queue. Unfortunately this is rather
+	 * inefficient, since removing from a priority queue takes O(n) operations.
+	 * 
+	 * @param n
+	 *            The node which will be updated.
+	 */
+	private void updateNodeInQueue(Node n) {
+		importanceOfNode(n);
+		q.remove(n);
+		q.add(n);
+	}
 
 	/**
 	 * Calculates the initial important measure for all nodes. Assume there are
 	 * at least 3 nodes otherwise it's all meaningless.
+	 * 
+	 * @throws NullPointerException
 	 */
-	public void calcInitialImportance() {
-		head.imp = tail.imp = infinity;
-		Node n = head.next;
-		while (n.next != null) {
-			n.imp = importanceOfP(n.prev.p, n.p, n.next.p);
-			q.add(n); //TODO: ska det vara så?
-			n = n.next;
+	public void calcInitialImportance() throws NullPointerException {
+		if (head == null) {
+			throw new NullPointerException("calcInitialImportance: you need to add some nodes.");
+		} else {
+			calcInitialImportanceRecursive(head);
 		}
-	}
+	}// end calcInitialImportance
+
+	/**
+	 * Helper function to calcInitialImportance().
+	 * 
+	 * @param n
+	 *            the node which importance needs to be calculated
+	 */
+	private void calcInitialImportanceRecursive(Node n) {
+		if (n != null) {
+			importanceOfNode(n);
+			q.add(n);
+			calcInitialImportanceRecursive(n.next);
+		}
+	}// end calcInitialImportanceRecursive
+
+	/**
+	 * Calculates the importance of the point in a specified node. The
+	 * importance if the head and tail will be set to infinity.
+	 * 
+	 * @param n
+	 *            The node whose importance will be recalculated.
+	 */
+	private void importanceOfNode(Node n) {
+		if (n != head && n != tail) {
+			n.imp = importanceOfP(n.prev.p, n.p, n.next.p);
+		} else {
+			n.imp = infinity;
+		}
+	} // end importanceOfNode
 
 	/**
 	 * Given three points, the important measure of the middle one, p, is
