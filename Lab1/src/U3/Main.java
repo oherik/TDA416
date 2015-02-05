@@ -8,7 +8,7 @@ public class Main {
 
 	public static void main(String[] args) {
 
-		DimpLinkedList outline;
+		Uppg3 outline;
 		int size = 0; // n number of points in shape
 		int j = -1; // count arguments
 		int w = 15; // width
@@ -60,7 +60,7 @@ public class Main {
 			System.exit(0); // avsluta
 		}
 
-		outline = new DimpLinkedList(w, h);
+		outline = new Uppg3(w, h);
 
 		// read constant points to linked list
 		// size = outline.readFakeShape();
