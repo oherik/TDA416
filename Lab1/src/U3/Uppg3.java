@@ -8,8 +8,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.awt.Point;
 import java.awt.Color;
-//import java.util.*;
-//import java.text.DecimalFormat;
 
 // EH 2015 01 28
 // även den här koden är återanvänd från andra uppgifter så det finns 
