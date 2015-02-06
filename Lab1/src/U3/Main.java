@@ -1,3 +1,6 @@
+/*
+ * Grupp 7 Erik Öhrn & Paula Eriksson
+ */
 package U3;
 
 import java.awt.Color;
