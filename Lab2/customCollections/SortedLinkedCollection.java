@@ -9,7 +9,7 @@ public class SortedLinkedCollection implements LinkedCollection {
 	 * först och största elementet sist.
 	 */
 
-	@override
+	
     /**
      * Adds an element to the collection.
      * The element added last will be the first element 
