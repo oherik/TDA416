@@ -207,7 +207,7 @@ public class Uppg3 {
 	public void addLast(Point p) throws NullPointerException {
 		if (p == null) {
 			throw new NullPointerException(this.getClass().getName()
-					+ " in addLast: Point is null");
+					+ " in addLast(Point p): Point is null");
 		}
 		Node newNode = new Node(p, size);
 		if (tail == null) {
@@ -229,15 +229,15 @@ public class Uppg3 {
 	 * @throws IllegalArgumentException
 	 */
 	public void importanceRemoveList(int k) throws IndexOutOfBoundsException,
-			RuntimeException {
+			IllegalArgumentException {
 		if (k < 2 || k > size) {
 			throw new IndexOutOfBoundsException(
 					this.getClass().getName()
-							+ " in importanceRemoveList: the number of points desired needs to be at least 2 and not larger than the number of initial points.");
+							+ " in importanceRemoveList(int k): the number of points desired needs to be at least 2 and not larger than the number of initial points.");
 		} else if (q.isEmpty()) {
 			throw new IllegalArgumentException(
 					this.getClass().getName()
-							+ " in importanceRemoveList: you need to calculate the initial importance first.");
+							+ " in importanceRemoveList(int k): you need to calculate the initial importance first.");
 		}
 		Node minImpNode;
 		while (size > k) {
@@ -282,7 +282,7 @@ public class Uppg3 {
 	public void calcInitialImportance() throws NullPointerException {
 		if (head == null) {
 			throw new NullPointerException(
-					"calcInitialImportance: no nodes have been added.");
+					"calcInitialImportance(): no nodes have been added.");
 		} else {
 			calcInitialImportanceRecursive(head);
 		}

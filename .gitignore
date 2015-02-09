@@ -7,12 +7,16 @@
 #*.project
 *.classpath
 
+#IntelliJ
+*/.idea/*
+*.iml
+
+
 #Project
 *.lyx*
 
 *.tar
 
-*.pdf
 *.xlsx
 
 # Windows image file caches
