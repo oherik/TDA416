@@ -11,31 +11,31 @@ import datastructures.*;
 import testSortCol.*;
 
 /**
- * Detta är en frame varmed man kan testa olika sorterade samlingar.
- * Via framen kan man välja en textfil, för vilken man kan skapa
- * en referenslista. Referenslistan beräknas i form av en map,
- * som har utökats med en räknare för antalet jämförelser som
- * behövs av de ord som ingår i texten. Efter beräkningen
- * presenteras antalet jämförelser av nycklar som behövdes, den tid
+ * Detta ï¿½r en frame varmed man kan testa olika sorterade samlingar.
+ * Via framen kan man vï¿½lja en textfil, fï¿½r vilken man kan skapa
+ * en referenslista. Referenslistan berï¿½knas i form av en map,
+ * som har utï¿½kats med en rï¿½knare fï¿½r antalet jï¿½mfï¿½relser som
+ * behï¿½vs av de ord som ingï¿½r i texten. Efter berï¿½kningen
+ * presenteras antalet jï¿½mfï¿½relser av nycklar som behï¿½vdes, den tid
  * det tog och hela referenslistan.
  */
 public class TestFrame extends JFrame implements ActionListener {
 
   Scanner textfil = new Scanner( System.in );
-  File indata = null;
-  JFileChooser texten = new JFileChooser(".");
+    File indata = null;
+    JFileChooser texten = new JFileChooser(".");
 
-    /*  ***** Här skall ni definiera era samlingar !!!  ***** */   
-   
+    /*  ***** Hï¿½r skall ni definiera era samlingar !!!  ***** */
+
     CollectionWithGet<TestMapWithCounter.TestMapEntry<String,List<Integer>>>
-	containerSLC   =   ,
-	containerBST   =   ,
-        containerAVL   =   ,
-        containerSplay =   ;
+            containerSLC   = new SortedLinkedCollection<TestMapWithCounter.TestMapEntry<String,List<Integer>>>(),
+            containerBST   =  new BSTwithGet<TestMapWithCounter.TestMapEntry<String,List<Integer>>>(),
+            containerAVL   =  new AVLwithGet<TestMapWithCounter.TestMapEntry<String, List<Integer>>>(),
+            containerSplay =  new SplayTree<TestMapWithCounter.TestMapEntry<String,List<Integer>>>();
     
-    /*    **************************************************  */   
+    /*    **************************************************  */
 
-  TestMapWithCounter<String,List<Integer>> slcMap =
+    TestMapWithCounter<String,List<Integer>> slcMap =
      new TestMapWithCounter<String,List<Integer>>(containerSLC);
 
   TestMapWithCounter<String,List<Integer>> bstMap =
@@ -57,8 +57,8 @@ public class TestFrame extends JFrame implements ActionListener {
   JRadioButton splay = new JRadioButton("Splay",false);
   
 
-  JButton text     = new JButton(" Välj fil");
-  JButton berakna  = new JButton(" Beräkna refs "); 
+  JButton text     = new JButton(" Vï¿½lj fil");
+  JButton berakna  = new JButton(" Berï¿½kna refs "); 
   JLabel  antjfr   = new JLabel("--", JLabel.CENTER);
   JLabel  millisec = new JLabel("--", JLabel.CENTER);
 
@@ -109,7 +109,7 @@ public class TestFrame extends JFrame implements ActionListener {
     JPanel knapparna = new JPanel(new GridLayout(2,3));
     content.add(knapparna, BorderLayout.CENTER );
     knapparna.add(text);
-    knapparna.add(new JLabel("Antal jämförelser", JLabel.CENTER));
+    knapparna.add(new JLabel("Antal jï¿½mfï¿½relser", JLabel.CENTER));
     knapparna.add(new JLabel("Antal millisek", JLabel.CENTER));
     knapparna.add(berakna);
     knapparna.add(antjfr);
@@ -122,11 +122,11 @@ public class TestFrame extends JFrame implements ActionListener {
     berakna.setForeground(Color.yellow);
 
     setSize(600,300);
-    listModel.addElement(" Välj en fil genom att klicka ovan och " );
-    listModel.addElement(" klicka sedan på beräkna. " );
-    listModel.addElement(" Eller klicka på Beräkna skriv sedan in " );
+    listModel.addElement(" Vï¿½lj en fil genom att klicka ovan och " );
+    listModel.addElement(" klicka sedan pï¿½ berï¿½kna. " );
+    listModel.addElement(" Eller klicka pï¿½ Berï¿½kna skriv sedan in " );
     listModel.addElement(" text via teminalrutan och avsluta med " );
-    listModel.addElement(" <CTRL>-d på ny rad" );
+    listModel.addElement(" <CTRL>-d pï¿½ ny rad" );
     
     content.add(delList, BorderLayout.SOUTH );
     setVisible(true);
@@ -165,12 +165,14 @@ public class TestFrame extends JFrame implements ActionListener {
         catch( FileNotFoundException fnfe) { 
             listModel.addElement( 
                "Filen " + (indata != null ? indata.getName() : "System.in" ) 
-               + " kunde inte öppnas !!" ); 
+               + " kunde inte ï¿½ppnas !!" ); 
 	} 
     }
   }
 
   public static void main(String[] args) {
-    new TestFrame();
+      System.out.println("lol");
+
+      new TestFrame();
   }
 }
