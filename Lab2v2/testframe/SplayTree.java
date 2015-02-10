@@ -110,18 +110,25 @@ private void doubleRotateRight( Entry x ) {
 private void zig(Entry x){
 	
 	    Entry   y = x.parent,
-		        z = x.right,
-		        temp;
+		        z = x.right;
 	    E       a = x.element,
-	    		b = y.element,
-	    		c = z.element;
-	    temp = x.left;
-	    x.left = y;
-	    x.parent = y.parent;
-	    y.right = temp;
-	    y.parent = x;
+	    		b = y.element;
+	    z.left = y.left.left.left;
+	    z.right= y.left.left.right;
+	    x.left=y.left.left;
+	    x.right=y.left;
+	    y.element = a;	//byter plats på elementen i x och y för att behålla kopplingen till det ovan.
+	    x.element = b;
+	    y.left = x;
+	    y.right = z;
+	    x.parent = y;
+	    z.parent = y;
+	    x.left.parent = x;
+	    x.right.parent = x;
+	    z.left.parent = z;
+	    z.right.parent = z;
 	    
-}
+} //TODO det här måste ju gåt att göra snyggare.
 
 
 
