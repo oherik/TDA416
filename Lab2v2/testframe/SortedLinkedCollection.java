@@ -31,23 +31,7 @@ public class SortedLinkedCollection<E extends Comparable<? super E>> extends
 	public E get(E e) {
 		if (e == null)
 			throw new NullPointerException();
-		if (head == null)
-			return null; // empty list
-		else {
-			Entry entry = head;
-			while (entry.next != null) {
-				if (e.compareTo(entry.element) == 0)
-					return entry.element;
-				else if(e.compareTo(entry.element) > 0){		//since it's sorted...
-					return null;
-					
-				}
-				else {
-					entry = entry.next;
-				}
-			}
-			return null;
-		}
+		return getRecursive(e, head);	
 	}
 
 	/**
@@ -64,11 +48,15 @@ public class SortedLinkedCollection<E extends Comparable<? super E>> extends
 	 * @return The first element in the list that satisfies e.compareTo(e')==0.
 	 *         Returns null if none is found.
 	 */
-	/*
-	 * private E compareToEntry(E e, Entry entry) { if (entry == null) return
-	 * null; // Element e not found else if (e.compareTo(entry.element) == 0)
-	 * return entry.element; return compareToEntry(e, entry.next); }
-	 */
+	private E getRecursive(E e, Entry entry){
+		if(entry==null)
+			return null;
+		else if (e.compareTo(entry.element) == 0)
+			return entry.element;
+		else if (e.compareTo(entry.element) > 0)  // since it's	sorted we can abort early
+			return null;
+		return getRecursive(e, entry.next);	
+	}
 
 	/**
 	 * Adds a new element to the list, in a sorted order
@@ -85,11 +73,11 @@ public class SortedLinkedCollection<E extends Comparable<? super E>> extends
 			throw new NullPointerException();
 		if (head == null || element.compareTo(head.element) < 0)
 			head = new Entry(element, null);
-		else 
-			return addSorted(element, head);							
+		else
+			addSorted(element, head);
 		return true;
-
 	} // add
+
 	/**
 	 * Compares a given element to one in a given entry and adds it before if
 	 * it's smaller according to compareTo.
@@ -99,14 +87,11 @@ public class SortedLinkedCollection<E extends Comparable<? super E>> extends
 	 * @param entry
 	 *            The entry whose element it compares to
 	 */
-	
-	private boolean addSorted(E element, Entry entry){
-		if(entry.next!=null && element.compareTo(entry.element) < 0)
+	private void addSorted(E element, Entry entry) {
+		if (entry.next != null && element.compareTo(entry.element) < 0)
 			addSorted(element, entry.next);
 		else
-			entry.next = new Entry(element, entry.next);		
-		return true;
+			entry.next = new Entry(element, entry.next);
 	}
-
 
 }
