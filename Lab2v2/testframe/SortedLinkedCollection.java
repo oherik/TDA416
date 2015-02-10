@@ -7,9 +7,7 @@
  */
 
 import testSortCol.CollectionWithGet;
-//import testSortCol.TestMapWithCounter.TestMapEntry;
-import datastructures.*;
-import datastructures.LinkedCollection.Entry;
+import datastructures.LinkedCollection;
 
 public class SortedLinkedCollection<E extends Comparable<? super E>> extends
 		LinkedCollection<E> implements CollectionWithGet<E> {
