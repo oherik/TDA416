@@ -4,7 +4,7 @@
  *
  * 
  * @author Erik Öhrn
- * @version 0.3
+ * @version 0.4
  */
 
 import testSortCol.CollectionWithGet;
@@ -36,18 +36,16 @@ public class SortedLinkedCollection<E extends Comparable<? super E>> extends
 	public E get(E e) {
 		if (e == null)
 			throw new NullPointerException();
-
 			Entry entry = head;
-			while(entry!=null){
-				if(e.compareTo(entry.element) == 0)
+			int compare = 0;
+			while(entry!=null	&&	compare>=0){	
+				compare = e.compareTo(entry.element);
+				if(compare == 0)
 					return entry.element;
 				entry = entry.next;
 			}
-		
-		return null;
-				
-			
-	}//TODO: get ä paj
+		return null;			
+	}
 
 	
 
@@ -64,7 +62,7 @@ public class SortedLinkedCollection<E extends Comparable<? super E>> extends
 	public boolean add(E element) {
 		if (element == null)
 			throw new NullPointerException();
-		else if (head == null || element.compareTo(head.element) < 0)
+		if (head == null || element.compareTo(head.element) < 0)
 			head = new Entry(element, head);
 		else{
 			Entry entry = head;
