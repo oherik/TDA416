@@ -28,7 +28,7 @@ public class SortedLinkedCollection<E extends Comparable<? super E>> extends
 	public E get(E e) {
 		if (e == null)
 			throw new NullPointerException();
-		return getRecursive(e, head);
+		return compareToEntry(e, head);
 	}
 
 	/**
@@ -45,12 +45,12 @@ public class SortedLinkedCollection<E extends Comparable<? super E>> extends
 	 * @return	The first element in the list that satisfies e.compareTo(e')==0.
 	 *         Returns null if none is found.
 	 */
-	private E getRecursive(E e, Entry entry) {
+	private E compareToEntry(E e, Entry entry) {
 		if (entry == null)
 			return null; // Element e not found
 		else if (e.compareTo(entry.element) == 0)
 			return entry.element;
-		return getRecursive(e, entry.next);
+		return compareToEntry(e, entry.next);
 	}
 	
 	@Override
