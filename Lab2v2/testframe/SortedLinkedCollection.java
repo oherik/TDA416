@@ -1,6 +1,7 @@
 /**
  * A subclass to LinkedCollection. It is in all appearances identical, 
- * except that it also has a "get" method.
+ * except that it also has a "get" method and the add method sorts it.
+ *
  * 
  * @author Erik Öhrn
  * @version 0.3
