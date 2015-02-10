@@ -3,7 +3,7 @@
  * except that it also has a "get" method.
  * 
  * @author Erik Öhrn
- * @version 0.2
+ * @version 0.3
  */
 
 import testSortCol.CollectionWithGet;
