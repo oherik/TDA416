@@ -8,7 +8,6 @@
 
 import testSortCol.CollectionWithGet;
 import datastructures.LinkedCollection;
-import datastructures.LinkedCollection.Entry;
 
 public class SortedLinkedCollection<E extends Comparable<? super E>> extends
 		LinkedCollection<E> implements CollectionWithGet<E> {
