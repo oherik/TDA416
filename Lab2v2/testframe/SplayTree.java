@@ -1,10 +1,9 @@
 import datastructures.BinarySearchTree;
-import datastructures.LinkedCollection;
 import testSortCol.CollectionWithGet;
 /**
  * 
  * @author Erik
- *testest
+ *
  * @param <E>
  */
 public class SplayTree<E extends Comparable<? super E>> extends
