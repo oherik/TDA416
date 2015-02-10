@@ -8,6 +8,7 @@
 
 import testSortCol.CollectionWithGet;
 import datastructures.LinkedCollection;
+import datastructures.LinkedCollection.Entry;
 
 public class SortedLinkedCollection<E extends Comparable<? super E>> extends
 		LinkedCollection<E> implements CollectionWithGet<E> {
@@ -40,7 +41,7 @@ public class SortedLinkedCollection<E extends Comparable<? super E>> extends
 	 * @param entry
 	 *            The current entry in which to compare e to the element in the
 	 *            entry.
-	 * @return	The first element in the list that satisfies e.compareTo(e')==0.
+	 * @return The first element in the list that satisfies e.compareTo(e')==0.
 	 *         Returns null if none is found.
 	 */
 	private E compareToEntry(E e, Entry entry) {
@@ -50,16 +51,42 @@ public class SortedLinkedCollection<E extends Comparable<? super E>> extends
 			return entry.element;
 		return compareToEntry(e, entry.next);
 	}
-	
+
+	/**
+	 * Adds a new element to the list, in a sorted order
+	 * 
+	 * @param element
+	 *            The element which is to be added
+	 * @throws NullPointerException
+	 *             if element is null
+	 * @return true if the element has been added
+	 */
 	@Override
-	public boolean add( E element ) {
-        if ( element == null )
-	    throw new NullPointerException();
-	else {
-	  
-		
-		
-		
+	public boolean add(E element) {
+		if (element == null)
+			throw new NullPointerException();
+		else
+			addSorted(element, head);
+		return true;
+	} // add
+
+	/**
+	 * Compares a given element to one in a given entry and adds it before if
+	 * it's smaller according to compareTo.
+	 * 
+	 * @param element
+	 *            The element which is to be added
+	 * @param entry
+	 *            The entry whose elemenst it compares to
+	 */
+	private void addSorted(E element, Entry entry) {
+		if (entry == null)
+			entry = new Entry(element, null);
+		else {
+			if (element.compareTo(head.element) < 0)
+				entry = new Entry(element, entry);
+			else
+				addSorted(element, entry.next);
+		}
 	}
-    } // add
 }
