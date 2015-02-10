@@ -9,6 +9,7 @@
 import testSortCol.CollectionWithGet;
 //import testSortCol.TestMapWithCounter.TestMapEntry;
 import datastructures.*;
+import datastructures.LinkedCollection.Entry;
 
 public class SortedLinkedCollection<E extends Comparable<? super E>> extends
 		LinkedCollection<E> implements CollectionWithGet<E> {
@@ -51,4 +52,16 @@ public class SortedLinkedCollection<E extends Comparable<? super E>> extends
 			return entry.element;
 		return getRecursive(e, entry.next);
 	}
+	
+	@Override
+	public boolean add( E element ) {
+        if ( element == null )
+	    throw new NullPointerException();
+	else {
+	  
+		
+		
+		
+	}
+    } // add
 }
