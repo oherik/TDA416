@@ -21,7 +21,7 @@ public class SortedLinkedCollection<E extends Comparable<? super E>> extends
 	 * Initializer function for getRecursive.
 	 * 
 	 * @param e
-	 *            The element which is to be found
+	 *            The element which is to be found. Needs to implement Comparable.
 	 * @throws NullPointerException
 	 *             if the argument is null
 	 * @return The first element in the list that satisfies e.compareTo(e')==0.
