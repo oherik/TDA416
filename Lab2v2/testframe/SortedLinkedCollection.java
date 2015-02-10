@@ -41,8 +41,6 @@ public class SortedLinkedCollection<E extends Comparable<? super E>> extends
 			while(entry!=null){
 				if(e.compareTo(entry.element) == 0)
 					return entry.element;
-			else if (e.compareTo(entry.element) > 0)
-					return null;
 				entry = entry.next;
 			}
 		
