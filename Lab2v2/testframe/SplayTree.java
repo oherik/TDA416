@@ -1,5 +1,5 @@
 import datastructures.BinarySearchTree;
-import datastructures.BinarySearchTree.Entry;
+//import datastructures.BinarySearchTree.Entry;
 import testSortCol.CollectionWithGet;
 /**
  * A splay tree class. 
@@ -96,6 +96,43 @@ private void doubleRotateRight( Entry x ) {
      z.parent  = x;
  }  //  doubleRotateRight
 
+/* zig
+   	     y'				x'
+        / \			   / \	
+       A   x'		  y'  z'
+      / \       ->   / \ / \
+     B  z'		    A  B C  D
+    / \
+   C  D
+*/	
+
+
+private void zig(Entry x){
+	
+	    Entry   y = x.parent,
+		        z = x.right,
+		        temp;
+	    E       a = x.element,
+	    		b = y.element,
+	    		c = z.element;
+	    temp = x.left;
+	    x.left = y;
+	    x.parent = y.parent;
+	    y.right = temp;
+	    y.parent = x;
+	    
+}
+
+
+
+
+
+
+
+
+
+
+
  /* Rotera 2 steg i vänstervarv, dvs 
             x'                  z'
            / \                /   \
@@ -105,7 +142,7 @@ private void doubleRotateRight( Entry x ) {
            / \  
           B   C  
   */
- private void doubleRotateLeft( Entry x ) {
+ private void zigzag( Entry x ) { //TODO kanske...
      Entry  y  = x.right,
 	z  = x.right.left;
      E      e  = x.element;
