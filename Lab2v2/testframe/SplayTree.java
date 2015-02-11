@@ -96,39 +96,25 @@ private void doubleRotateRight( Entry x ) {
      z.parent  = x;
  }  //  doubleRotateRight
 
-/* zig
-   	     y'				x'
-        / \			   / \	
-       A   x'		  y'  z'
-      / \       ->   / \ / \
-     B  z'		    A  B C  D
-    / \
-   C  D
-*/	
+
 
 
 private void zig(Entry x){
 	
 	    Entry   y = x.parent,
-		        z = x.right;
-	    E       a = x.element,
-	    		b = y.element;
-	    z.left = y.left.left.left;
-	    z.right= y.left.left.right;
-	    x.left=y.left.left;
-	    x.right=y.left;
-	    y.element = a;	//byter plats på elementen i x och y för att behålla kopplingen till det ovan.
-	    x.element = b;
-	    y.left = x;
-	    y.right = z;
-	    x.parent = y;
-	    z.parent = y;
-	    x.left.parent = x;
-	    x.right.parent = x;
-	    z.left.parent = z;
-	    z.right.parent = z;
+		        w = x.right	;
+	    E       e = y.element;
+	    y.element = x.element;	//byter plats på elementen i x och y för att behålla kopplingen till det ovan.
+	    x.element = e;
+	    y.right = w;
+	    x.right = x.left;
+	    x.left = y.left;
+	    if ( x.left != null )
+		    x.left.parent = x;
+	    y.left=x;
+	    w.parent=y;
 	    
-} //TODO det här måste ju gåt att göra snyggare.
+} //TODO borde stämma, men testa.
 
 
 
