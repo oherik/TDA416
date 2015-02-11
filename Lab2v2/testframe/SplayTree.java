@@ -1,4 +1,5 @@
 import datastructures.BinarySearchTree;
+
 //import datastructures.BinarySearchTree.Entry;
 import testSortCol.CollectionWithGet;
 /**
@@ -49,7 +50,7 @@ BinarySearchTree<E> implements CollectionWithGet<E>{
                / \            / \  
               B   C          A   B   
     */
-  private void rotateLeft( Entry x ) {
+  private void left( Entry x ) {
        Entry  y  = x.right;
        E temp    = x.element;
        x.element = y.element;
@@ -65,9 +66,54 @@ BinarySearchTree<E> implements CollectionWithGet<E>{
    } //   rotateLeft
   
 
+private void zigzig(Entry x){
+	Entry z = x.parent.parent,
+			y = x.parent,
+			temp;
+	E e = x.element;
+	x.element = z.element;
+	z.element = e;
 
+	z.right=x.right;	//D
+	x.right = y.left; //B
+	temp = z.left; //A
+	z.left=y;		
+	y.right = x.left;	//C
+	x.left = temp;	//A
+	y.left=x;
+	z.right.parent = z;
+	y.right.parent = y;
+	x.right.parent = x;
+	x.left.parent = x;	
+	
+}
 
+/* Rotera 2 steg i vänstervarv, dvs 
+               x'                  z'
+              / \                /   \
+             A   y'   -->       x'    y'
+                / \            / \   / \
+               z   D          A   B C   D
+              / \  
+             B   C  
+*/
+private void doubleRotateLeft( Entry x ) {
+Entry  y  = x.right,
+z  = x.right.left;
+E      e  = x.element;
+x.element = z.element;
+z.element = e;
+y.left    = z.right;
+if ( y.left != null )
+y.left.parent = y;
+z.right   = z.left;
+z.left    = x.left;
+if ( z.left != null )
+z.left.parent = z;
+x.left    = z;
+z.parent  = x;
 
+} //  doubleRotateLeft
 
 
   /* Rotera 2 steg i högervarv, dvs 
@@ -115,6 +161,7 @@ private void zig(Entry x){
 	    w.parent=y;
 	    
 } //TODO borde stämma, men testa.
+
 
 
 
