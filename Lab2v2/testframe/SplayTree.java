@@ -5,7 +5,7 @@ import testSortCol.CollectionWithGet;
 /**
  * A splay tree class. 
  * @author Erik Öhrn
- * @version 0.2_dev
+ * @version 0.3_dev
  */
 public class SplayTree<E extends Comparable<? super E>> extends
 BinarySearchTree<E> implements CollectionWithGet<E>{
@@ -17,39 +17,36 @@ BinarySearchTree<E> implements CollectionWithGet<E>{
 	@Override
 	public E get(E e) {
 		Entry result = find(e, root);
-		if(result!=null && result != root){
-			splay(result);
-			return result.element;
-		} else {
-		return null;
-		}
+		if(result==null)
+			return null;
+		else{
+			splay(result);	
+			return(root.element);		//TODO fult?
+		} 		
 	}
 	
-		
-	private void splay(Entry x){		
-		while(x.parent!=null){		//Splaya till den kommer till toppen?
+
+	private void splay(Entry x){	//TODO alt skicka x.parent.parent eller x.parent och låta get ha hand om loopen.
+		while(x != root){		//TODO är det rätt att loopa hela vägen?
 			if(x.parent.parent != null){
-				if(x.parent.right == x && x.parent.parent.right == x.parent){
+				if(x.parent.right == x && x.parent.parent.right == x.parent)
 					zagZag(x);
-				}
-				else if(x.parent.left == x && x.parent.parent.left == x.parent){
+				else if(x.parent.left == x && x.parent.parent.left == x.parent)
 					zigZig(x);
-				}
-				else if(x.parent.left == x && x.parent.parent.right == x.parent){
-					zagZig(x);
-				}
-				else{
+				else if(x.parent.left == x && x.parent.parent.right == x.parent)
+					zagZig(x); 
+				else
 					zigZag(x);
-				}
+
+				x = x.parent.parent;
 			}else{
-				if(x.parent.right ==  x){
+				if(x.parent.right ==  x)
 					zag(x);
-				}
-				else{
+				else
 					zig(x);
-				}
+
+				x = x.parent;
 			}
-						
 		}
 	}
 	
