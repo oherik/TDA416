@@ -6,7 +6,7 @@
  *
  * 
  * @author Erik Öhrn & Paula Eriksson Imable
- * @version 0.4
+ * @version 0.5
  */
 
 import testSortCol.CollectionWithGet;
