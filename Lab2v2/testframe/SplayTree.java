@@ -29,27 +29,18 @@ BinarySearchTree<E> implements CollectionWithGet<E>{
 				else if(x.parent.left == x && x.parent.parent.right == x.parent){
 					zagZig(x);
 				}
-				else if(x.parent.right == x && x.parent.parent.left == x.parent){
+				else{
 					zigZag(x);
 				}
+			}else{
+				if(x.parent.right ==  x){
+					zag(x);
+				}
+				else{
+					zig(x);
+				}
 			}
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
+						
 		}
 	}
 	
