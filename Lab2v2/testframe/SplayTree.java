@@ -5,7 +5,7 @@ import testSortCol.CollectionWithGet;
 /**
  * A splay tree class. 
  * @author Erik Öhrn
- * @version 0.3_dev
+ * @version 0.4_dev
  */
 public class SplayTree<E extends Comparable<? super E>> extends
 BinarySearchTree<E> implements CollectionWithGet<E>{
@@ -16,57 +16,83 @@ BinarySearchTree<E> implements CollectionWithGet<E>{
 	
 	@Override
 	public E get(E e) {
-		Entry result = find(e, root);
-		if(result==null)
-			return null;
-		else{
-			//while(result!= root)
-				splay(result);	
+		Entry result = splayFind(e, root, root);
+
+			if(result == null)
+				return null;
+			else
 			return(result.element);
-		} 		
+	 		
+	}
+	
+	private Entry splayFind(E elem, Entry t, Entry lc){
+		
+		Entry lastCheckedEntry = lc;
+		
+
+		if ( t == null ){
+			lastCheckedEntry=splay(lastCheckedEntry);
+			return null;
+		}
+	        else {
+	        	
+	        	
+		    int jfr = elem.compareTo( t.element );
+		    if ( jfr  < 0 ){
+			return splayFind( elem, t.left, t );}
+		    else if ( jfr > 0 ){
+		    	lastCheckedEntry = t;
+			return splayFind( elem, t.right, t );}
+		    else {	
+			return splay(t);
+		    }
+	        }
 	}
 	
 
-	private void splay(Entry x){	//TODO alt skicka x.parent.parent eller x.parent och låta get ha hand om loopen.
+	private Entry splay(Entry x){	//TODO alt skicka x.parent.parent eller x.parent och låta get ha hand om loopen.
 		if (x == null)
-			return;
+			return null;
 		else if(x == root)
-			return;
-		else if(x.parent == root){
+			return x;
+		while(x!= root){
+		if(x.parent == root){
 			if(root.right ==  x)
-				zag(x);
+				x=zag(x);
 			else
-				zig(x);
-			root = x;
+				x=zig(x);
+			this.root = x;
 		}
 		else{
 			Entry parent = x.parent;
 			Entry grandparent = parent.parent;
 			if(parent.right == x){
 				if(grandparent.right == parent){
-					zagZag(x);
+					x=zagZag(x);
 					//x=grandparent;
 					
 				}
 				else{
-					zigZag(x);
+					x=zigZag(x);
 					//x=parent;
 				}
 			}
 			else{
 				if(grandparent.left == parent){
-					zigZig(x);
+					x=zigZig(x);
 					//x= grandparent;
 				}	else{
-					zagZig(x);
+					x=zagZig(x);
 					//x=parent;
 				}
 
 			}
-
+			if(grandparent == root){
+				this.root = x;
+			}
 		}
-
-
+		}
+		return x;
 
 	}
 	
@@ -83,7 +109,7 @@ BinarySearchTree<E> implements CollectionWithGet<E>{
  * @param x
  */
 
-private void zig(Entry x){
+private Entry zig(Entry x){
 
 	Entry   y = x.parent;
 	E       e = y.element;
@@ -99,7 +125,8 @@ private void zig(Entry x){
 		x.right.parent = x;
 	if ( y.left != null )
 		y.left.parent = y;
-
+	return y;
+	
 	
 } //TODO borde stämma, men testa.
 
@@ -113,7 +140,7 @@ private void zig(Entry x){
 		   
 */    
 
-private void zag(Entry x){
+private Entry zag(Entry x){
 	Entry   y = x.parent;
 	E       e = x.element;
 	x.element = y.element;	//byt plats på x och y;
@@ -128,6 +155,8 @@ private void zag(Entry x){
 		x.left.parent = x;
 	if ( y.right != null )
 		y.right.parent = y;
+	return y;
+
 }
 
 
@@ -142,7 +171,7 @@ private void zag(Entry x){
 * @param x
 */
 
-private void zigZig(Entry x){
+private Entry zigZig(Entry x){
 	Entry z = x.parent.parent,
 		  y = x.parent;
 	E 	  e = x.element;
@@ -166,6 +195,8 @@ private void zigZig(Entry x){
 	if ( z.left != null )
 		z.left.parent = z;
 	
+	return z;
+	
 }
 
 /** zagZag
@@ -179,7 +210,7 @@ private void zigZig(Entry x){
  * @param x
  */
 
-private void zagZag(Entry x){
+private Entry zagZag(Entry x){
 	Entry z = x.parent.parent,
 		 y = x.parent;
 	E e = x.element;
@@ -201,6 +232,7 @@ private void zagZag(Entry x){
 		x.right.parent = x;
 	if ( x.left != null )
 		x.left.parent = x;	
+	return z;
 	
 }
 
@@ -216,7 +248,7 @@ private void zagZag(Entry x){
  * 
  * @param x
  */
-private void zigZag(Entry x){
+private Entry zigZag(Entry x){
 	Entry	y = x.parent,
 			z = x.parent.parent;
 	E	 	e = z.element;
@@ -234,6 +266,8 @@ private void zigZag(Entry x){
 	    y.right.parent = y;
 	if ( x.right != null )
 		   x.right.parent = x;
+	return z;
+	
 	
 }
 
@@ -252,7 +286,7 @@ private void zigZag(Entry x){
  * @param x
  */
 
-private void zagZig(Entry x){
+private Entry zagZig(Entry x){
 	Entry	y = x.parent,
 			z = x.parent.parent;
 	E	 	e = z.element;
@@ -270,6 +304,8 @@ private void zagZig(Entry x){
 	    y.left.parent = y;
 	if ( x.left != null )
 		x.left.parent = x;
+	return z;
+	
 	
 	
 	
@@ -281,6 +317,7 @@ private void zagZig(Entry x){
  * AVL_Tree.java
  * http://lcm.csa.iisc.ernet.in/dsa/node93.html
  * splay.lock.pdf
+ * https://www.cs.usfca.edu/~galles/visualization/SplayTree.html
  */
 
 
