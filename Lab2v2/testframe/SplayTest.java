@@ -1,0 +1,16 @@
+
+public class SplayTest {
+
+	public static void main(String[] args){
+		SplayTree tree = new SplayTree<Integer>();
+		
+		for(int i = 0; i<10; i++)
+			tree.add(new Integer(i));
+
+		System.out.println(tree.get(2));
+		System.out.println(tree.get(9));
+		System.out.println(tree.get(2));
+		
+	}
+	
+}
