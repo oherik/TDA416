@@ -225,6 +225,7 @@ private void zagZig(Entry x){
 /* Referenser: 
  * http://en.wikipedia.org/wiki/Splay_tree
  * AVL_Tree.java
+ * http://lcm.csa.iisc.ernet.in/dsa/node93.html
  */
 
 
