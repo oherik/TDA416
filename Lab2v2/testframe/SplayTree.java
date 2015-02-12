@@ -65,8 +65,18 @@ BinarySearchTree<E> implements CollectionWithGet<E>{
        x.left    = y;
    } //   rotateLeft
   
+ /** zigZigRight
+  *     	z						x
+  *        / \	    			   / \
+  *       y   D            till	  A   y
+  *      / \						 / \
+  *     x   C						B   z
+  *    / \                 			   / \
+  *   A   B							  C   D
+  * @param x
+  */
 
-private void zigzig(Entry x){
+private void zigZigRight(Entry x){
 	Entry z = x.parent.parent,
 			y = x.parent,
 			temp;
@@ -143,9 +153,17 @@ private void doubleRotateRight( Entry x ) {
  }  //  doubleRotateRight
 
 
+/** zig
+ *      y					x
+ *     / \				   / \
+ *    x   C		till	  A   y
+ *   / \					 / \
+ *  A   B					B   C
+ *  
+ * @param x
+ */
 
-
-private void zig(Entry x){
+private void zigRight(Entry x){
 	
 	    Entry   y = x.parent,
 		        w = x.right	;
