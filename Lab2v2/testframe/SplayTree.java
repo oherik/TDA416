@@ -20,34 +20,54 @@ BinarySearchTree<E> implements CollectionWithGet<E>{
 		if(result==null)
 			return null;
 		else{
-			splay(result);	
-			return(root.element);		//TODO fult?
+			//while(result!= root)
+				splay(result);	
+			return(result.element);
 		} 		
 	}
 	
 
 	private void splay(Entry x){	//TODO alt skicka x.parent.parent eller x.parent och låta get ha hand om loopen.
-		while(x != root){		//TODO är det rätt att loopa hela vägen?
-			if(x.parent.parent != null){
-				if(x.parent.right == x && x.parent.parent.right == x.parent)
-					zagZag(x);
-				else if(x.parent.left == x && x.parent.parent.left == x.parent)
-					zigZig(x);
-				else if(x.parent.left == x && x.parent.parent.right == x.parent)
-					zagZig(x); 
-				else
-					zigZag(x);
-
-				x = x.parent.parent;
-			}else{
-				if(x.parent.right ==  x)
-					zag(x);
-				else
-					zig(x);
-
-				x = x.parent;
-			}
+		if (x == null)
+			return;
+		else if(x == root)
+			return;
+		else if(x.parent == root){
+			if(root.right ==  x)
+				zag(x);
+			else
+				zig(x);
+			root = x;
 		}
+		else{
+			Entry parent = x.parent;
+			Entry grandparent = parent.parent;
+			if(parent.right == x){
+				if(grandparent.right == parent){
+					zagZag(x);
+					//x=grandparent;
+					
+				}
+				else{
+					zigZag(x);
+					//x=parent;
+				}
+			}
+			else{
+				if(grandparent.left == parent){
+					zigZig(x);
+					//x= grandparent;
+				}	else{
+					zagZig(x);
+					//x=parent;
+				}
+
+			}
+
+		}
+
+
+
 	}
 	
 
@@ -80,6 +100,7 @@ private void zig(Entry x){
 	if ( y.left != null )
 		y.left.parent = y;
 
+	
 } //TODO borde stämma, men testa.
 
 /** zag
