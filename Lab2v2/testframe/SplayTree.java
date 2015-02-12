@@ -16,6 +16,42 @@ BinarySearchTree<E> implements CollectionWithGet<E>{
 		return null;
 	}
 	
+		
+	private void splay(Entry x){		
+		while(x.parent!=null){		//Splaya till den kommer till toppen?
+			if(x.parent.parent != null){
+				if(x.parent.right == x && x.parent.parent.right == x.parent){
+					zagZag(x);
+				}
+				else if(x.parent.left == x && x.parent.parent.left == x.parent){
+					zigZig(x);
+				}
+				else if(x.parent.left == x && x.parent.parent.right == x.parent){
+					zagZig(x);
+				}
+				else if(x.parent.right == x && x.parent.parent.left == x.parent){
+					zigZag(x);
+				}
+			}
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+		}
+	}
 	
 
 
@@ -226,6 +262,7 @@ private void zagZig(Entry x){
  * http://en.wikipedia.org/wiki/Splay_tree
  * AVL_Tree.java
  * http://lcm.csa.iisc.ernet.in/dsa/node93.html
+ * splay.lock.pdf
  */
 
 
