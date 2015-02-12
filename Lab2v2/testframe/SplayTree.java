@@ -165,18 +165,20 @@ private void doubleRotateRight( Entry x ) {
 
 private void zigRight(Entry x){
 	
-	    Entry   y = x.parent,
-		        w = x.right	;
+	    Entry   y = x.parent;
 	    E       e = y.element;
 	    y.element = x.element;	//byter plats på elementen i x och y för att behålla kopplingen till det ovan.
 	    x.element = e;
-	    y.right = w;
-	    x.right = x.left;
-	    x.left = y.left;
-	    if ( x.left != null )
-		    x.left.parent = x;
-	    y.left=x;
-	    w.parent=y;
+	    
+	    y.left = x.left;
+	    x.left = x.right;
+	    x.right = y.right;
+	    y.right = x;
+	    
+	    if ( x.right != null )
+		    x.right.parent = x;
+	    if ( y.left != null )
+		    y.left.parent = y;
 	    
 } //TODO borde stämma, men testa.
 
