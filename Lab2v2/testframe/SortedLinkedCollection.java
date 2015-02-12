@@ -1,10 +1,12 @@
-/**
- * A subclass to LinkedCollection. It is in all appearances identical, 
- * except that it also has a "get" method and the add method sorts it.
+//Grupp 7 - Erik Öhrn & Paula Eriksson Imable
+
+ /**
+ * A subclass to LinkedCollection. It is in all appearances identical,  
+ * except that it also has a "get" method and the add method sorts the list.
  *
  * 
- * @author Erik Öhrn
- * @version 0.4
+ * @author Erik Öhrn & Paula Eriksson Imable
+ * @version 0.5
  */
 
 import testSortCol.CollectionWithGet;
@@ -36,15 +38,15 @@ public class SortedLinkedCollection<E extends Comparable<? super E>> extends
 	public E get(E e) {
 		if (e == null)
 			throw new NullPointerException();
-			Entry entry = head;
-			int compare = 0;
-			while(entry!=null	&&	compare>=0){	
-				compare = e.compareTo(entry.element);
-				if(compare == 0)
-					return entry.element;
-				entry = entry.next;
-			}
-		return null;			
+		int compare;
+		for(E entry : this)	{				
+			compare = e.compareTo(entry);
+			if(compare<0)
+				return null;					//Lika bra att bryta när compare hamnar under 0 eftersom listan nu är ordnad
+			if(compare == 0)
+				return entry;					//Rätt element hittat, returnera det
+		}
+		return null;							//Inget element hittat, eller listan är tom.
 	}
 
 	
@@ -63,12 +65,11 @@ public class SortedLinkedCollection<E extends Comparable<? super E>> extends
 		if (element == null)
 			throw new NullPointerException();
 		if (head == null || element.compareTo(head.element) < 0)
-			head = new Entry(element, head);
+			head = new Entry(element, head);					//I fallet då head är null kommer next också bli null.
 		else{
 			Entry entry = head;
-			while(entry.next!=null && element.compareTo(entry.next.element) >= 0)
-				entry = entry.next;				
-			
+			while(entry.next!=null && element.compareTo(entry.next.element) >= 0){
+				entry = entry.next;	}
 			entry.next = new Entry(element, entry.next);
 		}
 		return true;
