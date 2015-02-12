@@ -10,13 +10,19 @@ import testSortCol.CollectionWithGet;
 public class SplayTree<E extends Comparable<? super E>> extends
 BinarySearchTree<E> implements CollectionWithGet<E>{
 
+	public SplayTree(){
+		super();
+	}
+	
 	@Override
 	public E get(E e) {
 		Entry result = find(e, root);
 		if(result!=null && result != root){
 			splay(result);
+			return result.element;
+		} else {
+		return null;
 		}
-		return result.element;
 	}
 	
 		
