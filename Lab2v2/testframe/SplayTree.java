@@ -12,8 +12,11 @@ BinarySearchTree<E> implements CollectionWithGet<E>{
 
 	@Override
 	public E get(E e) {
-		// TODO Auto-generated method stub
-		return null;
+		Entry result = find(e, root);
+		if(result!=null && result != root){
+			splay(result);
+		}
+		return result.element;
 	}
 	
 		
