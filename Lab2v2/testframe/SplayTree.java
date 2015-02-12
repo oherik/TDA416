@@ -64,39 +64,7 @@ BinarySearchTree<E> implements CollectionWithGet<E>{
 	    y.left.parent   = y;
        x.left    = y;
    } //   rotateLeft
-  
- /** zigZigRight
-  *     	z						x
-  *        / \	    			   / \
-  *       y   D            till	  A   y
-  *      / \						 / \
-  *     x   C						B   z
-  *    / \                 			   / \
-  *   A   B							  C   D
-  * @param x
-  */
 
-private void zigZigRight(Entry x){
-	Entry z = x.parent.parent,
-			y = x.parent,
-			temp;
-	E e = x.element;
-	x.element = z.element;
-	z.element = e;
-
-	z.right=x.right;	//D
-	x.right = y.left; //B
-	temp = z.left; //A
-	z.left=y;		
-	y.right = x.left;	//C
-	x.left = temp;	//A
-	y.left=x;
-	z.right.parent = z;
-	y.right.parent = y;
-	x.right.parent = x;
-	x.left.parent = x;	
-	
-}
 
 /* Rotera 2 steg i vänstervarv, dvs 
                x'                  z'
@@ -182,6 +150,81 @@ private void zigRight(Entry x){
 	    
 } //TODO borde stämma, men testa.
 
+
+/** zigZigRight
+*      	  z						    x
+*        / \	    			   / \
+*       y   D            till	  A   y
+*      / \							 / \
+*     x   C							B   z
+*    / \                           	   / \
+*   A   B						  	  C   D
+* @param x
+*/
+
+/** zigZigLeft
+*    z    	          x	
+*   / \              / \	  
+*  A   y            y   D
+*	  / \   till   / \	
+*	 B   x        z   C	
+*       / \      / \  
+*	   C   D    A   B	
+ * @param x
+ */
+
+private void zigZigLeft(Entry x){
+	Entry z = x.parent.parent,
+			y = x.parent,
+			temp;
+	E e = x.element;
+	x.element = z.element;	//byt plats på x och z
+	z.element = e;
+
+	z.right=x.right;	//D
+	x.right = y.left; //B
+	temp = z.left; //A
+	z.left=y;		
+	y.right = x.left;	//C
+	x.left = temp;	//A
+	y.left=x;
+	z.right.parent = z;
+	y.right.parent = y;
+	x.right.parent = x;
+	x.left.parent = x;	
+	
+}
+
+/** zigZagRight
+ * 
+ * 			z					x
+ * 		   / \				   / \
+ *        y   D 	till	  y   z
+ *       / \				 / \ / \
+ *      A   x               A  B C  D
+ *         / \
+ *        B   C
+ * 
+ * @param x
+ */
+private void zigZagRight(Entry x){
+	Entry	y = x.parent,
+			z = x.parent.parent;
+	E	 	e = z.element;
+	z.element = x.element;	//byter plats på x och z;
+	x.element = e;
+	y.right = x.left;
+	x.left = x.right;
+	x.right = z.right;
+	z.right = x;
+	
+	x.parent = z;
+	if ( y.right != null )
+	    y.right.parent = y;
+	if ( x.right != null )
+		   x.right.parent = x;
+	
+}
 
 
 
