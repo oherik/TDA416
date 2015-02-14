@@ -1,11 +1,10 @@
-import datastructures.BinarySearchTree;
-
-//import datastructures.BinarySearchTree.Entry;
+//Grupp 7 - Erik Öhrn och Paula Eriksson Imable
+import datastructures.BinarySearchTree; 
 import testSortCol.CollectionWithGet;
 /**
  * A splay tree class. 
- * @author Erik Öhrn
- * @version 0.4_dev
+ * @author Erik Öhrn & Paula Eriksson Imable
+ * @version 0.4
  */
 public class SplayTree<E extends Comparable<? super E>> extends
 BinarySearchTree<E> implements CollectionWithGet<E>{
@@ -16,119 +15,115 @@ BinarySearchTree<E> implements CollectionWithGet<E>{
 	
 	@Override
 	public E get(E e) {
-		Entry result = splayFind(e, root, root);
-
+		Entry result = find(e, root);
 			if(result == null)
 				return null;
 			else
-			return(result.element);
-	 		
+				return(result.element);
 	}
+	
+	/** Searches for an element in the splay tree.
+	 * @param elem	The element that is looked for
+	 * @param t 	Where to start looking
+	 * @return the element if it's found, null otherwise
+	 */
+	@Override
+	protected Entry find(E elem, Entry t){
+		if ( t == null )
+		    return null;
+		else
+			return splayFind(elem, t, t);
+	}
+	
+	/**
+	 * Searches for an element in the tree, and splays it if it is found. If it's not found, the last checked element is splayed.
+	 * @param elem 	The element that is looked for
+	 * @param t		Where to start looking
+	 * @param lc	The last node it checked
+	 * @return		The element if it's found, otherwise null (splays on both these occasions)
+	 */
 	
 	private Entry splayFind(E elem, Entry t, Entry lc){
-		
+		if(lc==null)
+			return null;			
 		Entry lastCheckedEntry = lc;
-		
-
 		if ( t == null ){
-			lastCheckedEntry=splay(lastCheckedEntry);
+			splay(lastCheckedEntry);
 			return null;
 		}
-	        else {
-	        	
-	        	
-		    int jfr = elem.compareTo( t.element );
-		    if ( jfr  < 0 ){
-			return splayFind( elem, t.left, t );}
-		    else if ( jfr > 0 ){
-		    	lastCheckedEntry = t;
-			return splayFind( elem, t.right, t );}
-		    else {	
-			return splay(t);
-		    }
+	        else {       	
+	        	int jfr = elem.compareTo( t.element );
+	        	if ( jfr  < 0 )
+	        		return splayFind( elem, t.left, t );
+	        	else if ( jfr > 0 ){
+	        		lastCheckedEntry = t;
+	        		return splayFind( elem, t.right, t );
+	        	}else 	
+	        		return splay(t);
 	        }
-	}
-	
+	}	
 
-	private Entry splay(Entry x){	//TODO alt skicka x.parent.parent eller x.parent och låta get ha hand om loopen.
+	private Entry splay(Entry x){	
 		if (x == null)
 			return null;
-		else if(x == root)
-			return x;
 		while(x!= root){
-		if(x.parent == root){
-			if(root.right ==  x)
-				x=zag(x);
-			else
-				x=zig(x);
-			this.root = x;
-		}
-		else{
-			Entry parent = x.parent;
-			Entry grandparent = parent.parent;
-			if(parent.right == x){
-				if(grandparent.right == parent){
-					x=zagZag(x);
-					//x=grandparent;
-					
-				}
-				else{
-					x=zigZag(x);
-					//x=parent;
-				}
-			}
-			else{
-				if(grandparent.left == parent){
-					x=zigZig(x);
-					//x= grandparent;
-				}	else{
-					x=zagZig(x);
-					//x=parent;
-				}
-
-			}
-			if(grandparent == root){
+			if(x.parent == root){
+				if(root.right ==  x)
+					x=zag(x);
+				else
+					x=zig(x);
 				this.root = x;
 			}
-		}
+			else{
+				Entry parent = x.parent;
+				Entry grandparent = parent.parent;
+				if(parent.right == x){
+					if(grandparent.right == parent)
+						x=zagZag(x);		
+					else
+						x=zigZag(x);		
+				}
+				else{
+					if(grandparent.left == parent)
+						x=zigZig(x);
+					else
+						x=zagZig(x);
+				}
+				if(grandparent == root)
+					this.root = x;
+			}
 		}
 		return x;
-
 	}
 	
-
-
-
 /** zig
  *      y					x
  *     / \				   / \
- *    x   C		till	  A   y
+ *    x   C		->  	  A   y
  *   / \					 / \
  *  A   B					B   C
  *  
- * @param x
+ * @param x the entry to splay on
+ * @return the new position of x
  */
 
-private Entry zig(Entry x){
-
-	Entry   y = x.parent;
-	E       e = y.element;
-	y.element = x.element;	//byter plats på elementen i x och y för att behålla kopplingen till det ovan.
-	x.element = e;
-
-	y.left  = x.left;	//A
-	x.left  = x.right;	//B
-	x.right = y.right;	//C
-	y.right = x;		//y (värdet)
-
-	if ( x.right != null )
-		x.right.parent = x;
-	if ( y.left != null )
-		y.left.parent = y;
-	return y;
+	private Entry zig(Entry x){
+		Entry   y = x.parent;
+		E       e = y.element;
+		y.element = x.element;	//byter plats på elementen i x och y för att behålla kopplingen till det ovan.
+		x.element = e;
 	
+		y.left  = x.left;	//A
+		x.left  = x.right;	//B
+		x.right = y.right;	//C
+		y.right = x;		//y (värdet)
 	
-} //TODO borde stämma, men testa.
+		if ( x.right != null )
+			x.right.parent = x;
+		if ( y.left != null )
+			y.left.parent = y;
+		return y;
+	} 
 
 /** zag
 		 y                 x
@@ -136,140 +131,139 @@ private Entry zig(Entry x){
 	   A   x             y   C
 		  / \       ->  / \ 
    	     B   C         A   B 
-		 	
-		   
+		 			   
+*@param x the entry to splay on
+*@return the new position of x
 */    
-
-private Entry zag(Entry x){
-	Entry   y = x.parent;
-	E       e = x.element;
-	x.element = y.element;	//byt plats på x och y;
-	y.element = e;
 	
-	y.right = x.right;	//C
-	x.right = x.left;	//B
-	x.left  = y.left;	//A
-	y.left  = x;		//y (värdet)
-
-	if ( x.left != null )
-		x.left.parent = x;
-	if ( y.right != null )
-		y.right.parent = y;
-	return y;
-
-}
+	private Entry zag(Entry x){
+		Entry   y = x.parent;
+		E       e = x.element;
+		x.element = y.element;	//byt plats på x och y;
+		y.element = e;
+		
+		y.right = x.right;	//C
+		x.right = x.left;	//B
+		x.left  = y.left;	//A
+		y.left  = x;		//y (värdet)
+	
+		if ( x.left != null )
+			x.left.parent = x;
+		if ( y.right != null )
+			y.right.parent = y;
+		return y;
+	}
 
 
 /** zigZig
 *      	  z						    x
 *        / \	    			   / \
-*       y   D            till	  A   y
+*       y   D            -> 	  A   y
 *      / \							 / \
 *     x   C							B   z
 *    / \                           	   / \
 *   A   B						  	  C   D
-* @param x
+* @param x the entry to splay on
+* @return the new position of x
 */
 
-private Entry zigZig(Entry x){
-	Entry z = x.parent.parent,
-		  y = x.parent;
-	E 	  e = x.element;
-	
-	x.element = z.element;	//byt plats på x och z
-	z.element = e;
-	
-	z.left = x.left;	//A	
-	x.left = y.right;	//C
-	y.right = x;		//z  (värdet)
-	y.left = x.right;	//B
-	x.right = z.right;	//D
-	z.right = y;		//y
-	
-	if ( x.left != null )
-		x.left.parent = x;
-	if ( x.right != null )
-		x.right.parent = x;
-	if ( y.left != null )
-		y.left.parent = y;
-	if ( z.left != null )
-		z.left.parent = z;
-	
-	return z;
-	
-}
+	private Entry zigZig(Entry x){
+		Entry z = x.parent.parent,
+			  y = x.parent;
+		E 	  e = x.element;
+		
+		x.element = z.element;	//byt plats på x och z
+		z.element = e;
+		
+		z.left 	= x.left;	//A	
+		x.left 	= y.right;	//C
+		y.right = x;		//z  (värdet)
+		y.left 	= x.right;	//B
+		x.right = z.right;	//D
+		z.right = y;		//y
+		
+		if ( x.left != null )
+			x.left.parent = x;
+		if ( x.right != null )
+			x.right.parent = x;
+		if ( y.left != null )
+			y.left.parent = y;
+		if ( z.left != null )
+			z.left.parent = z;
+		
+		return z;
+	}
 
 /** zagZag
 *    z    	          x	
 *   / \              / \	  
 *  A   y            y   D
-*	  / \   till   / \	
+*	  / \   ->     / \	
 *	 B   x        z   C	
 *       / \      / \  
 *	   C   D    A   B	
- * @param x
+ * @param x the entry to splay on
+ * @return the new position of x
  */
-
-private Entry zagZag(Entry x){
-	Entry z = x.parent.parent,
-		 y = x.parent;
-	E e = x.element;
-	x.element = z.element;	//byt plats på x och z
-	z.element = e;
-
-	z.right=x.right;	//D
-	x.right = y.left; 	//B
-	y.right = x.left;	//C
-	y.left=x;			//z (värdet)
-	x.left = z.left;	//A
-	z.left=y;			//y
 	
-	if ( z.right != null )
-		z.right.parent = z;
-	if ( y.right != null )
-		y.right.parent = y;
-	if ( x.right != null )
-		x.right.parent = x;
-	if ( x.left != null )
-		x.left.parent = x;	
-	return z;
+	private Entry zagZag(Entry x){
+		Entry z = x.parent.parent,
+			  y = x.parent;
+		E e 		= x.element;
+		x.element 	= z.element;	//byt plats på x och z
+		z.element 	= e;
 	
-}
+		z.right	= x.right;	//D
+		x.right = y.left; 	//B
+		y.right = x.left;	//C
+		y.left	= x;			//z (värdet)
+		x.left 	= z.left;	//A
+		z.left	= y;			//y
+		
+		if ( z.right != null )
+			z.right.parent = z;
+		if ( y.right != null )
+			y.right.parent = y;
+		if ( x.right != null )
+			x.right.parent = x;
+		if ( x.left != null )
+			x.left.parent = x;	
+		return z;
+	}
 
 /** zigZag
  * 
  * 			z					x
  * 		   / \				   / \
- *        y   D 	till	  y   z
+ *        y   D 	->  	  y   z
  *       / \				 / \ / \
  *      A   x               A  B C  D
  *         / \
  *        B   C
  * 
- * @param x
+ * @param x the entry to splay on
+ * @return the new position of x
  */
-private Entry zigZag(Entry x){
-	Entry	y = x.parent,
-			z = x.parent.parent;
-	E	 	e = z.element;
-	
-	z.element = x.element;	//byter plats på x och z;
-	x.element = e;
-	
-	y.right  = x.left;	//B
-	x.left	 = x.right;	//C
-	x.right	 = z.right;	//D
-	z.right	 = x;		//z (värdet)
-	
-	x.parent = z;
-	if ( y.right != null )
-	    y.right.parent = y;
-	if ( x.right != null )
-		   x.right.parent = x;
-	return z;
-	
-	
-}
+	private Entry zigZag(Entry x){
+		Entry	y = x.parent,
+				z = x.parent.parent;
+		E	 	e = z.element;
+		
+		z.element = x.element;	//byter plats på x och z;
+		x.element = e;
+		
+		y.right  = x.left;	//B
+		x.left	 = x.right;	//C
+		x.right	 = z.right;	//D
+		z.right	 = x;		//z (värdet)
+		
+		x.parent = z;
+		if ( y.right != null )
+		    y.right.parent = y;
+		if ( x.right != null )
+			   x.right.parent = x;
+		return z;	
+	}
 
 
 /** zagZig
@@ -284,33 +278,29 @@ private Entry zigZag(Entry x){
 
  * 
  * @param x
+ * @return the new position of x
  */
 
-private Entry zagZig(Entry x){
-	Entry	y = x.parent,
-			z = x.parent.parent;
-	E	 	e = z.element;
-	
-	z.element = x.element;	//byter plats på x och z;
-	x.element = e;	
-	
-	y.left 	= x.right;	//C
-	x.right = x.left;	//B
-	x.left 	= z.left;	//A
-	z.left	= x;		//z (värdet)
-	
-	x.parent = z;
-	if ( y.left != null )
-	    y.left.parent = y;
-	if ( x.left != null )
-		x.left.parent = x;
-	return z;
-	
-	
-	
-	
-	
-}
+	private Entry zagZig(Entry x){
+		Entry	y = x.parent,
+				z = x.parent.parent;
+		E	 	e = z.element;
+		
+		z.element = x.element;	//byter plats på x och z;
+		x.element = e;	
+		
+		y.left 	= x.right;	//C
+		x.right = x.left;	//B
+		x.left 	= z.left;	//A
+		z.left	= x;		//z (värdet)
+		
+		x.parent = z;
+		if ( y.left != null )
+		    y.left.parent = y;
+		if ( x.left != null )
+			x.left.parent = x;
+		return z;	
+	}
 
 /* Referenser: 
  * http://en.wikipedia.org/wiki/Splay_tree
@@ -319,147 +309,4 @@ private Entry zagZig(Entry x){
  * splay.lock.pdf
  * https://www.cs.usfca.edu/~galles/visualization/SplayTree.html
  */
-
-
-//	Nedanstående kod är från AVL_Tree.java
-/*-------------------------------------------------------------------*/
-
-
-
-/* Rotera 1 steg i högervarv, dvs 
-          x'                 y'
-         / \                / \
-        y'  C   -->        A   x'
-       / \                    / \  
-      A   B                  B   C
-*/
-private void rotateRight( Entry x ) {
-   Entry   y = x.left;
-   E    temp = x.element;
-   x.element = y.element;
-   y.element = temp;
-   x.left    = y.left;
-   if ( x.left != null )
-    x.left.parent   = x;
-   y.left    = y.right;
-   y.right   = x.right;
-   if ( y.right != null )
-    y.right.parent  = y;
-   x.right   = y;
-
-} //   rotateRight
-
-/* Rotera 1 steg i vänstervarv, dvs 
-          x'                 y'
-         / \                / \
-        A   y'  -->        x'  C
-           / \            / \  
-          B   C          A   B   
-*/
-private void left( Entry x ) {
-   Entry  y  = x.right;
-   E temp    = x.element;
-   x.element = y.element;
-   y.element = temp;
-   x.right   = y.right;
-   if ( x.right != null )
-    x.right.parent  = x;
-   y.right   = y.left;
-   y.left    = x.left;
-   if ( y.left != null )
-    y.left.parent   = y;
-   x.left    = y;
-} //   rotateLeft
-
-
-/* Rotera 2 steg i vänstervarv, dvs 
-           x'                  z'
-          / \                /   \
-         A   y'   -->       x'    y'
-            / \            / \   / \
-           z   D          A   B C   D
-          / \  
-         B   C  
-*/
-private void doubleRotateLeft( Entry x ) {
-Entry  y  = x.right,
-z  = x.right.left;
-E      e  = x.element;
-x.element = z.element;
-z.element = e;
-y.left    = z.right;
-if ( y.left != null )
-y.left.parent = y;
-z.right   = z.left;
-z.left    = x.left;
-if ( z.left != null )
-z.left.parent = z;
-x.left    = z;
-z.parent  = x;
-
-} //  doubleRotateLeft
-
-
-/* Rotera 2 steg i högervarv, dvs 
-        x'                  z'
-       / \                /   \
-      y'  D   -->        y'    x'
-     / \                / \   / \
-    A   z'             A   B C   D
-       / \  
-      B   C  
-*/
-private void doubleRotateRight( Entry x ) {
- Entry   y = x.left,
-        z = x.left.right;
- E       e = x.element;
- x.element = z.element;
- z.element = e;
- y.right   = z.left;
- if ( y.right != null )
-    y.right.parent = y;
- z.left    = z.right;
- z.right   = x.right;
- if ( z.right != null )
-    z.right.parent = z;
- x.right   = z;
- z.parent  = x;
-}  //  doubleRotateRight
-
-/*---------------------------------------------------*/
-
- /* Rotera 2 steg i vänstervarv, dvs 
-            x'                  z'
-           / \                /   \
-          A   y'   -->       x'    y'
-             / \            / \   / \
-            z   D          A   B C   D
-           / \  
-          B   C  
-  */
- private void zigzag( Entry x ) { //TODO kanske...
-     Entry  y  = x.right,
-	z  = x.right.left;
-     E      e  = x.element;
-     x.element = z.element;
-     z.element = e;
-     y.left    = z.right;
-     if ( y.left != null )
-	    y.left.parent = y;
-     z.right   = z.left;
-     z.left    = x.left;
-     if ( z.left != null )
-	    z.left.parent = z;
-     x.left    = z;
-     z.parent  = x;
- } //  doubleRotateLeft
-   
-
-
-
-
-
-
-
-
 }
