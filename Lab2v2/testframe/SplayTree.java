@@ -3,8 +3,14 @@ import datastructures.BinarySearchTree;
 import testSortCol.CollectionWithGet;
 /**
  * A splay tree class. 
+ * References: 
+ * http://en.wikipedia.org/wiki/Splay_tree
+ * AVL_Tree.java
+ * http://lcm.csa.iisc.ernet.in/dsa/node93.html
+ * splay.lock.pdf
+ * https://www.cs.usfca.edu/~galles/visualization/SplayTree.html
  * @author Erik Öhrn & Paula Eriksson Imable
- * @version 0.4
+ * @version 0.5
  */
 public class SplayTree<E extends Comparable<? super E>> extends
 BinarySearchTree<E> implements CollectionWithGet<E>{
@@ -36,32 +42,38 @@ BinarySearchTree<E> implements CollectionWithGet<E>{
 	}
 	
 	/**
-	 * Searches for an element in the tree, and splays it if it is found. If it's not found, the last checked element is splayed.
+	 * Searches for an element in the tree, and splays it, i.e. moves it to the top, if it is found. 
+	 * If it's not found, the last checked element is splayed to the top.
 	 * @param elem 	The element that is looked for
 	 * @param t		Where to start looking
-	 * @param lc	The last node it checked
+	 * @param lc	The last node that was checked
 	 * @return		The element if it's found, otherwise null (splays on both these occasions)
 	 */
 	
 	private Entry splayFind(E elem, Entry t, Entry lc){
-		if(lc==null)
+		if( lc == null )
 			return null;			
-		Entry lastCheckedEntry = lc;
 		if ( t == null ){
-			splay(lastCheckedEntry);
+			splay(lc);
 			return null;
 		}
-	        else {       	
-	        	int jfr = elem.compareTo( t.element );
-	        	if ( jfr  < 0 )
-	        		return splayFind( elem, t.left, t );
-	        	else if ( jfr > 0 ){
-	        		lastCheckedEntry = t;
-	        		return splayFind( elem, t.right, t );
-	        	}else 	
-	        		return splay(t);
-	        }
+	    else {       	
+	       	int jfr = elem.compareTo( t.element );
+	       	if ( jfr  < 0 )
+	       		return splayFind( elem, t.left, t );
+	       	else if ( jfr > 0 )
+	       		return splayFind( elem, t.right, t );
+	       	else 	
+	       		return splay(t);
+	    }
 	}	
+	/**
+	 * Splays a selected entry to the top. In order to do this it uses different rotation 
+	 * operations or splay steps: zig, zag and combinations of these. Once the entry reaches 
+	 * the top the splaying is completed.
+	 * @param 	x 		The entry which to splay to the top
+	 * @return 	null if the entry is null, otherwise the entry splayed, now at the root position.
+	 */
 
 	private Entry splay(Entry x){	
 		if (x == null)
@@ -72,7 +84,6 @@ BinarySearchTree<E> implements CollectionWithGet<E>{
 					x=zag(x);
 				else
 					x=zig(x);
-				this.root = x;
 			}
 			else{
 				Entry parent = x.parent;
@@ -89,8 +100,6 @@ BinarySearchTree<E> implements CollectionWithGet<E>{
 					else
 						x=zagZig(x);
 				}
-				if(grandparent == root)
-					this.root = x;
 			}
 		}
 		return x;
@@ -103,7 +112,7 @@ BinarySearchTree<E> implements CollectionWithGet<E>{
  *   / \					 / \
  *  A   B					B   C
  *  
- * @param x the entry to splay on
+ * @param x the entry to splay
  * @return the new position of x
  */
 
@@ -132,7 +141,7 @@ BinarySearchTree<E> implements CollectionWithGet<E>{
 		  / \       ->  / \ 
    	     B   C         A   B 
 		 			   
-*@param x the entry to splay on
+*@param x the entry to splay
 *@return the new position of x
 */    
 	
@@ -163,7 +172,7 @@ BinarySearchTree<E> implements CollectionWithGet<E>{
 *     x   C							B   z
 *    / \                           	   / \
 *   A   B						  	  C   D
-* @param x the entry to splay on
+* @param x the entry to splay
 * @return the new position of x
 */
 
@@ -202,7 +211,7 @@ BinarySearchTree<E> implements CollectionWithGet<E>{
 *	 B   x        z   C	
 *       / \      / \  
 *	   C   D    A   B	
- * @param x the entry to splay on
+ * @param x the entry to splay
  * @return the new position of x
  */
 	
@@ -216,9 +225,9 @@ BinarySearchTree<E> implements CollectionWithGet<E>{
 		z.right	= x.right;	//D
 		x.right = y.left; 	//B
 		y.right = x.left;	//C
-		y.left	= x;			//z (värdet)
+		y.left	= x;		//z (värdet)
 		x.left 	= z.left;	//A
-		z.left	= y;			//y
+		z.left	= y;		//y
 		
 		if ( z.right != null )
 			z.right.parent = z;
@@ -241,7 +250,7 @@ BinarySearchTree<E> implements CollectionWithGet<E>{
  *         / \
  *        B   C
  * 
- * @param x the entry to splay on
+ * @param x the entry to splay
  * @return the new position of x
  */
 	private Entry zigZag(Entry x){
@@ -249,7 +258,7 @@ BinarySearchTree<E> implements CollectionWithGet<E>{
 				z = x.parent.parent;
 		E	 	e = z.element;
 		
-		z.element = x.element;	//byter plats på x och z;
+		z.element = x.element;	//byter plats på x och z
 		x.element = e;
 		
 		y.right  = x.left;	//B
@@ -277,7 +286,7 @@ BinarySearchTree<E> implements CollectionWithGet<E>{
  *        B  C  
 
  * 
- * @param x
+ * @param x the entry to splay
  * @return the new position of x
  */
 
@@ -286,7 +295,7 @@ BinarySearchTree<E> implements CollectionWithGet<E>{
 				z = x.parent.parent;
 		E	 	e = z.element;
 		
-		z.element = x.element;	//byter plats på x och z;
+		z.element = x.element;	//byter plats på x och z
 		x.element = e;	
 		
 		y.left 	= x.right;	//C
@@ -301,12 +310,4 @@ BinarySearchTree<E> implements CollectionWithGet<E>{
 			x.left.parent = x;
 		return z;	
 	}
-
-/* Referenser: 
- * http://en.wikipedia.org/wiki/Splay_tree
- * AVL_Tree.java
- * http://lcm.csa.iisc.ernet.in/dsa/node93.html
- * splay.lock.pdf
- * https://www.cs.usfca.edu/~galles/visualization/SplayTree.html
- */
 }
