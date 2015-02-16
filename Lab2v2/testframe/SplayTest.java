@@ -6,6 +6,13 @@ public class SplayTest {
 		
 		for(int i = 0; i<10; i++)
 			tree.add(new Integer(i));
+		tree.add(new Integer(5));
+		tree.add(new Integer(5));
+		tree.add(new Integer(5));
+		tree.add(new Integer(5));
+		tree.add(new Integer(5));
+		
+		
 
 		System.out.println(tree.get(2));
 		System.out.println(tree.get(9));
