@@ -42,14 +42,14 @@ BinarySearchTree<E> implements CollectionWithGet<E>{
 	 * If it's not found, the last checked element is splayed to the top.
 	 * @param elem The element that is looked for
 	 * @param t Where to start looking
-	 * @param lc The last node that was checked
+	 * @param lastChecked The last node that was checked
 	 * @return	The element if it's found, otherwise null (splays on both these occasions)
 	 */
-	private Entry splayFind(E elem, Entry t, Entry lc){
-		if( lc == null )
+	private Entry splayFind(E elem, Entry t, Entry lastChecked){
+		if( lastChecked == null )
 			return null;
 		if ( t == null ){
-			splay(lc);
+			splay(lastChecked);
 			return null;
 		}
 		else {
@@ -161,7 +161,7 @@ BinarySearchTree<E> implements CollectionWithGet<E>{
 
 /** zigZig
 *      	  z						    x
-*        / \	    			   / \
+*        / \	    				   / \
 *       y   D            -> 	  A   y
 *      / \							 / \
 *     x   C							B   z
