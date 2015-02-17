@@ -79,7 +79,7 @@ BinarySearchTree<E> implements CollectionWithGet<E>{
 		Entry parent, grandparent;
 		if (x == null)
 			return null;
-		while(x!= root){
+		while(x!= root){	//	-> x has a parent
 			parent = x.parent;
 			if(parent == root){
 				if(root.right ==  x)
