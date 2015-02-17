@@ -80,7 +80,7 @@ BinarySearchTree<E> implements CollectionWithGet<E>{
 					x=zag(x);
 				else
 					x=zig(x);
-			}
+			}//end if parent is root
 			else{
 				grandparent = parent.parent;
 				if(parent.right == x){
@@ -95,9 +95,9 @@ BinarySearchTree<E> implements CollectionWithGet<E>{
 					else
 						x=zagZig(x);
 				}
-			}
-		}
-		return x;
+			}//end else (i.e. if parent isn't root)
+		}//end while
+		return x;	//x is now root
 	}
 	
 /** zig
