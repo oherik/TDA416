@@ -1,87 +1,93 @@
 //Grupp 7 - Erik Öhrn och Paula Eriksson Imable
-import datastructures.BinarySearchTree; 
+import datastructures.BinarySearchTree;
 import testSortCol.CollectionWithGet;
 /**
- * A splay tree class. 
+ * A splay tree class.
+ * References:
+ * http://en.wikipedia.org/wiki/Splay_tree
+ * AVL_Tree.java
+ * http://lcm.csa.iisc.ernet.in/dsa/node93.html
+ * splay.lock.pdf
+ * https://www.cs.usfca.edu/~galles/visualization/SplayTree.html
  * @author Erik Öhrn & Paula Eriksson Imable
- * @version 0.4
+ * @version 0.5
  */
 public class SplayTree<E extends Comparable<? super E>> extends
 BinarySearchTree<E> implements CollectionWithGet<E>{
-
 	public SplayTree(){
 		super();
 	}
-	
 	@Override
 	public E get(E e) {
 		Entry result = find(e, root);
-			if(result == null)
-				return null;
-			else
-				return(result.element);
+		if(result == null)
+			return null;
+		else
+			return(result.element);
 	}
-	
 	/** Searches for an element in the splay tree.
-	 * @param elem	The element that is looked for
-	 * @param t 	Where to start looking
+	 * @param elem The element that is looked for
+	 * @param t Where to start looking
 	 * @return the element if it's found, null otherwise
 	 */
 	@Override
 	protected Entry find(E elem, Entry t){
 		if ( t == null )
-		    return null;
+			return null;
 		else
 			return splayFind(elem, t, t);
 	}
-	
 	/**
-	 * Searches for an element in the tree, and splays it if it is found. If it's not found, the last checked element is splayed.
-	 * @param elem 	The element that is looked for
-	 * @param t		Where to start looking
-	 * @param lc	The last node it checked
-	 * @return		The element if it's found, otherwise null (splays on both these occasions)
+	 * Searches for an element in the tree, and splays it, i.e. moves it to the top, if it is found.
+	 * If it's not found, the last checked element is splayed to the top.
+	 * @param elem The element that is looked for
+	 * @param t Where to start looking
+	 * @param lc The last node that was checked
+	 * @return	The element if it's found, otherwise null (splays on both these occasions)
 	 */
-	
 	private Entry splayFind(E elem, Entry t, Entry lc){
-		if(lc==null)
-			return null;			
-		Entry lastCheckedEntry = lc;
+		if( lc == null )
+			return null;
 		if ( t == null ){
-			splay(lastCheckedEntry);
+			splay(lc);
 			return null;
 		}
-	        else {       	
-	        	int jfr = elem.compareTo( t.element );
-	        	if ( jfr  < 0 )
-	        		return splayFind( elem, t.left, t );
-	        	else if ( jfr > 0 ){
-	        		lastCheckedEntry = t;
-	        		return splayFind( elem, t.right, t );
-	        	}else 	
-	        		return splay(t);
-	        }
-	}	
-
-	private Entry splay(Entry x){	
+		else {
+			int jfr = elem.compareTo( t.element );
+			if ( jfr < 0 )
+				return splayFind( elem, t.left, t );
+			else if ( jfr > 0 )
+				return splayFind( elem, t.right, t );
+			else
+				return splay(t);
+		}
+	}
+	/**
+	 * Splays a selected entry to the top. In order to do this it uses different rotation
+	 * operations or splay steps: zig, zag and combinations of these. Once the entry reaches
+	 * the top the splaying is completed.
+	 * @param x The entry which to splay to the top
+	 * @return null if the entry is null, otherwise the entry splayed, now at the root position.
+	 */
+	private Entry splay(Entry x){
+		Entry parent, grandparent;
 		if (x == null)
 			return null;
 		while(x!= root){
-			if(x.parent == root){
-				if(root.right ==  x)
+			parent = x.parent;
+			if(parent == root){
+				if(root.right == x)
 					x=zag(x);
 				else
 					x=zig(x);
-				this.root = x;
 			}
 			else{
-				Entry parent = x.parent;
-				Entry grandparent = parent.parent;
+				grandparent = parent.parent;
 				if(parent.right == x){
 					if(grandparent.right == parent)
-						x=zagZag(x);		
+						x=zagZag(x);
 					else
-						x=zigZag(x);		
+						x=zigZag(x);
 				}
 				else{
 					if(grandparent.left == parent)
@@ -89,8 +95,6 @@ BinarySearchTree<E> implements CollectionWithGet<E>{
 					else
 						x=zagZig(x);
 				}
-				if(grandparent == root)
-					this.root = x;
 			}
 		}
 		return x;
