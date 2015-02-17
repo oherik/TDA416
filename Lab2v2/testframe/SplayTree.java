@@ -76,18 +76,19 @@ BinarySearchTree<E> implements CollectionWithGet<E>{
 	 */
 
 	private Entry splay(Entry x){	
+		Entry parent, grandparent;
 		if (x == null)
 			return null;
 		while(x!= root){
-			if(x.parent == root){
+			parent = x.parent;
+			if(parent == root){
 				if(root.right ==  x)
 					x=zag(x);
 				else
 					x=zig(x);
 			}
 			else{
-				Entry parent = x.parent;
-				Entry grandparent = parent.parent;
+				grandparent = parent.parent;
 				if(parent.right == x){
 					if(grandparent.right == parent)
 						x=zagZag(x);		
