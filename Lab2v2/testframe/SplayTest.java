@@ -4,27 +4,30 @@ public class SplayTest {
 	public static void main(String[] args){
 		SplayTree tree = new SplayTree<Integer>();
 		
-		for(int i = 0; i<10; i++)
+		 //Lägg in massa tal
+		for(int i = -300; i<1000; i++)
 			tree.add(new Integer(i));
-		tree.add(new Integer(5));
-		tree.add(new Integer(5));
-		tree.add(new Integer(5));
-		tree.add(new Integer(5));
-		tree.add(new Integer(5));
+		for(int i = 0; i<400; i++)
+			tree.add(new Integer(i));
+		for(int i = 60; i<280; i++)
+			tree.add(new Integer(i));
+		
+		System.out.println("Rot: " + tree.getRootElement());
+		
+		System.out.println("Hämtar 2, fårn" + tree.get(2));
+		
+		System.out.println("Ny rot: " + tree.getRootElement());
 		
 		
+		System.out.println("Hämtar 9, får " + tree.get(9));
+		System.out.println("Ny rot: " + tree.getRootElement());
+		System.out.println("Hämtar -1000, får " + tree.get(-1000));
+		System.out.println("Ny rot: " + tree.getRootElement());
+		System.out.println("Hämtar 2, får " + tree.get(2));
+		System.out.println("Ny rot: " + tree.getRootElement());
 
-		System.out.println(tree.get(2));
-		System.out.println(tree.get(9));
-		System.out.println(tree.get(-1));
-		System.out.println(tree.get(2));
-		String y = "hej";
-		test(y);
-		System.out.println(y);
 		
 	}
-	public static void test(String str){
-		str = str+"lol";
-	}
+
 	
 }

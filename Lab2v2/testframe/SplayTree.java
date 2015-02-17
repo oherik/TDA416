@@ -67,6 +67,18 @@ BinarySearchTree<E> implements CollectionWithGet<E>{
 	       		return splay(t);
 	    }
 	}	
+	
+	public E getRootElement(){
+		return root.element;
+	}
+	public Entry getRootRightElement(){
+		return root.right;
+	}
+	public Entry getRootLeftElement(){
+		return root.left;
+	}
+	
+	
 	/**
 	 * Splays a selected entry to the top. In order to do this it uses different rotation 
 	 * operations or splay steps: zig, zag and combinations of these. Once the entry reaches 
