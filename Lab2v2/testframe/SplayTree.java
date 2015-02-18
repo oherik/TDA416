@@ -46,15 +46,15 @@ BinarySearchTree<E> implements CollectionWithGet<E>{
 	 * If it's not found, the last checked element is splayed to the top.
 	 * @param elem 	The element that is looked for
 	 * @param t		Where to start looking
-	 * @param lc	The last node that was checked
+	 * @param lastChecked	The last node that was checked
 	 * @return		The element if it's found, otherwise null (splays on both these occasions)
 	 */
 	
-	private Entry splayFind(E elem, Entry t, Entry lc){
-		if( lc == null )
+	private Entry splayFind(E elem, Entry t, Entry lastChecked){
+		if( lastChecked == null )
 			return null;			
 		if ( t == null ){
-			splay(lc);
+			splay(lastChecked);
 			return null;
 		}
 	    else {       	
@@ -84,24 +84,26 @@ BinarySearchTree<E> implements CollectionWithGet<E>{
 			parent = x.parent;
 			if(parent == root){
 				if(root.right ==  x)
-					x=zag(x);
+					zag(x);
 				else
-					x=zig(x);
+					zig(x);
+				x=parent;
 			}
 			else{
 				grandparent = parent.parent;
 				if(parent.right == x){
 					if(grandparent.right == parent)
-						x=zagZag(x);		
+						zagZag(x);		
 					else
-						x=zigZag(x);		
+						zigZag(x);		
 				}
 				else{
 					if(grandparent.left == parent)
-						x=zigZig(x);
+						zigZig(x);
 					else
-						x=zagZig(x);
+						zagZig(x);
 				}
+				x=grandparent;
 			}
 		}
 		return x;
@@ -118,7 +120,7 @@ BinarySearchTree<E> implements CollectionWithGet<E>{
  * @return the new position of x
  */
 
-	private Entry zig(Entry x){
+	private void zig(Entry x){
 		Entry   y = x.parent;
 		E       e = y.element;
 		y.element = x.element;	//byter plats på elementen i x och y för att behålla kopplingen till det ovan.
@@ -133,7 +135,6 @@ BinarySearchTree<E> implements CollectionWithGet<E>{
 			x.right.parent = x;
 		if ( y.left != null )
 			y.left.parent = y;
-		return y;
 	} 
 
 /** zag
@@ -147,7 +148,7 @@ BinarySearchTree<E> implements CollectionWithGet<E>{
 *@return the new position of x
 */    
 	
-	private Entry zag(Entry x){
+	private void zag(Entry x){
 		Entry   y = x.parent;
 		E       e = x.element;
 		x.element = y.element;	//byt plats på x och y;
@@ -162,7 +163,6 @@ BinarySearchTree<E> implements CollectionWithGet<E>{
 			x.left.parent = x;
 		if ( y.right != null )
 			y.right.parent = y;
-		return y;
 	}
 
 
@@ -178,7 +178,7 @@ BinarySearchTree<E> implements CollectionWithGet<E>{
 * @return the new position of x
 */
 
-	private Entry zigZig(Entry x){
+	private void zigZig(Entry x){
 		Entry z = x.parent.parent,
 			  y = x.parent;
 		E 	  e = x.element;
@@ -201,8 +201,6 @@ BinarySearchTree<E> implements CollectionWithGet<E>{
 			y.left.parent = y;
 		if ( z.left != null )
 			z.left.parent = z;
-		
-		return z;
 	}
 
 /** zagZag
@@ -217,7 +215,7 @@ BinarySearchTree<E> implements CollectionWithGet<E>{
  * @return the new position of x
  */
 	
-	private Entry zagZag(Entry x){
+	private void zagZag(Entry x){
 		Entry z = x.parent.parent,
 			  y = x.parent;
 		E e 		= x.element;
@@ -239,7 +237,6 @@ BinarySearchTree<E> implements CollectionWithGet<E>{
 			x.right.parent = x;
 		if ( x.left != null )
 			x.left.parent = x;	
-		return z;
 	}
 
 /** zigZag
@@ -255,7 +252,7 @@ BinarySearchTree<E> implements CollectionWithGet<E>{
  * @param x the entry to splay
  * @return the new position of x
  */
-	private Entry zigZag(Entry x){
+	private void zigZag(Entry x){
 		Entry	y = x.parent,
 				z = x.parent.parent;
 		E	 	e = z.element;
@@ -272,8 +269,7 @@ BinarySearchTree<E> implements CollectionWithGet<E>{
 		if ( y.right != null )
 		    y.right.parent = y;
 		if ( x.right != null )
-			   x.right.parent = x;
-		return z;	
+			   x.right.parent = x;	
 	}
 
 
@@ -292,7 +288,7 @@ BinarySearchTree<E> implements CollectionWithGet<E>{
  * @return the new position of x
  */
 
-	private Entry zagZig(Entry x){
+	private void zagZig(Entry x){
 		Entry	y = x.parent,
 				z = x.parent.parent;
 		E	 	e = z.element;
@@ -309,7 +305,6 @@ BinarySearchTree<E> implements CollectionWithGet<E>{
 		if ( y.left != null )
 		    y.left.parent = y;
 		if ( x.left != null )
-			x.left.parent = x;
-		return z;	
+			x.left.parent = x;	
 	}
 }
