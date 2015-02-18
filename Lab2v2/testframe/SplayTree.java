@@ -44,7 +44,7 @@ BinarySearchTree<E> implements CollectionWithGet<E>{
 	/**
 	 * Searches for an element in the tree, and splays it, i.e. moves it to the top, if it is found. 
 	 * If it's not found, the last checked element is splayed to the top.
-	 * @param elem 	The element that is looked for
+	 * @param elem 	The element that is looked for	
 	 * @param t		Where to start looking
 	 * @param lastChecked	The last node that was checked
 	 * @return		The element if it's found, otherwise null (splays on both these occasions)
