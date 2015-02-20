@@ -31,19 +31,44 @@ public class SplayTest<E extends Comparable<? super E>> extends SplayTree<E> {
 		System.out.println("\nZagZig:");
 		ST.getAndPrint(ST.root.right.left.element);
 
-		System.out.println("\nGetting a number not in tree, small");
+		System.out.println("\nGetting a number not in tree, small:");
 		ST.getAndPrint(-6);
-		System.out.println("\nGetting a number not in tree, large");
+		System.out.println("\nGetting a number not in tree, large:");
 		ST.getAndPrint(10);
 
 	}
 
 	private void getAndPrint(E e) {
+		E lastRootElement = root.element;
+		Entry lastRootLeft = root.left;
+		Entry lastRootRight= root.right;
+		
 		System.out.println("Trying to find " + e + " in the tree.");
 		E result = get(e);
-		if (result == null)
-			System.out.println("Couldn't find " + e + ". Splayed "
-					+ root.element + " (last checked entry) to the top.");
+		if(root.element == lastRootElement && lastRootElement!=e && result != null){
+			System.err.println("The root hasn't been changed, even though " + e + 
+					" wasn't root. Check your splay function. Exiting.");
+			System.exit(0);
+		}
+		else if (result == null){
+			if(lastRootElement == root.element && !(
+					(e.compareTo(root.element)>0 && root.right == null) || 
+					(e.compareTo(root.element)<0 && root.left == null))){
+				System.err.println("Couldn't find " + e + ".\nShould have splayed the "
+						+ "last checked entry to the top, but didn't!\n"
+						+ "Make sure you splay even when you don't find anything. Exiting.");
+				System.exit(0);
+			}
+			else 		
+				System.out.println("Couldn't find " + e	 + ". Splayed "
+					+ root.element + " to the top.");
+		}
+		else if(e!=result){
+			System.err.println("get(E e) didn't return the correct value!\n"
+					+ "Looked for " + e + ", recieved " + result + ".\n"
+							+ "The current root element is " + root.element + ".");
+			System.exit(0);
+		}
 		else
 			System.out.println(e + " was found! Splayed it to the top.");
 		System.out.println("New tree layout: \n");
