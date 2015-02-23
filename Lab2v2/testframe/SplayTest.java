@@ -36,12 +36,15 @@ public class SplayTest<E extends Comparable<? super E>> extends SplayTree<E> {
 		System.out.println("\nGetting a number not in tree, large:");
 		ST.getAndPrint(10);
 
+		System.out.println("\n");
+		SplayTest<String> STS = new SplayTest<String>();
+		STS.add("lol");
+		STS.add("nå");
+		STS.printTree(STS.root, 1);
 	}
 
 	private void getAndPrint(E e) {
 		E lastRootElement = root.element;
-		Entry lastRootLeft = root.left;
-		Entry lastRootRight= root.right;
 		
 		System.out.println("Trying to find " + e + " in the tree.");
 		E result = get(e);
