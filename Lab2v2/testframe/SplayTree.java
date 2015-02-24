@@ -3,12 +3,7 @@ import datastructures.BinarySearchTree;
 import testSortCol.CollectionWithGet;
 /**
  * A splay tree class. 
- * References: 
- * http://en.wikipedia.org/wiki/Splay_tree
- * AVL_Tree.java
- * http://lcm.csa.iisc.ernet.in/dsa/node93.html
- * splay.lock.pdf
- * https://www.cs.usfca.edu/~galles/visualization/SplayTree.html
+ *
  * @author Erik Öhrn & Paula Eriksson Imable
  * @version 0.5
  */
