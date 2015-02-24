@@ -1,0 +1,1883 @@
+#LyX 2.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 474
+\begin_document
+\begin_header
+\textclass article
+\begin_preamble
+% Erik Öhrn, Paula Eriksson
+
+\usepackage{listings} 
+\usepackage{color} 
+\usepackage{textcomp}
+\definecolor{listinggray}{gray}{0.9} 
+\definecolor{lbcolor}{rgb}{0.9,0.9,0.9}
+\lstset{
+language=java,
+keywordstyle=\bfseries\ttfamily\color[rgb]{0,0,1},
+identifierstyle=\ttfamily, 
+commentstyle=\color[rgb]{0.133,0.545,0.133},
+stringstyle=\ttfamily\color[rgb]{0.627,0.126,0.941},
+showstringspaces=false, 	
+basicstyle=\small\ttfamily,
+numberstyle=\footnotesize,
+numbers=left, 	
+stepnumber=1, 
+numbersep=10pt, 	
+tabsize=2,
+breaklines=true,
+prebreak = \raisebox{0ex}[0ex][0ex]{\ensuremath{\hookleftarrow}},
+breakatwhitespace=false,
+aboveskip={1,5\baselineskip},
+columns=fixed,
+ upquote=true,  
+extendedchars=true,
+% frame=single, 
+% backgroundcolor=\color{lbcolor}, 
+}
+\usepackage{booktabs}
+\end_preamble
+\use_default_options true
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_math auto
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\float_placement h
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Laboration 2, analys av datastrukturer, TDA416 
+\end_layout
+
+\begin_layout Author
+Grupp 7: Erik Öhrn, Paula Eriksson Imable
+\end_layout
+
+\begin_layout Date
+2015-02-20
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+thispagestyle{empty}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+newpage
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+setcounter{page}{1}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section*
+Kort om varje datastruktur:
+\end_layout
+
+\begin_layout Subsection*
+SLC
+\end_layout
+
+\begin_layout Standard
+Sorted Linked Collection är en länkad lista som även är ordnad.
+ När ett objekt sätts in i listan stegar listan igenom de objekten som finns
+ och jämför med detta.
+ När den hittar var objektet platsar sätter den in det där.
+ Detta leder till att objekt som är större (enligt dess egen sortering,
+ alltså typens inbyggda sortering enligt java) kommer ta relativt lång tid
+ att sätta in, då listan kommer jämföra alla objekt i listan för att sedan
+ sätta in det längst bak.
+ När objekt hämtas stegas listan igenom för att hitta rätt objekt.
+ Detta gör att objekt med låga värden (eller tidigt alfabetiskt, om det
+ är ord, etc) kommer gå snabbt att hämta, medan listan måste stega igenom
+ många objekt för att hämta de större.
+ Den linjära sökningen innebär att både insättning och sökning får komplexiteten
+ O(n).
+\end_layout
+
+\begin_layout Subsection*
+BST
+\end_layout
+
+\begin_layout Standard
+Det binära sökträdet sätter in ett objekt även det sorterat, men ser på
+ varje nod om dess objekt är större eller mindre än (eller lika stort som)
+ objektet som skickas in.
+ Beroende på svar kommer nästa sak upprepas med antingen dess barn till
+ höger eller till vänster, och fortsätter så till dess att rätt plats hittas
+ varvid det sätts in.
+ Höjden regleras inte, vilket gör att trädet i värsta fall kan bete sig
+ som en lista, med enbart en barnnod på nod och alla följande värden antingen
+ till höger eller till vänster om noden.
+ Då det inte är balanserat kommer det i värsta fall få komplexiteten O(n),
+ både för insättning och sökning.
+ I medelvärde och för slumpmässig data kommer det få O(log(n)) som komplextet
+ för båda.
+ Detta eftersom trädet då i genomsnitt halveras efter varje sökning.
+\end_layout
+
+\begin_layout Subsection*
+AVL
+\end_layout
+
+\begin_layout Standard
+AVL-trädet är självbalanserande.
+ Data sätts in på samma sätt som i BST, men höjden regleras efter varje
+ insättning och borttagning med hjälp av rotationer om höjdskillnaden mellan
+ två subträd överstiger 1.
+ Detta gör att exemplet ovan, när trädet beter sig som en lista, undviks.
+ Således är komplexiteten O(log(n)) för insättning och uttagning.
+\end_layout
+
+\begin_layout Subsection*
+Splay
+\end_layout
+
+\begin_layout Standard
+I vårt splayträd splayas ett objekt enbart när det söks, eller det närmaste
+ objektet om det inte hittas.
+ Normalt sätt splayas ett objekt även vid insättning och borttagning, men
+ enligt labbhänsvisningarna skulle detta inte göras i vår implementation.
+ Splayträdet fungerar som ett binärt sökträdet, med skillnaden att det senaste
+ sökta objektet flyttas till toppen genom en serie rotationer.
+ Hittas inte objektet kommer det senaste sökta flyttas till toppen.
+ Det resulterande trädet ordnar sig därefter.
+ Detta leder till att de objekt som söks efter ofta hamnar högt upp i trädet.
+ Då det inte är balanserat finns möjligheten att en sökning efter ett värde
+ kan ta O(n), om trädet fått liknande liststruktur som BST riskerar få.
+ Detta brukar dock ordna ut sig och undantaget enstaka sökningar opererar
+ splayträdet med komplexiteten O(log(n)).
+\end_layout
+
+\begin_layout Part*
+Textanalys
+\end_layout
+
+\begin_layout Section*
+TEXT1
+\end_layout
+
+\begin_layout Standard
+Text1 är en till synes vanlig text, om än skriven på något ålderdomlig svenska.
+ Den är inte sorterad på något sätt och innehåller upprepningar.
+ Den består av 3468 ord.
+\end_layout
+
+\begin_layout Subsection*
+SLC
+\end_layout
+
+\begin_layout Standard
+I den sorterade listan kommer ett ord, när det sätts in, sorteras.
+ Om ett ord är väldigt långt ned, exempelvis “vaccin” måste därför hela
+ eller nästan hela listan gås igenom vid hämtning.
+ Det blir många jämförelser vid denna text eftersom den är osorterad från
+ början och innehåller många olika ord (varav många återkommer flera gånger
+ och är alfabetsikt stora, som “zz”, “vaccin”, “under” och “till”).
+\end_layout
+
+\begin_layout Subsection*
+BST
+\end_layout
+
+\begin_layout Standard
+Då texten är någorlunda slumpmässig och inte har så många upprepningar för
+ varje ord kommer trädet bli någorlunda jämt.
+ Hämtningen går snabbt eftersom den delar antalet noder i ungefär två vid
+ varje jämförelse.
+ 
+\end_layout
+
+\begin_layout Subsection*
+AVL
+\end_layout
+
+\begin_layout Standard
+AVL-trädet liknar det binära sökträdet och har ungefär likvärdig prestanda.
+ Trädet balanseras dock när element sätts in, vilket gör att sökningarna
+ kommer operera i O(log(n)) i tid.
+ Att hämta objekt kommer därför här göras på något färre jämförelser eftersom
+ antalet noder halveras vid varje hämtning.
+\end_layout
+
+\begin_layout Subsection*
+Splay
+\end_layout
+
+\begin_layout Standard
+I denna text finns inte så många upprepningar, men väl några.
+ Dessutom kommer de stora orden komma närmare och närmare toppen eftersom
+ programmet hämtar orden i bokstavsordning.
+ Detta gör att splayträdet, relativt till de andra, visar på god prestanda.
+\end_layout
+
+\begin_layout Section*
+TEXT2
+\end_layout
+
+\begin_layout Standard
+Samma text som början av TEXT1 förutom att alla ord nu upprepas och därmed
+ står fem gånger i rad.
+ Texten består av 3480 ord.
+\end_layout
+
+\begin_layout Subsection*
+SLC
+\end_layout
+
+\begin_layout Standard
+SLC kommer fungera på liknande sätt som tidigare, men då bara det första
+ av orden vid upprepning behöver returneras minskas antalet jämförelser
+ avsevärt.
+ Av samma anledning kommer även insättning gå snabbare.
+\end_layout
+
+\begin_layout Subsection*
+BST
+\end_layout
+
+\begin_layout Standard
+Av samma anledningar kommer insättning och hämtning från BST gå på färre
+ jämförelser.
+\end_layout
+
+\begin_layout Subsection*
+AVL
+\end_layout
+
+\begin_layout Standard
+Även AVL-trädet gagnas av detta.
+\end_layout
+
+\begin_layout Subsection*
+Splay
+\end_layout
+
+\begin_layout Standard
+Splayträdet är det som får mest ut av förändringen till många upprepningar.
+ Då trädets struktur går ut på att ta ofta sökta element till toppen kommer
+ antalet jämförelser minska drastiskt när texten innehåller många upprepningar.
+ 
+\end_layout
+
+\begin_layout Section*
+TEXT3
+\end_layout
+
+\begin_layout Standard
+En ordlista som är sorterad i bokstavsordning, utan upprepningar.
+ Den består av 3445 ord.
+\end_layout
+
+\begin_layout Subsection*
+SLC
+\end_layout
+
+\begin_layout Standard
+Denna typ av text får SLC stora problem med.
+ Då den redan är sorterad kommer varje efterföljande ord sättas in längst
+ bak i listan.
+ Detta gör, vilket vi skrev i introduktionen för SLC, att den måste jämföra
+ med alla andra objekt som redan finns i den.
+ Detta gör denna datastruktur mycket långsam vid denna typ av text.
+\end_layout
+
+\begin_layout Subsection*
+BST
+\end_layout
+
+\begin_layout Standard
+Även BST kommer här fungera som en lista, som en form av extremfallet som
+ nämndes i introduktionen för datastrukturerna.
+ Prestandan blir då lika dålig som för SLC.
+ Vilket vi antydde i introduktionen kommer även här, liksom för SLC, insättning
+ och hämtning gå på O(n) i komplexitet.
+\end_layout
+
+\begin_layout Subsection*
+AVL
+\end_layout
+
+\begin_layout Standard
+AVL-trädet kommer klara av texten bättre eftersom det är självbalanserat.
+ Däremot kommer det bli många rotationer när datan som kommer in är sorterad,
+ vilket gör att insättningen tar tid jämfört med tidigare.
+\end_layout
+
+\begin_layout Subsection*
+Splay
+\end_layout
+
+\begin_layout Standard
+Splayträdet påverkas inte negativt av att indatan är sorterad, tvärtom visar
+ den på bra prestanda.
+ Då orden hämtas i bokstavsordning kommer nästa ord i ordningen alltid finnas
+ nära på grund av splayningnen.
+ Detta då nästa ord kommer vara den senaste hämtningens barn och därmed
+ bara vara ett steg från roten.
+ Detta leder till mycket snabba söktider.
+ 
+\end_layout
+
+\begin_layout Section*
+TEXT4
+\end_layout
+
+\begin_layout Standard
+En ordlista i bokstavsordning, samt att varje upprepas och står fem gånger
+ i rad.
+ Texten består av 3445 ord.
+\end_layout
+
+\begin_layout Subsection*
+SLC
+\end_layout
+
+\begin_layout Standard
+Liksom vid Text2 kommer SLC gagnas av att det finns upprepningar, men fortfarand
+e tar det lång tid med tanke på att orden kommer i bokstavsordning.
+\end_layout
+
+\begin_layout Subsection*
+BST
+\end_layout
+
+\begin_layout Standard
+BST uppvisar samma antal jämförelser som SLC, vilket den även gjorde i den
+ tidigare texten där det var bokstavsordning.
+ Detta för att den strukturmässigt fortfarande liknar en lista.
+\end_layout
+
+\begin_layout Subsection*
+AVL
+\end_layout
+
+\begin_layout Standard
+Liksom i skillnaden mellan Text1 och Text2 gagnas AVL även här av att det
+ finns upprepningar.
+ Antalet jämförelser minskar avsevärt.
+ 
+\end_layout
+
+\begin_layout Subsection*
+Splay
+\end_layout
+
+\begin_layout Standard
+Splay visar här på mycket bra prestanda.
+ Dels gagnas det av att datan kommer sorterad, och dels av att det finns
+ upprepningar.
+ Det går därför mycket snabbt att hämta de olika orden och på väldigt få
+ jämförelser.
+ 
+\end_layout
+
+\begin_layout Section*
+TEXT5
+\end_layout
+
+\begin_layout Standard
+En ordlista i bokstavsordning, där själva listan upprepas fyra gånger och
+ därmed står fem gånger.
+ Den består av 3445 ord.
+\end_layout
+
+\begin_layout Subsection*
+SLC
+\end_layout
+
+\begin_layout Standard
+Insättningen går här på ungefär lika många operationer som för Text 4, då
+ texten har liknande struktur.
+ 
+\end_layout
+
+\begin_layout Subsection*
+BST
+\end_layout
+
+\begin_layout Standard
+I likhet med de tidigare texterna 3 och 4 bildar strukturen formen av en
+ lista, fast med upprepningar.
+ Således blir antalet jämförelser även här lika med de hos BST..
+\end_layout
+
+\begin_layout Subsection*
+AVL
+\end_layout
+
+\begin_layout Standard
+Inte heller AVL-trädet påverkas nämnvärt av den nya textens struktur
+\end_layout
+
+\begin_layout Subsection*
+Splay
+\end_layout
+
+\begin_layout Standard
+Då texten inte har varje nästa element som ska hämtas direkt efter det som
+ nyss hämtats kommer inte splayträdet visa på samma goda prestanda som för
+ text 4.
+ Däremot kommer det gå snabbt eftersom orden i sig kommer läggas i alfabetisk
+ ordning samt att upprepningarna gagnar hämtningarna.
+\end_layout
+
+\begin_layout Part*
+Sammanfattning
+\end_layout
+
+\begin_layout Standard
+Sammanfattningsvis kan man se att SLC coh BST påverkas mycket negativt av
+ sorterad data, speciellt utan dubletter.
+ Splayträdet är som snabbast när element som hämtas är på varandra påföljande
+ samt när texten innehåller många upprepningar eller orden ligger nära varandra.
+ Vid helt slumpmässig data ligger splay och AVL nära varandra prestandamässigt,
+ men AVL halkar efter vid helt sorterad data.
+ Intressant är att trots Splay bara gör en bråkdel av jämförelserna jämfört
+ med AVL-trädet i text 3 är det bara ungefär dubbelt gånger så snabbt.
+ Detta beror troligtvis på att splayningarna tar mycket tid.
+ Likadant kan man i de övriga testerna se att AVL inte är mycket långsammare
+ än Splayträdet, även om det gör många fler jämförelser.
+\end_layout
+
+\begin_layout Part*
+Tabeller
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="5" columns="6">
+<features rotate="0" tabularvalignment="middle">
+<column alignment="left" valignment="top">
+<column alignment="left" valignment="top">
+<column alignment="left" valignment="top">
+<column alignment="left" valignment="top">
+<column alignment="left" valignment="top">
+<column alignment="left" valignment="top">
+<row>
+<cell alignment="left" valignment="top" bottomline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+Text1
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+Text2
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+Text3
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+Text4
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+Text5
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+Sorted Linked Collection
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+2212067
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+491598
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+17796870
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+1645263
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+1661868
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+Binary Search Tree
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+74860
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+45966
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+17796870
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+1645263
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+1661868
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+AVL tree
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+52592
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+31186
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+111735
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+40969
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+41109
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+Splay tree
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+47115
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+13610
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+13775
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+5493
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+17506
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Antal jämförelser
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="5" columns="6">
+<features rotate="0" tabularvalignment="middle">
+<column alignment="left" valignment="top">
+<column alignment="left" valignment="top">
+<column alignment="left" valignment="top">
+<column alignment="left" valignment="top">
+<column alignment="left" valignment="top">
+<column alignment="left" valignment="top">
+<row>
+<cell alignment="left" valignment="top" bottomline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+Text1
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+Text2
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+Text3
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+Text4
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+Text5
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+Sorted Linked Collection
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+28
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+9
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+359
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+17
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+17
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+Binary Search Tree
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+2
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+2
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+350
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+21
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+21
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+AVL tree
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+2
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+2
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+4
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+1
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+4
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+Splay tree
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+2
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+1
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+2
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+1
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+3
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Tid i millisekunder
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Part*
+Referenser
+\end_layout
+
+\begin_layout Standard
+De källor, utöver kurslitteratur etc, som använts är
+\end_layout
+
+\begin_layout Itemize
+\begin_inset CommandInset href
+LatexCommand href
+target "http://en.wikipedia.org/wiki/Splay_tree "
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+\begin_inset CommandInset href
+LatexCommand href
+target "http://lcm.csa.iisc.ernet.in/dsa/node93.html"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+\begin_inset CommandInset href
+LatexCommand href
+target "https://www.cs.usfca.edu/~galles/visualization/SplayTree.html"
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document
