@@ -13,8 +13,7 @@
 
 
 #Project
-*.lyx*
-
+*.lyx~
 *.tar
 
 *.xlsx
