@@ -1,0 +1,956 @@
+#LyX 2.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 474
+\begin_document
+\begin_header
+\textclass article
+\begin_preamble
+% Erik Öhrn, Paula Eriksson
+
+\usepackage{listings} 
+\usepackage{color} 
+\usepackage{textcomp}
+\definecolor{listinggray}{gray}{0.9} 
+\definecolor{lbcolor}{rgb}{0.9,0.9,0.9}
+\lstset{
+language=java,
+keywordstyle=\bfseries\ttfamily\color[rgb]{0,0,1},
+identifierstyle=\ttfamily, 
+commentstyle=\color[rgb]{0.133,0.545,0.133},
+stringstyle=\ttfamily\color[rgb]{0.627,0.126,0.941},
+showstringspaces=false, 	
+basicstyle=\small\ttfamily,	
+tabsize=2,
+breaklines=true,
+prebreak = \raisebox{0ex}[0ex][0ex]{\ensuremath{\hookleftarrow}},
+breakatwhitespace=false,
+aboveskip={1,5\baselineskip},
+columns=fixed,
+ upquote=true,  
+extendedchars=true,
+% frame=single, 
+% backgroundcolor=\color{lbcolor}, 
+frame=single, % adds a frame around the code
+    tabsize=2, % sets default tabsize to 2 spaces
+    rulecolor=\color{black},
+}
+\usepackage{booktabs}
+\end_preamble
+\use_default_options true
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_math auto
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\float_placement h
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Svar på frågor till laboration 1, uppgift 3 i TDA416 
+\end_layout
+
+\begin_layout Author
+Grupp 7: Erik Öhrn, Paula Eriksson Imable
+\end_layout
+
+\begin_layout Date
+2015-02-06
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+thispagestyle{empty}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+newpage
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+setcounter{page}{1}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section*
+Svar på frågor
+\end_layout
+
+\begin_layout Subsection*
+a) 
+\end_layout
+
+\begin_layout Enumerate
+När ett objekt tas bort måste alla nedanstående objekt i fältet flyttas
+ upp ett steg.
+ I värsta fall måste listans samtliga kvarvarande objekt flyttas upp, om
+ man tar bort det översta.
+ Således kommer detta gå på O(n) operationer.
+ Att däremot sätta in på slutet går på O(1) om man känner till objektet
+ innan.
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename Uppg 3a figur.jpg
+	width 100col%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Visualisering av dataförflyttning vid borttagning i ett fält
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+I LinkedList, som är enkellänkad, är det svårt att gå baklänges.
+ Att då beräkna om importance hos objektet bakom tar tid, det behövs istället
+ en dubbellänkad lista.
+ addLast kan tros vara O(n) eftersom den kanske behöver stega igenom alla
+ element, men den anropar enligt källkoden bara linkLast: 
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+  301       public void addLast(E e) {
+\end_layout
+
+\begin_layout Plain Layout
+
+  302           linkLast(e);
+\end_layout
+
+\begin_layout Plain Layout
+
+  303       }
+\end_layout
+
+\end_inset
+
+vilken i sin tur har O(1) : 
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+  138       void linkLast(E e) {
+\end_layout
+
+\begin_layout Plain Layout
+
+  139           final Node<E> l = last;
+\end_layout
+
+\begin_layout Plain Layout
+
+  140           final Node<E> newNode = new Node<>(l, e, null);
+\end_layout
+
+\begin_layout Plain Layout
+
+  141           last = newNode;
+\end_layout
+
+\begin_layout Plain Layout
+
+  142           if (l == null)
+\end_layout
+
+\begin_layout Plain Layout
+
+  143               first = newNode;
+\end_layout
+
+\begin_layout Plain Layout
+
+  144           else
+\end_layout
+
+\begin_layout Plain Layout
+
+  145               l.next = newNode;
+\end_layout
+
+\begin_layout Plain Layout
+
+  146           size++;
+\end_layout
+
+\begin_layout Plain Layout
+
+  147           modCount++;
+\end_layout
+
+\begin_layout Plain Layout
+
+  148       }
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection*
+b)
+\end_layout
+
+\begin_layout Standard
+Se bifogade .java-filer.
+\end_layout
+
+\begin_layout Subsubsection*
+Metoder
+\end_layout
+
+\begin_layout Standard
+Det som inte syns här är att LinkedList kan var mycket långsammare om det
+ rör sig om stora filer där datorn hela tiden måste skifta minne mellan
+ primärminne, sekundärminne, cache osv.
+ Metoder inklusive hjälpmetoder, men utan dokumentation (detta finns i .java-file
+rna):
+\end_layout
+
+\begin_layout Enumerate
+addLast(Point p)
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+public void addLast(Point p) throws NullPointerException {
+\end_layout
+
+\begin_layout Plain Layout
+
+		if (p == null) {
+\end_layout
+
+\begin_layout Plain Layout
+
+			throw new NullPointerException(this.getClass().getName()
+\end_layout
+
+\begin_layout Plain Layout
+
+					+ " in addLast(Point p): Point is null");
+\end_layout
+
+\begin_layout Plain Layout
+
+		}
+\end_layout
+
+\begin_layout Plain Layout
+
+		Node newNode = new Node(p, size);
+\end_layout
+
+\begin_layout Plain Layout
+
+		if (tail == null) {
+\end_layout
+
+\begin_layout Plain Layout
+
+			head = newNode;
+\end_layout
+
+\begin_layout Plain Layout
+
+		} else {
+\end_layout
+
+\begin_layout Plain Layout
+
+			tail.next = newNode;
+\end_layout
+
+\begin_layout Plain Layout
+
+			newNode.prev = tail;
+\end_layout
+
+\begin_layout Plain Layout
+
+		}
+\end_layout
+
+\begin_layout Plain Layout
+
+		tail = newNode;
+\end_layout
+
+\begin_layout Plain Layout
+
+		size++;
+\end_layout
+
+\begin_layout Plain Layout
+
+	} // end addLast
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+calcInitialImportance()
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+public void calcInitialImportance() throws NullPointerException {
+\end_layout
+
+\begin_layout Plain Layout
+
+		if (head == null) {
+\end_layout
+
+\begin_layout Plain Layout
+
+			throw new NullPointerException(
+\end_layout
+
+\begin_layout Plain Layout
+
+					"calcInitialImportance(): no nodes have been added.");
+\end_layout
+
+\begin_layout Plain Layout
+
+		} else {
+\end_layout
+
+\begin_layout Plain Layout
+
+			calcInitialImportanceRecursive(head);
+\end_layout
+
+\begin_layout Plain Layout
+
+		}
+\end_layout
+
+\begin_layout Plain Layout
+
+	}// end calcInitialImportance
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+private void calcInitialImportanceRecursive(Node n) {
+\end_layout
+
+\begin_layout Plain Layout
+
+		if (n != null) {
+\end_layout
+
+\begin_layout Plain Layout
+
+			importanceOfNode(n);
+\end_layout
+
+\begin_layout Plain Layout
+
+			q.add(n);
+\end_layout
+
+\begin_layout Plain Layout
+
+			calcInitialImportanceRecursive(n.next);
+\end_layout
+
+\begin_layout Plain Layout
+
+		}
+\end_layout
+
+\begin_layout Plain Layout
+
+	}// end calcInitialImportanceRecursive
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+private void importanceOfNode(Node n) {
+\end_layout
+
+\begin_layout Plain Layout
+
+		if (n != head && n != tail) {
+\end_layout
+
+\begin_layout Plain Layout
+
+			n.imp = importanceOfP(n.prev.p, n.p, n.next.p);
+\end_layout
+
+\begin_layout Plain Layout
+
+		} else {
+\end_layout
+
+\begin_layout Plain Layout
+
+			n.imp = infinity;
+\end_layout
+
+\begin_layout Plain Layout
+
+		}
+\end_layout
+
+\begin_layout Plain Layout
+
+	} // end importanceOfNode
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+importanceRemoveList(int k)
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+public void importanceRemoveList(int k) throws IndexOutOfBoundsException,
+\end_layout
+
+\begin_layout Plain Layout
+
+			IllegalArgumentException {
+\end_layout
+
+\begin_layout Plain Layout
+
+		if (k < 2 || k > size) {
+\end_layout
+
+\begin_layout Plain Layout
+
+			throw new IndexOutOfBoundsException(
+\end_layout
+
+\begin_layout Plain Layout
+
+					this.getClass().getName()
+\end_layout
+
+\begin_layout Plain Layout
+
+							+ " in importanceRemoveList(int k): the number of points desired
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+								needs to be at least 2 and not larger than the number of initial
+ points.");
+\end_layout
+
+\begin_layout Plain Layout
+
+		} else if (q.isEmpty()) {
+\end_layout
+
+\begin_layout Plain Layout
+
+			throw new IllegalArgumentException(
+\end_layout
+
+\begin_layout Plain Layout
+
+					this.getClass().getName()
+\end_layout
+
+\begin_layout Plain Layout
+
+							+ " in importanceRemoveList(int k): you need to calculate the initial
+ importance first.");
+\end_layout
+
+\begin_layout Plain Layout
+
+		}
+\end_layout
+
+\begin_layout Plain Layout
+
+		Node minImpNode;
+\end_layout
+
+\begin_layout Plain Layout
+
+		while (size > k) {
+\end_layout
+
+\begin_layout Plain Layout
+
+			minImpNode = q.poll();
+\end_layout
+
+\begin_layout Plain Layout
+
+			rebindPointersForRemoval(minImpNode);
+\end_layout
+
+\begin_layout Plain Layout
+
+			updateNodeInQueue(minImpNode.prev);
+\end_layout
+
+\begin_layout Plain Layout
+
+			updateNodeInQueue(minImpNode.next);
+\end_layout
+
+\begin_layout Plain Layout
+
+			size--;
+\end_layout
+
+\begin_layout Plain Layout
+
+		}
+\end_layout
+
+\begin_layout Plain Layout
+
+	}// end importanceRemoveList
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	private void rebindPointersForRemoval(Node n) {
+\end_layout
+
+\begin_layout Plain Layout
+
+		n.next.prev = n.prev;
+\end_layout
+
+\begin_layout Plain Layout
+
+		n.prev.next = n.next;
+\end_layout
+
+\begin_layout Plain Layout
+
+	} // end rebindPointers
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	private void updateNodeInQueue(Node n) {
+\end_layout
+
+\begin_layout Plain Layout
+
+		importanceOfNode(n);
+\end_layout
+
+\begin_layout Plain Layout
+
+		q.remove(n);
+\end_layout
+
+\begin_layout Plain Layout
+
+		q.add(n);
+\end_layout
+
+\begin_layout Plain Layout
+
+	}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection*
+c)
+\end_layout
+
+\begin_layout Standard
+För att uppdatera den prioritetskö som används måste den aktuella nodpekaren
+ tas bort och sedan läggas till igen.
+ Om inte detta görs kan inte poll() användas tillförlitligt.
+ Att lägga till går snabbt, men i remove()-funktionen i PriorityQueue anropas
+ indexOf(Object o) på det objektet som skickas in.
+ Även removeAt(int i) kallas på, men den gör sitt arbete på O(1) operationer.
+ indexOf(Object o) har däremot i sig en komplexitet på O(n), eftersom den
+ stegar igenom hela kön för att hitta rätt index.
+ Då remove() anropas varje gång i vårt program när antlet punkter ska stegas
+ ned till k är denna lösning ineffektiv.
+ Allt detta kan härledas från källkoden för PriorityQueue.java :
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+  359       public boolean remove(Object o) {
+\end_layout
+
+\begin_layout Plain Layout
+
+  360           int i = indexOf(o);
+\end_layout
+
+\begin_layout Plain Layout
+
+  361           if (i == -1)
+\end_layout
+
+\begin_layout Plain Layout
+
+  362               return false;
+\end_layout
+
+\begin_layout Plain Layout
+
+  363           else {
+\end_layout
+
+\begin_layout Plain Layout
+
+  364               removeAt(i);
+\end_layout
+
+\begin_layout Plain Layout
+
+  365               return true;
+\end_layout
+
+\begin_layout Plain Layout
+
+  366           }
+\end_layout
+
+\begin_layout Plain Layout
+
+  367       }
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+  339       private int indexOf(Object o) {
+\end_layout
+
+\begin_layout Plain Layout
+
+  340           if (o != null) {
+\end_layout
+
+\begin_layout Plain Layout
+
+  341               for (int i = 0; i < size; i++)
+\end_layout
+
+\begin_layout Plain Layout
+
+  342                   if (o.equals(queue[i]))
+\end_layout
+
+\begin_layout Plain Layout
+
+  343                       return i;
+\end_layout
+
+\begin_layout Plain Layout
+
+  344           }
+\end_layout
+
+\begin_layout Plain Layout
+
+  345           return -1;
+\end_layout
+
+\begin_layout Plain Layout
+
+  346       }
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+  594       private E removeAt(int i) {
+\end_layout
+
+\begin_layout Plain Layout
+
+  595           assert i >= 0 && i < size;
+\end_layout
+
+\begin_layout Plain Layout
+
+  596           modCount++;
+\end_layout
+
+\begin_layout Plain Layout
+
+  597           int s = --size;
+\end_layout
+
+\begin_layout Plain Layout
+
+  598           if (s == i) // removed last element
+\end_layout
+
+\begin_layout Plain Layout
+
+  599               queue[i] = null;
+\end_layout
+
+\begin_layout Plain Layout
+
+  600           else {
+\end_layout
+
+\begin_layout Plain Layout
+
+  601               E moved = (E) queue[s];
+\end_layout
+
+\begin_layout Plain Layout
+
+  602               queue[s] = null;
+\end_layout
+
+\begin_layout Plain Layout
+
+  603               siftDown(i, moved);
+\end_layout
+
+\begin_layout Plain Layout
+
+  604               if (queue[i] == moved) {
+\end_layout
+
+\begin_layout Plain Layout
+
+  605                   siftUp(i, moved);
+\end_layout
+
+\begin_layout Plain Layout
+
+  606                   if (queue[i] != moved)
+\end_layout
+
+\begin_layout Plain Layout
+
+  607                       return moved;
+\end_layout
+
+\begin_layout Plain Layout
+
+  608               }
+\end_layout
+
+\begin_layout Plain Layout
+
+  609           }
+\end_layout
+
+\begin_layout Plain Layout
+
+  610           return null;
+\end_layout
+
+\begin_layout Plain Layout
+
+  611       }
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section*
+Referenser
+\end_layout
+
+\begin_layout Standard
+Källkod och dokumentation för LinkedList.java: 
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset href
+LatexCommand href
+target "http://www.docjar.com/html/api/java/util/LinkedList.java.html"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Källkod och dokumentation för PriorityQueue.java:
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset href
+LatexCommand href
+target "http://www.docjar.com/html/api/java/util/PriorityQueue.java.html"
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document

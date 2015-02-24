@@ -1,0 +1,487 @@
+#LyX 2.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 474
+\begin_document
+\begin_header
+\textclass article
+\begin_preamble
+% Erik Öhrn, Paula Eriksson
+
+\usepackage{listings} 
+\usepackage{color} 
+\usepackage{textcomp}
+\definecolor{listinggray}{gray}{0.9} 
+\definecolor{lbcolor}{rgb}{0.9,0.9,0.9}
+\lstset{
+language=java,
+keywordstyle=\bfseries\ttfamily\color[rgb]{0,0,1},
+identifierstyle=\ttfamily, 
+commentstyle=\color[rgb]{0.133,0.545,0.133},
+stringstyle=\ttfamily\color[rgb]{0.627,0.126,0.941},
+showstringspaces=false, 	
+basicstyle=\small\ttfamily,	
+tabsize=2,
+breaklines=true,
+prebreak = \raisebox{0ex}[0ex][0ex]{\ensuremath{\hookleftarrow}},
+breakatwhitespace=false,
+aboveskip={1,5\baselineskip},
+columns=fixed,
+ upquote=true,  
+extendedchars=true,
+% frame=single, 
+% backgroundcolor=\color{lbcolor}, 
+frame=single, % adds a frame around the code
+    tabsize=2, % sets default tabsize to 2 spaces
+    rulecolor=\color{black},
+}
+\usepackage{booktabs}
+\end_preamble
+\use_default_options true
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_math auto
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\float_placement h
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Readme till laboration 1, uppgift 3 i TDA416 
+\end_layout
+
+\begin_layout Author
+Grupp 7: Erik Öhrn, Paula Eriksson Imable
+\end_layout
+
+\begin_layout Date
+2015-02-06
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+thispagestyle{empty}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+newpage
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+setcounter{page}{1}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Part*
+Readme
+\end_layout
+
+\begin_layout Section
+Tillhörande filer:
+\end_layout
+
+\begin_layout Labeling
+\labelwidthstring 00.00.0000
+src/U3/Uppg3.java
+\end_layout
+
+\begin_layout Labeling
+\labelwidthstring 00.00.0000
+src/U3/DrawGraph.java
+\end_layout
+
+\begin_layout Labeling
+\labelwidthstring 00.00.0000
+src/U3/Main.java
+\end_layout
+
+\begin_layout Labeling
+\labelwidthstring 00.00.0000
+fig1.txt
+\end_layout
+
+\begin_layout Labeling
+\labelwidthstring 00.00.0000
+fig2.txt (egen figurfil)
+\end_layout
+
+\begin_layout Labeling
+\labelwidthstring 00.00.0000
+tom.txt (användes för debug för att se vad som hände om inga punkter lästes
+ in)
+\end_layout
+
+\begin_layout Labeling
+\labelwidthstring 00.00.0000
+lab1U3.pdf
+\end_layout
+
+\begin_layout Section
+Ändringar i medskickad kod
+\end_layout
+
+\begin_layout Standard
+Vi fick på datorerna problem med att läsa in textfilen med punkter med den
+ koden som gavs.
+ Hur filnamnet än skrevs in lyckades inte skannern läsa punkterna.
+ Detta löstes genom att ändra metoden readShape() från
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+public int readShape() {
+\end_layout
+
+\begin_layout Plain Layout
+
+		Scanner sc = new Scanner(System.in);
+\end_layout
+
+\begin_layout Plain Layout
+
+		int n = 0;
+\end_layout
+
+\begin_layout Plain Layout
+
+		while (sc.hasNext()) { // antag 2 korrekta tal per rad
+\end_layout
+
+\begin_layout Plain Layout
+
+			int n1 = sc.nextInt();
+\end_layout
+
+\begin_layout Plain Layout
+
+			int n2 = sc.nextInt();
+\end_layout
+
+\begin_layout Plain Layout
+
+			this.addLast(new Point(n1, n2));
+\end_layout
+
+\begin_layout Plain Layout
+
+			n++;
+\end_layout
+
+\begin_layout Plain Layout
+
+		}
+\end_layout
+
+\begin_layout Plain Layout
+
+		//sc.close();
+\end_layout
+
+\begin_layout Plain Layout
+
+		this.calcInitialImportance();
+\end_layout
+
+\begin_layout Plain Layout
+
+		return n;
+\end_layout
+
+\begin_layout Plain Layout
+
+	}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+till
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+public int readShape() {
+\end_layout
+
+\begin_layout Plain Layout
+
+		int n = 0;
+\end_layout
+
+\begin_layout Plain Layout
+
+		System.out.println("Please enter filename (for example ./fig1.txt)");
+\end_layout
+
+\begin_layout Plain Layout
+
+		Scanner input = new Scanner(System.in);
+\end_layout
+
+\begin_layout Plain Layout
+
+		File file = new File(input.nextLine());
+\end_layout
+
+\begin_layout Plain Layout
+
+		input.close();
+\end_layout
+
+\begin_layout Plain Layout
+
+		try {
+\end_layout
+
+\begin_layout Plain Layout
+
+			Scanner sc = new Scanner(file);
+\end_layout
+
+\begin_layout Plain Layout
+
+			while (sc.hasNext()) { // antag 2 korrekta tal per rad
+\end_layout
+
+\begin_layout Plain Layout
+
+				int n1 = sc.nextInt();
+\end_layout
+
+\begin_layout Plain Layout
+
+				int n2 = sc.nextInt();
+\end_layout
+
+\begin_layout Plain Layout
+
+				this.addLast(new Point(n1, n2));
+\end_layout
+
+\begin_layout Plain Layout
+
+				n++;
+\end_layout
+
+\begin_layout Plain Layout
+
+			}
+\end_layout
+
+\begin_layout Plain Layout
+
+			sc.close();
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+		} catch (FileNotFoundException e) {
+\end_layout
+
+\begin_layout Plain Layout
+
+			System.err.println(this.getClass().getName()
+\end_layout
+
+\begin_layout Plain Layout
+
+					+ " in readShape: File not found.
+\backslash
+nExiting.");
+\end_layout
+
+\begin_layout Plain Layout
+
+			System.exit(0);
+\end_layout
+
+\begin_layout Plain Layout
+
+		}
+\end_layout
+
+\begin_layout Plain Layout
+
+		try {
+\end_layout
+
+\begin_layout Plain Layout
+
+			this.calcInitialImportance();
+\end_layout
+
+\begin_layout Plain Layout
+
+		} catch (NullPointerException e) {
+\end_layout
+
+\begin_layout Plain Layout
+
+			System.err.println(e + "
+\backslash
+nExiting");
+\end_layout
+
+\begin_layout Plain Layout
+
+			System.exit(0);
+\end_layout
+
+\begin_layout Plain Layout
+
+		}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+		return n;
+\end_layout
+
+\begin_layout Plain Layout
+
+	}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Texten på rad 3 lades till för att visa att man måste skrriva t.ex.
+ ./fig1.txt och inte bara fig1.txt för att programmet ska hitta filen.
+ calcInitialImportance() kan här kasta en NullPointerException, varför eventuell
+ sådan tas hand om.
+\end_layout
+
+\begin_layout Standard
+Även koden i Main.java har ändrats något för att ta hand om exceptions som
+ kan kastas från Uppg3.java.
+\end_layout
+
+\begin_layout Section
+Användning
+\end_layout
+
+\begin_layout Standard
+Programmet startas med tre parametrar:
+\end_layout
+
+\begin_layout Enumerate
+Antalet punkter som figuren ska förkortas ned till
+\end_layout
+
+\begin_layout Enumerate
+Bredd på figuren
+\end_layout
+
+\begin_layout Enumerate
+Höjd på figuren
+\end_layout
+
+\begin_layout Standard
+Programmet kommer därefter fråga efter en textfil med punkter, skriv in
+ den för att fortsätta.
+\end_layout
+
+\begin_layout Standard
+Som exempel kan programmet startas med flaggorna -8 -12 -12 och sedan ta
+ in ./fig1.txt för att skriva ut samma bild som finns i uppgiftinstruktionerna.
+ 
+\end_layout
+
+\end_body
+\end_document
