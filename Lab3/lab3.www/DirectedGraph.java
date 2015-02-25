@@ -12,6 +12,12 @@ public class DirectedGraph<E extends Edge> {
 		//for(int i = 0; i<noOfNodes; i++)
 			//nodeList[i] = new LinkedList<E>();
 		
+		
+		/*
+		Revelation! NodeTable.java gör om alla nodnamn till heltal. Är det så att de är från 0-nånting? I så fall blir det mycket snabbare, och smidigare med ett fält eller en ArrayList.
+		
+		
+		*/
 	}
 
 	public void addEdge(E e) {
