@@ -6,10 +6,10 @@ public class DirectedGraph<E extends Edge> {
 	// private Map<Integer, LinkedList<E>> nodeMap;
 	private LinkedList<E>[] nodeList;
 	private int noOfNodes;
-	PriorityQueue<E> nodeQueue;
-	
+	private PriorityQueue nodeQueue;
+
 	public DirectedGraph(int noOfNodes) {
-		this.noOfNodes = noOfNodes;
+		this.noOfNodes=noOfNodes;
 		// nodeMap = new HashMap<Integer, LinkedList<E>>();
 		// nodeList = new LinkedList[noOfNodes];
 		for (int i = 0; i < noOfNodes; i++)
@@ -30,15 +30,22 @@ public class DirectedGraph<E extends Edge> {
 		// int source = e.getSource();
 		nodeList[e.getSource()].add(e);
 		nodeQueue.add(e);
-		
 		// nodeMap.putIfAbsent(source, new LinkedList<E>());
 		// nodeMap.get(source).add(e);
 	}
 
+	/*
+	 * Använda dijkstras
+	 */
 	public Iterator<E> shortestPath(int from, int to) {
 		return null;
 	}
-
+	
+	
+/*
+ * Använda Kruskals algoritm
+ * n-1 bågar som binder ihop alla n hpl till lägsta kostnad
+ */
 	public Iterator<E> minimumSpanningTree() {
 		/*
 		 * 
@@ -94,6 +101,22 @@ public class DirectedGraph<E extends Edge> {
 			}//if		
 		}//while
 		
+		
+		//Skapa ett fält cc, som för varje nod innehåller en egen tom lista
+		//LinkedList<E>[] cc = new LinkedList<E>();
+	
+		//if (cc[temp] == null) {
+		  //   cc[temp] = new LinkedList<Integer>();
+		//}
+		for(int i=0; i<=nodeList.length; i++){
+		//	cc[i] = new LinkedList<E>;
+		}
+		
+		//Lägg in alla bågar i en prioritetskö
+		
+		//while(pq!=null && cc <n){
+		// e=(from, to, weight) (från kön?)
+		//if(from
 		return null;
 	}
 
