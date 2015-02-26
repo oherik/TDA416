@@ -88,15 +88,27 @@ public class DirectedGraph<E extends Edge> {
 		
 		while(!pq.isEmpty() && (cc.length < noOfNodes	)){
 			temp = pq.remove();
-		
-			if(!comp.isLoop(temp, cc)){ //if inte samma? //TODO
-				LinkedList<E> smallList = comp.getSmall();
-				LinkedList<E> largeList = comp.getLarge();
+			
+			
+			
+			int start = comp.getStartIndex(temp,cc);
+			int dest = comp.getDestIndex(temp,cc);
+			if(start!=dest){ //if inte samma? //TODO
+				LinkedList<E> smallList, largeList;
+				if(cc[start].size()>cc[dest].size()){	//Hitta vilken av listorna som är minst
+					smallList=cc[dest];
+					largeList=cc[start];				
+				}
+				else{
+					smallList=cc[start];
+					largeList=cc[dest];
+				}
+
 				for(E e : smallList){
-				    largeList.add(e);
-				    cc[e.getSource()]=largeList;
+				    largeList.add(e);				//lägg till varje element i den stora listan från den lilla
+				    cc[e.getSource()]=largeList;	//peka om fältet så den pekar på den stora listan
+				    smallList.remove(e); //TODO är detta smart tro?
 				  }
-				smallList.clear();
 				largeList.add(temp);
 			}//if		
 		}//while
