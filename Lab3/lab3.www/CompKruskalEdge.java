@@ -7,16 +7,14 @@ import java.util.LinkedList;
  */
 public class CompKruskalEdge<E extends Edge> {
 	
-	public LinkedList<E> getSmall(){
-		return null;
+	
+	public int getStartIndex(E e, LinkedList<E>[] list){
+		return 0;
 	}
-
-	public LinkedList<E> getLarge(){
-		return null;
+	public int getDestIndex(E e, LinkedList<E>[] list){
+		return 0;
 	}
 	
-	public boolean isLoop(E e, LinkedList<E>[] list){
-		return false;
-	}
+	
 
 }
