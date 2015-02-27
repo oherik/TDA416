@@ -90,7 +90,33 @@ public class DirectedGraph<E extends Edge> {
 			temp = pq.remove();
 			
 			
+			//En idé, men användar inte CompKruskalEdge____________________
 			
+			LinkedList<E> startList = cc[temp.getSource()]; //Kanske göra såhär istället?
+			LinkedList<E> destList = cc[temp.getDest()];
+			
+			if(startList!=destList){ //if inte samma? //TODO
+				if(destList.size()>startList.size()){	//Hitta vilken av listorna som är minst
+					for(E e : startList){
+					    destList.add(e);				//lägg till varje element i den stora listan från den lilla
+					    cc[e.getSource()]=destList;	//peka om fältet så den pekar på den stora listan
+					  }			
+					destList.add(temp);
+				}
+				else{
+					for(E e : destList){
+					    startList.add(e);				//lägg till varje element i den stora listan från den lilla
+					    cc[e.getSource()]=startList;	//peka om fältet så den pekar på den stora listan
+					  }		
+					startList.add(temp);
+				}
+			
+			}//if
+			
+			//_____________________________________________________
+			
+			
+			//En annan idé _____________________________________
 			int start = comp.getStartIndex(temp,cc);
 			int dest = comp.getDestIndex(temp,cc);
 			if(start!=dest){ //if inte samma? //TODO
@@ -107,10 +133,11 @@ public class DirectedGraph<E extends Edge> {
 				for(E e : smallList){
 				    largeList.add(e);				//lägg till varje element i den stora listan från den lilla
 				    cc[e.getSource()]=largeList;	//peka om fältet så den pekar på den stora listan
-				    smallList.remove(e); //TODO är detta smart tro?
+				   // smallList.remove(e); //TODO är detta smart tro?
 				  }
 				largeList.add(temp);
 			}//if		
+			//__________________________________________________________
 		}//while
 		
 		
