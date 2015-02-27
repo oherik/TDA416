@@ -4,18 +4,18 @@ import java.util.*;
 
 public class DirectedGraph<E extends Edge> {
 	// private Map<Integer, LinkedList<E>> nodeMap;
-	private List<E>[] nodeList;
+	private List<E>[] edgeListArray;
 	private int noOfNodes;
 	private List<E> edgeList;
 
 	public DirectedGraph(int noOfNodes) {
 		this.noOfNodes=noOfNodes;
-		nodeList = new ArrayList[noOfNodes];
+		edgeListArray = (ArrayList<E>[])new ArrayList[noOfNodes];
 		edgeList = new ArrayList<E>(); 
 		// nodeMap = new HashMap<Integer, LinkedList<E>>();
 		// nodeList = new LinkedList[noOfNodes];
 		for (int i = 0; i < noOfNodes; i++)
-			nodeList[i] = new ArrayList<E>();
+			edgeListArray[i] = new ArrayList<E>();
 
 		/*
 		 * Revelation! NodeTable.java gör om alla nodnamn till heltal. Är det så
@@ -30,7 +30,7 @@ public class DirectedGraph<E extends Edge> {
 		 * tillåtervi flera bågar mellan samma noder?
 		 */
 		// int source = e.getSource();
-		nodeList[e.getSource()].add(e);
+		edgeListArray[e.getSource()].add(e);
 		edgeList.add(e);
 		// nodeMap.putIfAbsent(source, new LinkedList<E>());
 		// nodeMap.get(source).add(e);
@@ -81,82 +81,77 @@ public class DirectedGraph<E extends Edge> {
 		lägg slutligen e i den påfyllda listan
 		 *
 		 */
-		PriorityQueue<E> edgeQueue = new PriorityQueue<E>(11, new CompKruskalEdge<E>());	//11 är standard för java. Använder sig av CompKruskalEdge som jämförare
-		ArrayList<E>[] cc = (ArrayList<E>[]) new ArrayList[noOfNodes];	//Listan cc. Består av en array av listor
-		
-		int arraySize = 0;
+		PriorityQueue<E> 	edgeQueue 	= new PriorityQueue<E>(11, new CompKruskalEdge<E>());	//11 är standard för java. Använder sig av CompKruskalEdge som jämförare
+		ArrayList<E>[] 		cc 			= (ArrayList<E>[]) new ArrayList[noOfNodes];	//Listan cc. Består av en array av listor
+		ArrayList<E> 		smallList,
+							largeList,
+							sourceList,
+							destList;	
+		int 				arraySize 	= 0;
+		E 					topEdge;
 		
 		for(E e : edgeList){
 			edgeQueue.add(e);		//Lägger till alla bågar i prioritetskön (enl. punkt 1)
 		}
-		
-		
+				
 		for (int i = 0; i < noOfNodes; i++){
 			cc[i] = new ArrayList<E>();			//Gör så att varje entry i arrayen cc fåren tom lista (enl. punkt 0)
 		}
-		E topEdge;
-		System.out.println("Alla elementen i prioriteskön: ");//TODO debug
-		for(E e : edgeQueue){
-			System.out.print(e + "     ");//TODO debug
-		}
-		System.out.println("");//TODO debug
 
-		while(!edgeQueue.isEmpty() && arraySize<noOfNodes){//&& (cc.length < noOfNodes	) //TODO det som är utkommenterat ska visst med, men hur? UPDATE: kanske lyckats fixa det nu. Kolla variabeln arraySize
-			topEdge = edgeQueue.remove();
+								System.out.println("Alla elementen i prioriteskön: ");//TODO debug
+								for(E e : edgeQueue){
+									System.out.print(e + "     ");//TODO debug
+								}
+								System.out.println("");//TODO debug
 
-			ArrayList<E> smallList, largeList;
-			ArrayList<E> listA = cc[topEdge.getSource()];
-			ArrayList<E> listB = cc[topEdge.getDest()];		
+		while(!edgeQueue.isEmpty() && arraySize<noOfNodes){//&& (cc.length < noOfNodes	) //TODO det som är utkommenterat ska visst med, men hur? UPDATE: kanske lyckats fixa det nu. Kolla variabeln arraySize			
+			topEdge 	= 	edgeQueue.remove();	//Ta ut toppelementet ur prioritetskön
+			sourceList 	= 	cc[topEdge.getSource()];
+			destList 	= 	cc[topEdge.getDest()];		
 			
-			System.out.println("\nBåge: " + topEdge);
-			System.out.println("cc["+ topEdge.getSource()+"] : "+cc[topEdge.getSource()]);	//TODO debug
-			System.out.println("cc["+ topEdge.getDest()+"] : "+ cc[topEdge.getDest()]);	//TODO debug
-			if(listA!=listB)
-				System.out.println("Listorna är inte lika.");//TODO debug
-			else
-				System.out.println("Listorna är lika. Lägger inte till.");//TODO debug
-			if(listA!=listB){ 
-				
-				if(listA.isEmpty())		//är det så att den är tom kommer den inte vara det efter att elementet lagts till
+								System.out.println("\nBåge: " + topEdge);	//TODO debug
+								System.out.println("cc["+ topEdge.getSource()+"] : "+cc[topEdge.getSource()]);	//TODO debug
+								System.out.println("cc["+ topEdge.getDest()+"] : "+ cc[topEdge.getDest()]);	//TODO debug
+								if(sourceList!=destList)
+									System.out.println("Listorna är inte lika.");//TODO debug
+								else
+									System.out.println("Listorna är lika. Lägger inte till.");//TODO debug
+			if(sourceList!=destList){ 				
+				if(sourceList.isEmpty())		//är det så att den är tom kommer den inte vara det efter att elementet lagts till
 					arraySize++;		//detta innebär att antalet icke-tomma entries i arrayen cc har ökat emd 1
-				if(listB.isEmpty())		//samma för den andra listan
+				if(destList.isEmpty())		//samma för den andra listan
 					arraySize++;
 				
-				if(listB.size()>listA.size()){	//Hitta vilken av listorna som är minst
-					smallList=listA;		
-					largeList=listB;
+				if(destList.size()>sourceList.size()){	//Hitta vilken av listorna som är minst
+					smallList=sourceList;		
+					largeList=destList;
 				}
 				else{
-					largeList=listB;
-					smallList=listA;					
+					smallList=destList;
+					largeList=sourceList;					
 				}
 
 				for(E e : smallList){
 					largeList.add(e);				//lägg till varje element i den stora listan från den lilla
-					cc[e.getSource()]=largeList;
-					cc[e.getDest()]=largeList;
+					cc[e.getSource()] 	=	cc[e.getDest()] =
+											largeList;
 				}			
 				largeList.add(topEdge);
-				cc[topEdge.getSource()]=largeList;	//peka om fältet så den pekar på den stora listan //TODO behövs?
-				cc[topEdge.getDest()]=largeList; //TODO behövs?
 				
+				cc[topEdge.getSource()] = 	cc[topEdge.getDest()] =		
+											largeList;	//peka om fältet så den pekar på den stora listan //TODO behövs?
 				
-				
-
-				System.out.println("Lägger till " + topEdge);//TODO debug
+												System.out.println("Lägger till " + topEdge);//TODO debug
 			}//if
-			System.out.println("Skriver ut hela listan:");	//TODO debug
-			for(int i = 0; i<noOfNodes; i++){	//TODO debug
-				System.out.println("cc["+ i +"] : "+cc[i]);	//TODO debug
-
-			}
-
+												System.out.println("Skriver ut hela listan:");	//TODO debug
+												for(int i = 0; i<noOfNodes; i++){	//TODO debug
+													System.out.println("cc["+ i +"] : "+cc[i]);	//TODO debug
+												}
 		}//while
-		System.out.println("\nKlar! Miniträdet innehåller bågarna: "); //TODO debug
-		for(E e : cc[0]){	//TODO debug. Skriver ut miniträdet
-			System.out.println(e);
-
-		}
+												System.out.println("\nKlar! Miniträdet innehåller bågarna: "); //TODO debug
+												for(E e : cc[0]){	//TODO debug. Skriver ut miniträdet
+													System.out.println(e);
+												}
 		
 		return cc[0].iterator();
 
