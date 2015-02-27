@@ -6,8 +6,9 @@ import java.util.LinkedList;
  * @author Erik
  *
  */
-public class CompKruskalEdge<E extends Edge>  implements Comparator{
-	//Eller extends BusEdge implements Comparable
+public class CompKruskalEdge<E extends Edge> implements Comparator<E>{
+
+	//Eller implements Comparator
 	
 	public int getStartIndex(E e, LinkedList<E>[] list){ //TODO ska man ha double linked istället?
 		return 0;
@@ -17,20 +18,28 @@ public class CompKruskalEdge<E extends Edge>  implements Comparator{
 	}
 	
 	@Override
-	public int compare(Object o1, Object o2) {
-		if(o1 instanceof BusEdge && o2 instanceof BusEdge){
-			BusEdge BE1 = (BusEdge) o1;
-			BusEdge BE2 = (BusEdge) o2;
-			if(BE1.getWeight()==BE2.getWeight())
+	public int compare(E e1, E e2) {
+			if(e1.getWeight()==e2.getWeight())
 				return 0;
-			else if(BE1.getWeight()<BE2.getWeight())
+			else if(e1.getWeight()<e2.getWeight())
 				return -1;
 			else 
 				return 1;			
-		}
-		else
+
+	}/*
+	@Override
+	public int compareTo(E edge) {
+		if(this == edge)
 			return 0;
-	}
+		if(this.getWeight()==edge.getWeight())
+			return 0;
+		else if(this.getWeight()<edge.getWeight())
+			return -1;
+		else 
+			return 1;
+		
+		// TODO Auto-generated method stub
+	}*/
 	
 	
 
