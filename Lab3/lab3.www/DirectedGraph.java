@@ -10,6 +10,8 @@ public class DirectedGraph<E extends Edge> {
 
 	public DirectedGraph(int noOfNodes) {
 		this.noOfNodes=noOfNodes;
+		nodeList = new LinkedList[noOfNodes];
+		nodeQueue = new PriorityQueue<E>();
 		// nodeMap = new HashMap<Integer, LinkedList<E>>();
 		// nodeList = new LinkedList[noOfNodes];
 		for (int i = 0; i < noOfNodes; i++)
