@@ -11,7 +11,7 @@ public class DirectedGraph<E extends Edge> {
 	public DirectedGraph(int noOfNodes) {
 		this.noOfNodes=noOfNodes;
 		nodeList = new LinkedList[noOfNodes];
-		nodeQueue = new PriorityQueue<E>();
+		nodeQueue = new PriorityQueue<E>(11, new CompKruskalEdge<E>()); //11 är standard för java
 		// nodeMap = new HashMap<Integer, LinkedList<E>>();
 		// nodeList = new LinkedList[noOfNodes];
 		for (int i = 0; i < noOfNodes; i++)
@@ -49,6 +49,7 @@ public class DirectedGraph<E extends Edge> {
  * n-1 bågar som binder ihop alla n hpl till lägsta kostnad
  */
 	public Iterator<E> minimumSpanningTree() {
+		System.out.println("startar mST");
 		/*
 		 * 
 		 * @author Erik
@@ -87,8 +88,13 @@ public class DirectedGraph<E extends Edge> {
 			cc[i] = new LinkedList<E>();
 		}
 		E temp;
+		for(E e : pq){
+			System.out.print("pq"+e + "     ");
+			
+		}
+		System.out.println("");
 		
-		while(!pq.isEmpty() && (cc.length < noOfNodes	)){
+		while(!pq.isEmpty() ){//&& (cc.length < noOfNodes	)
 			temp = pq.remove();
 			
 			
@@ -96,28 +102,41 @@ public class DirectedGraph<E extends Edge> {
 			
 			LinkedList<E> startList = cc[temp.getSource()]; //Kanske göra såhär istället?
 			LinkedList<E> destList = cc[temp.getDest()];
-			
+			System.out.println("\n" + "cc["+ temp.getSource()+"] : "+cc[temp.getSource()]);
+			System.out.println("cc["+ temp.getDest()+"] : "+ cc[temp.getDest()]);
+			System.out.println(startList!=destList);
 			if(startList!=destList){ //if inte samma? //TODO
 				if(destList.size()>startList.size()){	//Hitta vilken av listorna som är minst
 					for(E e : startList){
 					    destList.add(e);				//lägg till varje element i den stora listan från den lilla
-					    cc[e.getSource()]=destList;	//peka om fältet så den pekar på den stora listan
+					    cc[e.getSource()]=destList;
+					    cc[e.getDest()]=destList;
 					  }			
 					destList.add(temp);
+				    cc[temp.getSource()]=destList;	//peka om fältet så den pekar på den stora listan
 				}
 				else{
 					for(E e : destList){
 					    startList.add(e);				//lägg till varje element i den stora listan från den lilla
-					    cc[e.getSource()]=startList;	//peka om fältet så den pekar på den stora listan
+					    cc[e.getSource()]=startList;
+					    cc[e.getDest()]=startList;
+					   
+					 
 					  }		
 					startList.add(temp);
+					   cc[temp.getDest()]=startList;	//peka om fältet så den pekar på den stora listan
 				}
-			
+			System.out.println("addar " + temp);
 			}//if
-			
+System.out.println("sen");
+for(int i = 0; i<noOfNodes; i++){
+	System.out.println("cc["+ i +"] : "+cc[i]);
+	
+}
+		
 			//_____________________________________________________
 			
-			
+		/*	
 			//En annan idé _____________________________________
 			int start = comp.getStartIndex(temp,cc);
 			int dest = comp.getDestIndex(temp,cc);
@@ -139,8 +158,14 @@ public class DirectedGraph<E extends Edge> {
 				  }
 				largeList.add(temp);
 			}//if		
-			//__________________________________________________________
+			//__________________________________________________________*/
 		}//while
+		//TODO debug nedan
+	
+		for(E e : cc[0]){
+			System.out.print(e + "     ");
+			
+		}
 		
 		
 		//Skapa ett fält cc, som för varje nod innehåller en egen tom lista
