@@ -27,6 +27,7 @@ public class testGraph {
 			DG.addEdge(e);
 		}
 		
+		DG.minimumSpanningTree();
 
 	}
 
