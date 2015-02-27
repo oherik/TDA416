@@ -81,8 +81,8 @@ public class DirectedGraph<E extends Edge> {
 		lägg slutligen e i den påfyllda listan
 		 *
 		 */
-		PriorityQueue<E> edgeQueue = new PriorityQueue<E>(11, new CompKruskalEdge<E>());	//11 är standard för java. ANvänder sig av CompKruskalEdge som jämförare
-		ArrayList<E>[] cc = new ArrayList[noOfNodes];	//Listan cc. Består av en array av listor
+		PriorityQueue<E> edgeQueue = new PriorityQueue<E>(11, new CompKruskalEdge<E>());	//11 är standard för java. Använder sig av CompKruskalEdge som jämförare
+		ArrayList<E>[] cc = (ArrayList<E>[]) new ArrayList[noOfNodes];	//Listan cc. Består av en array av listor
 		
 		int arraySize = 0;
 		
@@ -117,9 +117,9 @@ public class DirectedGraph<E extends Edge> {
 				System.out.println("Listorna är lika. Lägger inte till.");//TODO debug
 			if(listA!=listB){ 
 				
-				if(listA.isEmpty())
-					arraySize++;
-				if(listB.isEmpty())	
+				if(listA.isEmpty())		//är det så att den är tom kommer den inte vara det efter att elementet lagts till
+					arraySize++;		//detta innebär att antalet icke-tomma entries i arrayen cc har ökat emd 1
+				if(listB.isEmpty())		//samma för den andra listan
 					arraySize++;
 				
 				if(listB.size()>listA.size()){	//Hitta vilken av listorna som är minst
