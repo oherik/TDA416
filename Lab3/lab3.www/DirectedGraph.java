@@ -152,9 +152,9 @@ public class DirectedGraph<E extends Edge> {
 			}
 
 		}//while
-	
+		System.out.println("\nKlar! Miniträdet innehåller bågarna: "); //TODO debug
 		for(E e : cc[0]){	//TODO debug. Skriver ut miniträdet
-			System.out.print(e + "     ");
+			System.out.println(e);
 
 		}
 
