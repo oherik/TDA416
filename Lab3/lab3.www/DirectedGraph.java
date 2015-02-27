@@ -49,7 +49,7 @@ public class DirectedGraph<E extends Edge> {
  * n-1 bågar som binder ihop alla n hpl till lägsta kostnad
  */
 	public Iterator<E> minimumSpanningTree() {
-		System.out.println("startar mST");
+		System.out.println("startar mST");//TODO debug
 		/*
 		 * 
 		 * @author Erik
@@ -84,6 +84,8 @@ public class DirectedGraph<E extends Edge> {
 		PriorityQueue<E> edgeQueue = new PriorityQueue<E>(11, new CompKruskalEdge<E>());	//11 är standard för java. ANvänder sig av CompKruskalEdge som jämförare
 		ArrayList<E>[] cc = new ArrayList[noOfNodes];	//Listan cc. Består av en array av listor
 		
+		int arraySize = 0;
+		
 		for(E e : edgeList){
 			edgeQueue.add(e);		//Lägger till alla bågar i prioritetskön (enl. punkt 1)
 		}
@@ -93,21 +95,33 @@ public class DirectedGraph<E extends Edge> {
 			cc[i] = new ArrayList<E>();			//Gör så att varje entry i arrayen cc fåren tom lista (enl. punkt 0)
 		}
 		E topEdge;
+		System.out.println("Alla elementen i prioriteskön: ");//TODO debug
 		for(E e : edgeQueue){
-			System.out.print("pq"+e + "     ");
+			System.out.print(e + "     ");//TODO debug
 		}
-		System.out.println("");
+		System.out.println("");//TODO debug
 
-		while(!edgeQueue.isEmpty() ){//&& (cc.length < noOfNodes	) //TODO det som är utkommenterat ska visst med, men hur?
+		while(!edgeQueue.isEmpty() && arraySize<noOfNodes){//&& (cc.length < noOfNodes	) //TODO det som är utkommenterat ska visst med, men hur? UPDATE: kanske lyckats fixa det nu. Kolla variabeln arraySize
 			topEdge = edgeQueue.remove();
 
 			ArrayList<E> smallList, largeList;
 			ArrayList<E> listA = cc[topEdge.getSource()];
-			ArrayList<E> listB = cc[topEdge.getDest()];
-			System.out.println("\n" + "cc["+ topEdge.getSource()+"] : "+cc[topEdge.getSource()]);	//TODO debug
+			ArrayList<E> listB = cc[topEdge.getDest()];		
+			
+			System.out.println("\nBåge: " + topEdge);
+			System.out.println("cc["+ topEdge.getSource()+"] : "+cc[topEdge.getSource()]);	//TODO debug
 			System.out.println("cc["+ topEdge.getDest()+"] : "+ cc[topEdge.getDest()]);	//TODO debug
-			System.out.println(listA!=listB);	//TODO debug
-			if(listA!=listB){ //if inte samma? //TODO
+			if(listA!=listB)
+				System.out.println("Listorna är inte lika.");//TODO debug
+			else
+				System.out.println("Listorna är lika. Lägger inte till.");//TODO debug
+			if(listA!=listB){ 
+				
+				if(listA.isEmpty())
+					arraySize++;
+				if(listB.isEmpty())	
+					arraySize++;
+				
 				if(listB.size()>listA.size()){	//Hitta vilken av listorna som är minst
 					smallList=listA;		
 					largeList=listB;
@@ -123,11 +137,15 @@ public class DirectedGraph<E extends Edge> {
 					cc[e.getDest()]=largeList;
 				}			
 				largeList.add(topEdge);
-				cc[topEdge.getSource()]=largeList;	//peka om fältet så den pekar på den stora listan
+				cc[topEdge.getSource()]=largeList;	//peka om fältet så den pekar på den stora listan //TODO behövs?
+				cc[topEdge.getDest()]=largeList; //TODO behövs?
+				
+				
+				
 
-				System.out.println("addar " + topEdge);//TODO debug
+				System.out.println("Lägger till " + topEdge);//TODO debug
 			}//if
-			System.out.println("sen");	//TODO debug
+			System.out.println("Skriver ut hela listan:");	//TODO debug
 			for(int i = 0; i<noOfNodes; i++){	//TODO debug
 				System.out.println("cc["+ i +"] : "+cc[i]);	//TODO debug
 
