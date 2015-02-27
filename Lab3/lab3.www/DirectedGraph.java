@@ -4,18 +4,18 @@ import java.util.*;
 
 public class DirectedGraph<E extends Edge> {
 	// private Map<Integer, LinkedList<E>> nodeMap;
-	private LinkedList<E>[] nodeList;
+	private List<E>[] nodeList;
 	private int noOfNodes;
-	private PriorityQueue nodeQueue;
+	private List<E> edgeList;
 
 	public DirectedGraph(int noOfNodes) {
 		this.noOfNodes=noOfNodes;
-		nodeList = new LinkedList[noOfNodes];
-		nodeQueue = new PriorityQueue<E>(11, new CompKruskalEdge<E>()); //11 är standard för java
+		nodeList = new ArrayList[noOfNodes];
+		edgeList = new ArrayList<E>(); 
 		// nodeMap = new HashMap<Integer, LinkedList<E>>();
 		// nodeList = new LinkedList[noOfNodes];
 		for (int i = 0; i < noOfNodes; i++)
-			nodeList[i] = new LinkedList<E>();
+			nodeList[i] = new ArrayList<E>();
 
 		/*
 		 * Revelation! NodeTable.java gör om alla nodnamn till heltal. Är det så
@@ -31,7 +31,7 @@ public class DirectedGraph<E extends Edge> {
 		 */
 		// int source = e.getSource();
 		nodeList[e.getSource()].add(e);
-		nodeQueue.add(e);
+		edgeList.add(e);
 		// nodeMap.putIfAbsent(source, new LinkedList<E>());
 		// nodeMap.get(source).add(e);
 	}
@@ -81,105 +81,78 @@ public class DirectedGraph<E extends Edge> {
 		lägg slutligen e i den påfyllda listan
 		 *
 		 */
-		PriorityQueue<E> pq = nodeQueue;
-		LinkedList<E>[] cc = new LinkedList[noOfNodes];
-		CompKruskalEdge comp = new CompKruskalEdge();
-		for (int i = 0; i < noOfNodes; i++){
-			cc[i] = new LinkedList<E>();
+		PriorityQueue<E> edgeQueue = new PriorityQueue<E>(11, new CompKruskalEdge<E>());	//11 är standard för java. ANvänder sig av CompKruskalEdge som jämförare
+		ArrayList<E>[] cc = new ArrayList[noOfNodes];	//Listan cc. Består av en array av listor
+		
+		for(E e : edgeList){
+			edgeQueue.add(e);		//Lägger till alla bågar i prioritetskön (enl. punkt 1)
 		}
-		E temp;
-		for(E e : pq){
+		
+		
+		for (int i = 0; i < noOfNodes; i++){
+			cc[i] = new ArrayList<E>();			//Gör så att varje entry i arrayen cc fåren tom lista (enl. punkt 0)
+		}
+		E topEdge;
+		for(E e : edgeQueue){
 			System.out.print("pq"+e + "     ");
-			
 		}
 		System.out.println("");
-		
-		while(!pq.isEmpty() ){//&& (cc.length < noOfNodes	)
-			temp = pq.remove();
-			
-			
-			//En idé, men användar inte CompKruskalEdge____________________
-			
-			LinkedList<E> startList = cc[temp.getSource()]; //Kanske göra såhär istället?
-			LinkedList<E> destList = cc[temp.getDest()];
-			System.out.println("\n" + "cc["+ temp.getSource()+"] : "+cc[temp.getSource()]);
-			System.out.println("cc["+ temp.getDest()+"] : "+ cc[temp.getDest()]);
-			System.out.println(startList!=destList);
-			if(startList!=destList){ //if inte samma? //TODO
-				if(destList.size()>startList.size()){	//Hitta vilken av listorna som är minst
-					for(E e : startList){
-					    destList.add(e);				//lägg till varje element i den stora listan från den lilla
-					    cc[e.getSource()]=destList;
-					    cc[e.getDest()]=destList;
-					  }			
-					destList.add(temp);
-				    cc[temp.getSource()]=destList;	//peka om fältet så den pekar på den stora listan
+
+		while(!edgeQueue.isEmpty() ){//&& (cc.length < noOfNodes	) //TODO det som är utkommenterat ska visst med, men hur?
+			topEdge = edgeQueue.remove();
+
+			ArrayList<E> smallList, largeList;
+			ArrayList<E> listA = cc[topEdge.getSource()];
+			ArrayList<E> listB = cc[topEdge.getDest()];
+			System.out.println("\n" + "cc["+ topEdge.getSource()+"] : "+cc[topEdge.getSource()]);	//TODO debug
+			System.out.println("cc["+ topEdge.getDest()+"] : "+ cc[topEdge.getDest()]);	//TODO debug
+			System.out.println(listA!=listB);	//TODO debug
+			if(listA!=listB){ //if inte samma? //TODO
+				if(listB.size()>listA.size()){	//Hitta vilken av listorna som är minst
+					smallList=listA;		
+					largeList=listB;
 				}
 				else{
-					for(E e : destList){
-					    startList.add(e);				//lägg till varje element i den stora listan från den lilla
-					    cc[e.getSource()]=startList;
-					    cc[e.getDest()]=startList;
-					   
-					 
-					  }		
-					startList.add(temp);
-					   cc[temp.getDest()]=startList;	//peka om fältet så den pekar på den stora listan
-				}
-			System.out.println("addar " + temp);
-			}//if
-System.out.println("sen");
-for(int i = 0; i<noOfNodes; i++){
-	System.out.println("cc["+ i +"] : "+cc[i]);
-	
-}
-		
-			//_____________________________________________________
-			
-		/*	
-			//En annan idé _____________________________________
-			int start = comp.getStartIndex(temp,cc);
-			int dest = comp.getDestIndex(temp,cc);
-			if(start!=dest){ //if inte samma? //TODO
-				LinkedList<E> smallList, largeList;
-				if(cc[start].size()>cc[dest].size()){	//Hitta vilken av listorna som är minst
-					smallList=cc[dest];
-					largeList=cc[start];				
-				}
-				else{
-					smallList=cc[start];
-					largeList=cc[dest];
+					largeList=listB;
+					smallList=listA;					
 				}
 
 				for(E e : smallList){
-				    largeList.add(e);				//lägg till varje element i den stora listan från den lilla
-				    cc[e.getSource()]=largeList;	//peka om fältet så den pekar på den stora listan
-				   // smallList.remove(e); //TODO är detta smart tro?
-				  }
-				largeList.add(temp);
-			}//if		
-			//__________________________________________________________*/
+					largeList.add(e);				//lägg till varje element i den stora listan från den lilla
+					cc[e.getSource()]=largeList;
+					cc[e.getDest()]=largeList;
+				}			
+				largeList.add(topEdge);
+				cc[topEdge.getSource()]=largeList;	//peka om fältet så den pekar på den stora listan
+
+				System.out.println("addar " + topEdge);//TODO debug
+			}//if
+			System.out.println("sen");	//TODO debug
+			for(int i = 0; i<noOfNodes; i++){	//TODO debug
+				System.out.println("cc["+ i +"] : "+cc[i]);	//TODO debug
+
+			}
+
 		}//while
-		//TODO debug nedan
 	
-		for(E e : cc[0]){
+		for(E e : cc[0]){	//TODO debug. Skriver ut miniträdet
 			System.out.print(e + "     ");
-			
+
 		}
-		
-		
+
+
 		//Skapa ett fält cc, som för varje nod innehåller en egen tom lista
 		//LinkedList<E>[] cc = new LinkedList<E>();
-	
+
 		//if (cc[temp] == null) {
-		  //   cc[temp] = new LinkedList<Integer>();
+		//   cc[temp] = new LinkedList<Integer>();
 		//}
 		for(int i=0; i<=nodeList.length; i++){
-		//	cc[i] = new LinkedList<E>;
+			//	cc[i] = new LinkedList<E>;
 		}
-		
+
 		//Lägg in alla bågar i en prioritetskö
-		
+
 		//while(pq!=null && cc <n){
 		// e=(from, to, weight) (från kön?)
 		//if(from
