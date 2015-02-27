@@ -157,6 +157,8 @@ public class DirectedGraph<E extends Edge> {
 			System.out.println(e);
 
 		}
+		
+		return cc[0].iterator();
 
 
 		//Skapa ett fält cc, som för varje nod innehåller en egen tom lista
@@ -165,16 +167,17 @@ public class DirectedGraph<E extends Edge> {
 		//if (cc[temp] == null) {
 		//   cc[temp] = new LinkedList<Integer>();
 		//}
+	/*
 		for(int i=0; i<=nodeList.length; i++){
 			//	cc[i] = new LinkedList<E>;
 		}
-
+*/
 		//Lägg in alla bågar i en prioritetskö
 
 		//while(pq!=null && cc <n){
 		// e=(from, to, weight) (från kön?)
 		//if(from
-		return null;
+	//	return null;
 	}
 
 }
