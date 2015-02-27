@@ -82,8 +82,8 @@ public class DirectedGraph<E extends Edge> {
 		 *
 		 */
 		PriorityQueue<E> 	edgeQueue 	= new PriorityQueue<E>(11, new CompKruskalEdge<E>());	//11 är standard för java. Använder sig av CompKruskalEdge som jämförare
-		ArrayList<E>[] 		cc 			= (ArrayList<E>[]) new ArrayList[noOfNodes];	//Listan cc. Består av en array av listor
-		ArrayList<E> 		smallList,
+		LinkedList<E>[] 	cc 			= (LinkedList<E>[]) new LinkedList[noOfNodes];	//Listan cc. Består av en array av listor
+		LinkedList<E> 		smallList,
 							largeList,
 							sourceList,
 							destList;	
@@ -95,7 +95,7 @@ public class DirectedGraph<E extends Edge> {
 		}
 				
 		for (int i = 0; i < noOfNodes; i++){
-			cc[i] = new ArrayList<E>();			//Gör så att varje entry i arrayen cc fåren tom lista (enl. punkt 0)
+			cc[i] = new LinkedList<E>();			//Gör så att varje entry i arrayen cc fåren tom lista (enl. punkt 0)
 		}
 
 								System.out.println("Alla elementen i prioriteskön: ");//TODO debug
