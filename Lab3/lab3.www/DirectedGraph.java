@@ -40,6 +40,23 @@ public class DirectedGraph<E extends Edge> {
 	 * Använda dijkstras
 	 */
 	public Iterator<E> shortestPath(int from, int to) {
+		//lägg (startnod, 0, tom väg) i en p-kö
+		
+		//behöver jag skapa en ny? ändra namn på denna som anv i minimunspanningtree
+		PriorityQueue<E> 	dijsktraQueue 	= new PriorityQueue<E>(from, 0, emptyPath);
+		
+		//While kön inte är tom
+		while (!dijsktraQueue.isEmpty()) {
+			//(nod, cost, path) = första elementet i p-kön
+		//	dijsktraQueue.
+		}
+		
+		//if nod ej besökt
+		//ifnod är slutpunkt returnera path
+		//else markera nod besökt
+		//for every v on EL(nod)
+		//if v ej besökt
+		//lägg in nytt köelement för v i p-kön
 		return null;
 	}
 	
