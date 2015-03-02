@@ -9,5 +9,12 @@ public class QueueElement {
 		this.to = to;
 	}
 	
-	
+	/*
+	 * Behöver en som innehåller  to, cost och path
+	 */
+	public QueueElement(NodeObject to, double cost, NodeObject path){
+		this.to =to;
+		this.cost = cost;
+		this.path = path;
+	}
 }
