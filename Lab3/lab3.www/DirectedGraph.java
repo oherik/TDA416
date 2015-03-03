@@ -71,6 +71,7 @@ public class DirectedGraph<E extends Edge> {
 				}			
 			}	
 		}
+		return null;
 	}
 	
 	
