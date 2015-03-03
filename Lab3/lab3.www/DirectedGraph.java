@@ -43,11 +43,46 @@ public class DirectedGraph<E extends Edge> {
 		//lägg (startnod, 0, tom väg) i en p-kö
 		
 		//behöver jag skapa en ny? ändra namn på denna som anv i minimunspanningtree
-		PriorityQueue<E> 	dijsktraQueue 	= new PriorityQueue<E>(from, 0, emptyPath);
+		PriorityQueue<QueueElement<E>> 	dijkstraQueue 	= new PriorityQueue<QueueElement<E>>();
+		
+		dijkstraQueue.add(new QueueElement(from, 0, new ArrayList<E>()));
+		
+		QueueElement<E> currentElement;
+		ArrayList<E> currentPath;
+		ArrayList<Integer> visitedNodes = new ArrayList<Integer>();
 		
 		//While kön inte är tom
-		while (!dijsktraQueue.isEmpty()) {
+		while (!dijkstraQueue.isEmpty()) {
 			//(nod, cost, path) = första elementet i p-kön
+			
+		currentElement = dijkstraQueue.poll();
+		int currentNode = currentElement.getNode();
+		if (!visitedNodes.contains(currentNode)){
+			if (currentNode==to){
+				//for(Q)		
+				visitedNodes.add(currentNode);
+				return currentElement.getPath().iterator();
+			}
+			else{
+				visitedNodes.add(currentNode);
+				for(E e: edgeListArray[currentNode]){
+					if(!visitedNodes.contains(e.getDest())){
+						currentPath =  new ArrayList<E>(currentElement.getPath());
+						currentPath.add(e);
+						dijkstraQueue.add(new QueueElement(e.getDest(), e.getWeight()+currentElement.getWeight(), currentPath));	
+						
+					}
+				}
+					
+				
+				
+				
+			}
+			
+			
+		}
+			
+			
 		//	dijsktraQueue.
 		}
 		
