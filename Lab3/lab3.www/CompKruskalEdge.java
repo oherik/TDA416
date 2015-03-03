@@ -35,13 +35,6 @@ public class CompKruskalEdge<E extends Edge> implements Comparator<E> {
 	public int compare(E e1, E e2) {
 		if (e1 == null || e2 == null)
 			throw new NullPointerException("Cannot compare null elements.");
-		else {
-			if (e1.getWeight() == e2.getWeight())
-				return 0;
-			else if (e1.getWeight() < e2.getWeight())
-				return -1;
-			else
-				return 1;
-		}
+		return Double.compare(e1.getWeight(), e2.getWeight());
 	}
 }
