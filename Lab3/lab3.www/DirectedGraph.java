@@ -45,12 +45,12 @@ public class DirectedGraph<E extends Edge> {
 		//behöver jag skapa en ny? ändra namn på denna som anv i minimunspanningtree
 		PriorityQueue<CompDijkstraPath<E>> 	dijkstraQueue 	= new PriorityQueue<CompDijkstraPath<E>>();
 		ArrayList<E> currentPath;
-		dijkstraQueue.add(new CompDijkstraPath<E>(from, 0, new ArrayList<E>()));
+		dijkstraQueue.add(new CompDijkstraPath<E>(from, 0, new ArrayList<E>()));//	dijsktraQueue.
 		
 		
 		
 		CompDijkstraPath<E> currentElement;
-		Set<Integer> visitedNodes = new HashSet<Integer>();
+		Set<Integer> visitedNodes = new HashSet<Integer>();	//contains är O(1) för hash set
 		
 		//While kön inte är tom
 		while (!dijkstraQueue.isEmpty()) {
@@ -58,17 +58,16 @@ public class DirectedGraph<E extends Edge> {
 		int currentNode = currentElement.getNode();
 		if (!visitedNodes.contains(currentNode)){	//if nod ej besökt
 			if (currentNode==to){
-				return currentElement.getPath().iterator();
+				return currentElement.getPath().iterator();//ifnod är slutpunkt returnera path
 			}
 			else{
-				visitedNodes.add(currentNode);
-				for(E e: edgeListArray[currentNode]){
-					if(!visitedNodes.contains(e.getDest())){
+				visitedNodes.add(currentNode);	//else markera nod besökt
+				for(E e: edgeListArray[currentNode]){//for every v on EL(nod)
+					if(!visitedNodes.contains(e.getDest())){//if v ej besökt
 		
 						currentPath =  new ArrayList<E>(currentElement.getPath());
 						currentPath.add(e);
-						dijkstraQueue.add(new CompDijkstraPath<E>(e.getDest(), e.getWeight()+currentElement.getCost(), currentPath));	
-						
+						dijkstraQueue.add(new CompDijkstraPath<E>(e.getDest(), e.getWeight()+currentElement.getCost(), currentPath)); 	//lägg in nytt köelement för v i p-kön						
 					}
 				}
 				
@@ -77,15 +76,15 @@ public class DirectedGraph<E extends Edge> {
 		}
 			
 			
-		//	dijsktraQueue.
+		
 		}
 		
 		
-		//ifnod är slutpunkt returnera path
-		//else markera nod besökt
-		//for every v on EL(nod)
-		//if v ej besökt
-		//lägg in nytt köelement för v i p-kön
+		
+	
+		
+		
+	
 		return null;
 	}
 	
