@@ -7,6 +7,7 @@ public class QueueElement<E extends Edge> implements Comparable<QueueElement>{
 	private int node;
 	private double cost;
 	ArrayList<E> path;
+	int path2;
 	//private List<Integer> PathList;
 	
 	public QueueElement(int node){
@@ -24,6 +25,19 @@ public class QueueElement<E extends Edge> implements Comparable<QueueElement>{
 		this.path = path;
 		
 	}
+	public QueueElement(int node, double cost, int path){
+		this.node = node;
+		
+		this.cost = cost;
+		this.path2 = path;
+		
+	}
+	public int getPath2(){
+		return path2;
+	}
+	
+	
+
 	
 
 	public double getWeight(){

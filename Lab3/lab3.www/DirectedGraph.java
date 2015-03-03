@@ -44,12 +44,17 @@ public class DirectedGraph<E extends Edge> {
 		
 		//behöver jag skapa en ny? ändra namn på denna som anv i minimunspanningtree
 		PriorityQueue<QueueElement<E>> 	dijkstraQueue 	= new PriorityQueue<QueueElement<E>>();
+		ArrayList<ArrayList<E>> pathList = new ArrayList<ArrayList<E>>();
+		Map<Integer,E> pathMap = new HashMap<Integer, E>();
+		ArrayList<E> currentPath;
+		dijkstraQueue.add(new QueueElement(from, 0, -1));
 		
-		dijkstraQueue.add(new QueueElement(from, 0, new ArrayList<E>()));
+		
 		
 		QueueElement<E> currentElement;
-		ArrayList<E> currentPath;
+		//pathList.add(from, new ArrayList<E>());
 		ArrayList<Integer> visitedNodes = new ArrayList<Integer>();
+		pathMap.put(from, null);
 		
 		//While kön inte är tom
 		while (!dijkstraQueue.isEmpty()) {
@@ -61,15 +66,28 @@ public class DirectedGraph<E extends Edge> {
 			if (currentNode==to){
 				//for(Q)		
 				visitedNodes.add(currentNode);
-				return currentElement.getPath().iterator();
+				//return pathList.get(currentNode).iterator();
+				E e = pathMap.get(currentNode);
+				ArrayList<E> test = new ArrayList<E>();
+				while(e!=null){		
+					test.add(0,e);
+					currentNode = e.getSource();	
+					e = pathMap.get(currentNode);
+				}
+				
+				
+				return test.iterator();
 			}
 			else{
 				visitedNodes.add(currentNode);
 				for(E e: edgeListArray[currentNode]){
 					if(!visitedNodes.contains(e.getDest())){
-						currentPath =  new ArrayList<E>(currentElement.getPath());
-						currentPath.add(e);
-						dijkstraQueue.add(new QueueElement(e.getDest(), e.getWeight()+currentElement.getWeight(), currentPath));	
+					pathMap.put(e.getDest(), e);
+						
+						dijkstraQueue.add(new QueueElement(e.getDest(), e.getWeight()+currentElement.getWeight(), currentNode));	
+						//currentPath =  new ArrayList<E>(currentElement.getPath());
+						//currentPath.add(e);
+						//dijkstraQueue.add(new QueueElement(e.getDest(), e.getWeight()+currentElement.getWeight(), currentPath));	
 						
 					}
 				}
@@ -224,7 +242,7 @@ public class DirectedGraph<E extends Edge> {
 													System.out.print(e + "  ");
 												}
 												
-		
+		//TODO ifall inteär uppspännande då?
 		return cc[longField].iterator();
 
 
