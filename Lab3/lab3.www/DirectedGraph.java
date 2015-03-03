@@ -105,49 +105,55 @@ public class DirectedGraph<E extends Edge> {
 							sourceList,
 							destList;	
 		int 				arraySize 	= 0;
+		int 				longField	= 0; 		//TODO kom igen hitta ett bättre namn
 		E 					topEdge;
+		int					destListSize, sourceListSize, largeListSize;	 
 		
-		for(E e : edgeList){
-			edgeQueue.add(e);		//Lägger till alla bågar i prioritetskön (enl. punkt 1)
-		}
+		
+			edgeQueue.addAll(edgeList);		//Lägger till alla bågar i prioritetskön (enl. punkt 1)
+		
 				
 		for (int i = 0; i < noOfNodes; i++){
 			cc[i] = new LinkedList<E>();			//Gör så att varje entry i arrayen cc fåren tom lista (enl. punkt 0)
 		}
 
-								System.out.println("Alla elementen i prioriteskön: ");//TODO debug
+							/*	System.out.println("Alla elementen i prioriteskön: ");//TODO debug
 								for(E e : edgeQueue){
 									System.out.print(e + "     ");//TODO debug
 								}
-								System.out.println("");//TODO debug
+								System.out.println("");//TODO debug*/
 
 		while(!edgeQueue.isEmpty() && arraySize<noOfNodes){//&& (cc.length < noOfNodes	) //TODO det som är utkommenterat ska visst med, men hur? UPDATE: kanske lyckats fixa det nu. Kolla variabeln arraySize			
 			topEdge 	= 	edgeQueue.remove();	//Ta ut toppelementet ur prioritetskön
 			sourceList 	= 	cc[topEdge.getSource()];
 			destList 	= 	cc[topEdge.getDest()];		
 			
-								System.out.println("\nBåge: " + topEdge);	//TODO debug
+								/*System.out.println("\nBåge: " + topEdge);	//TODO debug
 								System.out.println("cc["+ topEdge.getSource()+"] : "+cc[topEdge.getSource()]);	//TODO debug
 								System.out.println("cc["+ topEdge.getDest()+"] : "+ cc[topEdge.getDest()]);	//TODO debug
 								if(sourceList!=destList)
 									System.out.println("Listorna är inte lika.");//TODO debug
 								else
-									System.out.println("Listorna är lika. Lägger inte till.");//TODO debug
+									System.out.println("Listorna är lika. Lägger inte till.");//TODO debug*/
 			if(sourceList!=destList){ 				
-				if(sourceList.isEmpty())		//är det så att den är tom kommer den inte vara det efter att elementet lagts till
+			/*	if(sourceList.isEmpty())		//är det så att den är tom kommer den inte vara det efter att elementet lagts till
 					arraySize++;		//detta innebär att antalet icke-tomma entries i arrayen cc har ökat emd 1
 				if(destList.isEmpty())		//samma för den andra listan
-					arraySize++;
-				
-				if(destList.size()>sourceList.size()){	//Hitta vilken av listorna som är minst
+					arraySize++;*/
+				destListSize=destList.size();
+				sourceListSize = sourceList.size();
+				if(destListSize>sourceListSize){	//Hitta vilken av listorna som är minst
 					smallList=sourceList;		
 					largeList=destList;
+					largeListSize = destListSize;
+					
 				}
 				else{
 					smallList=destList;
-					largeList=sourceList;					
+					largeList=sourceList;	
+					largeListSize = sourceListSize;
 				}
-
+				
 				for(E e : smallList){
 					largeList.add(e);				//lägg till varje element i den stora listan från den lilla
 					cc[e.getSource()] 	=	cc[e.getDest()] =
@@ -155,22 +161,36 @@ public class DirectedGraph<E extends Edge> {
 				}			
 				largeList.add(topEdge);
 				
+				if(largeListSize>arraySize){
+					arraySize=largeListSize;
+					longField=topEdge.getSource();
+				}
+				
 				cc[topEdge.getSource()] = 	cc[topEdge.getDest()] =		
 											largeList;	//peka om fältet så den pekar på den stora listan //TODO behövs?
-				
-												System.out.println("Lägger till " + topEdge);//TODO debug
+
+				/*
+				for(E e : largeList){	//TODO debug. Skriver ut miniträdet
+					System.out.println(e);
+				}
+				for(E e : cc[longField]){	//TODO debug. Skriver ut miniträdet
+					System.out.print(e);
+				}
+				*/
+												//System.out.println("Lägger till " + topEdge);//TODO debug
 			}//if
-												System.out.println("Skriver ut hela listan:");	//TODO debug
+											/*	System.out.println("Skriver ut hela listan:");	//TODO debug
 												for(int i = 0; i<noOfNodes; i++){	//TODO debug
 													System.out.println("cc["+ i +"] : "+cc[i]);	//TODO debug
-												}
+												}*/
 		}//while
 												System.out.println("\nKlar! Miniträdet innehåller bågarna: "); //TODO debug
-												for(E e : cc[0]){	//TODO debug. Skriver ut miniträdet
-													System.out.println(e);
+												for(E e : cc[longField]){	//TODO debug. Skriver ut miniträdet
+													System.out.print(e + "  ");
 												}
+												
 		
-		return cc[0].iterator();
+		return cc[longField].iterator();
 
 
 		//Skapa ett fält cc, som för varje nod innehåller en egen tom lista
