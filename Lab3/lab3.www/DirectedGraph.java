@@ -167,9 +167,7 @@ public class DirectedGraph<E extends Edge> {
 
 			}//if											
 		}//while
-		if(minTreeSize<noOfNodes){
-			System.err.println("Varning: inget helt uppspännande träd hittades. Returnerar det största.");
-		}
+		//TODO varna om inget uppspännande träd hittas?
 		return cc[minTreeIndex].iterator();
 
 
