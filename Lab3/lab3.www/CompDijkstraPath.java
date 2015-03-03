@@ -31,6 +31,8 @@ public class CompDijkstraPath<E extends Edge> implements Comparable<CompDijkstra
 	
 	@Override
 	public int compareTo(CompDijkstraPath dijkstra) {
+		if (dijkstra == null )
+			throw new NullPointerException("Cannot compare null elements.");
 		return Double.compare(this.cost, dijkstra.getCost());
 	}
 }
