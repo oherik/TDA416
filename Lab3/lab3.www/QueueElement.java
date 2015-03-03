@@ -32,8 +32,8 @@ public class QueueElement<E extends Edge> implements Comparable<QueueElement>{
 		this.path2 = path;
 		
 	}
-	public int getPath2(){
-		return path2;
+	public ArrayList<E> getPath(){
+		return path;
 	}
 	
 	
@@ -53,11 +53,6 @@ public class QueueElement<E extends Edge> implements Comparable<QueueElement>{
 		
 	}*/
 	
-	
-	public ArrayList<E> getPath(){
-		return path;
-		
-	}
 	
 	@Override
 	public int compareTo(QueueElement QE) {

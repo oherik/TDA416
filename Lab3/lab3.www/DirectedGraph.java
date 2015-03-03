@@ -43,18 +43,16 @@ public class DirectedGraph<E extends Edge> {
 		//lägg (startnod, 0, tom väg) i en p-kö
 		
 		//behöver jag skapa en ny? ändra namn på denna som anv i minimunspanningtree
-		PriorityQueue<QueueElement<E>> 	dijkstraQueue 	= new PriorityQueue<QueueElement<E>>();
-		ArrayList<ArrayList<E>> pathList = new ArrayList<ArrayList<E>>();
-		Map<Integer,E> pathMap = new HashMap<Integer, E>();
+		PriorityQueue<CompDijkstraPath<E>> 	dijkstraQueue 	= new PriorityQueue<CompDijkstraPath<E>>();
 		ArrayList<E> currentPath;
-		dijkstraQueue.add(new QueueElement(from, 0, -1));
+		dijkstraQueue.add(new CompDijkstraPath<E>(from, 0, new ArrayList<E>()));
 		
 		
 		
-		QueueElement<E> currentElement;
+		CompDijkstraPath<E> currentElement;
 		//pathList.add(from, new ArrayList<E>());
 		ArrayList<Integer> visitedNodes = new ArrayList<Integer>();
-		pathMap.put(from, null);
+		//pathMap.put(from, null);
 		
 		//While kön inte är tom
 		while (!dijkstraQueue.isEmpty()) {
@@ -64,30 +62,16 @@ public class DirectedGraph<E extends Edge> {
 		int currentNode = currentElement.getNode();
 		if (!visitedNodes.contains(currentNode)){
 			if (currentNode==to){
-				//for(Q)		
-				visitedNodes.add(currentNode);
-				//return pathList.get(currentNode).iterator();
-				E e = pathMap.get(currentNode);
-				ArrayList<E> test = new ArrayList<E>();
-				while(e!=null){		
-					test.add(0,e);
-					currentNode = e.getSource();	
-					e = pathMap.get(currentNode);
-				}
-				
-				
-				return test.iterator();
+				return currentElement.getPath().iterator();
 			}
 			else{
 				visitedNodes.add(currentNode);
 				for(E e: edgeListArray[currentNode]){
 					if(!visitedNodes.contains(e.getDest())){
-					pathMap.put(e.getDest(), e);
-						
-						dijkstraQueue.add(new QueueElement(e.getDest(), e.getWeight()+currentElement.getWeight(), currentNode));	
-						//currentPath =  new ArrayList<E>(currentElement.getPath());
-						//currentPath.add(e);
-						//dijkstraQueue.add(new QueueElement(e.getDest(), e.getWeight()+currentElement.getWeight(), currentPath));	
+		
+						currentPath =  new ArrayList<E>(currentElement.getPath());
+						currentPath.add(e);
+						dijkstraQueue.add(new CompDijkstraPath<E>(e.getDest(), e.getWeight()+currentElement.getCost(), currentPath));	
 						
 					}
 				}
