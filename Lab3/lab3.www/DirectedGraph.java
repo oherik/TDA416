@@ -104,7 +104,7 @@ public class DirectedGraph<E extends Edge> {
 							largeList,
 							sourceList,
 							destList;	
-		int 				arraySize 	= 0;
+		int 				minTreeSize 	= 0;
 		int 				longField	= 0; 		//TODO kom igen hitta ett bättre namn
 		E 					topEdge;
 		int					destListSize, sourceListSize, largeListSize;	 
@@ -123,7 +123,7 @@ public class DirectedGraph<E extends Edge> {
 								}
 								System.out.println("");//TODO debug*/
 
-		while(!edgeQueue.isEmpty() && arraySize<noOfNodes){//&& (cc.length < noOfNodes	) //TODO det som är utkommenterat ska visst med, men hur? UPDATE: kanske lyckats fixa det nu. Kolla variabeln arraySize			
+		while(!edgeQueue.isEmpty() && minTreeSize<noOfNodes){//&& (cc.length < noOfNodes	) //TODO det som är utkommenterat ska visst med, men hur? UPDATE: kanske lyckats fixa det nu. Kolla variabeln arraySize			
 			topEdge 	= 	edgeQueue.remove();	//Ta ut toppelementet ur prioritetskön
 			sourceList 	= 	cc[topEdge.getSource()];
 			destList 	= 	cc[topEdge.getDest()];		
@@ -161,8 +161,8 @@ public class DirectedGraph<E extends Edge> {
 				}			
 				largeList.add(topEdge);
 				
-				if(largeListSize>arraySize){
-					arraySize=largeListSize;
+				if(largeListSize>minTreeSize){
+					minTreeSize=largeListSize + 1;  //Since we just added one
 					longField=topEdge.getSource();
 				}
 				
