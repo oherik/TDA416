@@ -28,6 +28,10 @@ public class testGraph {
 		}
 		
 		DG.minimumSpanningTree();
+		
+		
+		
+		ShortRoute SR = new ShortRoute(null);
 
 	}
 
