@@ -54,38 +54,23 @@ public class DirectedGraph<E extends Edge> {
 		
 		//While kön inte är tom
 		while (!dijkstraQueue.isEmpty()) {
-		currentElement = dijkstraQueue.poll(); 	//(nod, cost, path) = första elementet i p-kön
-		int currentNode = currentElement.getNode();
-		if (!visitedNodes.contains(currentNode)){	//if nod ej besökt
-			if (currentNode==to){
-				return currentElement.getPath().iterator();//ifnod är slutpunkt returnera path
-			}
-			else{
-				visitedNodes.add(currentNode);	//else markera nod besökt
-				for(E e: edgeListArray[currentNode]){//for every v on EL(nod)
-					if(!visitedNodes.contains(e.getDest())){//if v ej besökt
-		
-						currentPath =  new ArrayList<E>(currentElement.getPath());
-						currentPath.add(e);
-						dijkstraQueue.add(new CompDijkstraPath<E>(e.getDest(), e.getWeight()+currentElement.getCost(), currentPath)); 	//lägg in nytt köelement för v i p-kön						
-					}
-				}
-				
-			}
-				
+			currentElement = dijkstraQueue.poll(); 	//(nod, cost, path) = första elementet i p-kön
+			int currentNode = currentElement.getNode();
+			if (!visitedNodes.contains(currentNode)){	//if nod ej besökt
+				if (currentNode==to)
+					return currentElement.getPath().iterator();//ifnod är slutpunkt returnera path
+				else{
+					visitedNodes.add(currentNode);	//else markera nod besökt
+					for(E e: edgeListArray[currentNode]){//for every v on EL(nod)
+						if(!visitedNodes.contains(e.getDest())){//if v ej besökt
+							currentPath =  new ArrayList<E>(currentElement.getPath());
+							currentPath.add(e);
+							dijkstraQueue.add(new CompDijkstraPath<E>(e.getDest(), e.getWeight()+currentElement.getCost(), currentPath)); 	//lägg in nytt köelement för v i p-kön						
+						}
+					}		
+				}			
+			}	
 		}
-			
-			
-		
-		}
-		
-		
-		
-	
-		
-		
-	
-		return null;
 	}
 	
 	
@@ -131,44 +116,25 @@ public class DirectedGraph<E extends Edge> {
 		LinkedList<E> 		smallList,
 							largeList,
 							sourceList,
-							destList;	
-		int 				minTreeSize 	= 0;
-		int 				longField	= 0; 		//TODO kom igen hitta ett bättre namn
+							destList;						
 		E 					topEdge;
-		int					destListSize, sourceListSize, 
-							largeListSize = 0;	 
+		int					destListSize, sourceListSize, largeListSize,
+							minTreeSize 	= 0,
+							minTreeIndex	= 0;  
 		
-		
-			edgeQueue.addAll(edgeList);		//Lägger till alla bågar i prioritetskön (enl. punkt 1)
-		
+		edgeQueue.addAll(edgeList);		//Lägger till alla bågar i prioritetskön (enl. punkt 1)
 				
 		for (int i = 0; i < noOfNodes; i++){
 			cc[i] = new LinkedList<E>();			//Gör så att varje entry i arrayen cc fåren tom lista (enl. punkt 0)
 		}
 
-							/*	System.out.println("Alla elementen i prioriteskön: ");//TODO debug
-								for(E e : edgeQueue){
-									System.out.print(e + "     ");//TODO debug
-								}
-								System.out.println("");//TODO debug*/
 
-		while(!edgeQueue.isEmpty() && minTreeSize<noOfNodes){//&& (cc.length < noOfNodes	) //TODO det som är utkommenterat ska visst med, men hur? UPDATE: kanske lyckats fixa det nu. Kolla variabeln arraySize			
+		while(!edgeQueue.isEmpty() && minTreeSize<noOfNodes){
 			topEdge 	= 	edgeQueue.remove();	//Ta ut toppelementet ur prioritetskön
 			sourceList 	= 	cc[topEdge.getSource()];
 			destList 	= 	cc[topEdge.getDest()];		
 			
-								/*System.out.println("\nBåge: " + topEdge);	//TODO debug
-								System.out.println("cc["+ topEdge.getSource()+"] : "+cc[topEdge.getSource()]);	//TODO debug
-								System.out.println("cc["+ topEdge.getDest()+"] : "+ cc[topEdge.getDest()]);	//TODO debug
-								if(sourceList!=destList)
-									System.out.println("Listorna är inte lika.");//TODO debug
-								else
-									System.out.println("Listorna är lika. Lägger inte till.");//TODO debug*/
 			if(sourceList!=destList){ 				
-			/*	if(sourceList.isEmpty())		//är det så att den är tom kommer den inte vara det efter att elementet lagts till
-					arraySize++;		//detta innebär att antalet icke-tomma entries i arrayen cc har ökat emd 1
-				if(destList.isEmpty())		//samma för den andra listan
-					arraySize++;*/
 				destListSize=destList.size();
 				sourceListSize = sourceList.size();
 				if(destListSize>sourceListSize){	//Hitta vilken av listorna som är minst
@@ -192,37 +158,18 @@ public class DirectedGraph<E extends Edge> {
 				
 				if(largeListSize>minTreeSize){
 					minTreeSize=largeListSize + 1;  //Since we just added one
-					longField=topEdge.getSource();
+					minTreeIndex=topEdge.getSource();
 				}
 				
 				cc[topEdge.getSource()] = 	cc[topEdge.getDest()] =		
 											largeList;	//peka om fältet så den pekar på den stora listan //TODO behövs?
 
-				/*
-				for(E e : largeList){	//TODO debug. Skriver ut miniträdet
-					System.out.println(e);
-				}
-				for(E e : cc[longField]){	//TODO debug. Skriver ut miniträdet
-					System.out.print(e);
-				}
-				*/
-												//System.out.println("Lägger till " + topEdge);//TODO debug
-			}//if
-											/*	System.out.println("Skriver ut hela listan:");	//TODO debug
-												for(int i = 0; i<noOfNodes; i++){	//TODO debug
-													System.out.println("cc["+ i +"] : "+cc[i]);	//TODO debug
-												}*/
+			}//if											
 		}//while
-												System.out.println("\nKlar! Miniträdet innehåller bågarna: "); //TODO debug
-												for(E e : cc[longField]){	//TODO debug. Skriver ut miniträdet
-													System.out.print(e + "  ");
-												}
-												
-		//TODO ifall inteär uppspännande då?
-		if(largeListSize<noOfNodes){
+		if(minTreeSize<noOfNodes){
 			System.err.println("Varning: inget helt uppspännande träd hittades. Returnerar det största.");
 		}
-		return cc[longField].iterator();
+		return cc[minTreeIndex].iterator();
 
 
 		//Skapa ett fält cc, som för varje nod innehåller en egen tom lista
