@@ -50,17 +50,13 @@ public class DirectedGraph<E extends Edge> {
 		
 		
 		CompDijkstraPath<E> currentElement;
-		//pathList.add(from, new ArrayList<E>());
 		ArrayList<Integer> visitedNodes = new ArrayList<Integer>();
-		//pathMap.put(from, null);
 		
 		//While kön inte är tom
 		while (!dijkstraQueue.isEmpty()) {
-			//(nod, cost, path) = första elementet i p-kön
-			
-		currentElement = dijkstraQueue.poll();
+		currentElement = dijkstraQueue.poll(); 	//(nod, cost, path) = första elementet i p-kön
 		int currentNode = currentElement.getNode();
-		if (!visitedNodes.contains(currentNode)){
+		if (!visitedNodes.contains(currentNode)){	//if nod ej besökt
 			if (currentNode==to){
 				return currentElement.getPath().iterator();
 			}
@@ -75,20 +71,16 @@ public class DirectedGraph<E extends Edge> {
 						
 					}
 				}
-					
-				
-				
 				
 			}
-			
-			
+				
 		}
 			
 			
 		//	dijsktraQueue.
 		}
 		
-		//if nod ej besökt
+		
 		//ifnod är slutpunkt returnera path
 		//else markera nod besökt
 		//for every v on EL(nod)
