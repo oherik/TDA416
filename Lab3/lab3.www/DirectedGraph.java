@@ -135,7 +135,8 @@ public class DirectedGraph<E extends Edge> {
 		int 				minTreeSize 	= 0;
 		int 				longField	= 0; 		//TODO kom igen hitta ett bättre namn
 		E 					topEdge;
-		int					destListSize, sourceListSize, largeListSize;	 
+		int					destListSize, sourceListSize, 
+							largeListSize = 0;	 
 		
 		
 			edgeQueue.addAll(edgeList);		//Lägger till alla bågar i prioritetskön (enl. punkt 1)
@@ -218,6 +219,9 @@ public class DirectedGraph<E extends Edge> {
 												}
 												
 		//TODO ifall inteär uppspännande då?
+		if(largeListSize<noOfNodes){
+			System.err.println("Varning: inget helt uppspännande träd hittades. Returnerar det största.");
+		}
 		return cc[longField].iterator();
 
 
