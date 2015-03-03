@@ -50,7 +50,7 @@ public class DirectedGraph<E extends Edge> {
 		
 		
 		CompDijkstraPath<E> currentElement;
-		ArrayList<Integer> visitedNodes = new ArrayList<Integer>();
+		Set<Integer> visitedNodes = new HashSet<Integer>();
 		
 		//While kön inte är tom
 		while (!dijkstraQueue.isEmpty()) {
