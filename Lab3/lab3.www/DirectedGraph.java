@@ -1,129 +1,180 @@
+//Grupp 7 - Erik Öhrn & Paula Eriksson Imable
 import java.util.*;
 
-//Efterföljarlista?
-
+/**
+ * En klass som kan hitta kortaste vägen mellan två noder samt skapa ett
+ * minimalt uppspännande träd.
+ * 
+ * @author Erik Öhrn & Paula Eriksson Imable
+ *
+ * @param <E>
+ *            en klass som utökar Edge
+ */
 public class DirectedGraph<E extends Edge> {
-	// private Map<Integer, LinkedList<E>> nodeMap;
+	// Variabeldeklaration
 	private List<E>[] edgeListArray;
-	private int noOfNodes;
 	private List<E> edgeList;
+	private int noOfNodes;
 
+	/**
+	 * Konstruktor, initialerar en ny graf. Grafen använder sig av en
+	 * efterföljarlisa för att spara bågarna som går från varje nod. Denna
+	 * använder sig av ett fält av listor, där fältets storlek är antalet noder.
+	 * 
+	 * @param noOfNodes
+	 *            Antalet noder i grafen
+	 * @throws IndexOutOfBoundsException
+	 *             Om antalet noder är mindre än ett
+	 * 
+	 */
 	public DirectedGraph(int noOfNodes) {
-		this.noOfNodes=noOfNodes;
-		edgeListArray = (ArrayList<E>[])new ArrayList[noOfNodes];
-		edgeList = new ArrayList<E>(); 
-		// nodeMap = new HashMap<Integer, LinkedList<E>>();
-		// nodeList = new LinkedList[noOfNodes];
+		if (noOfNodes < 1)
+			throw new IndexOutOfBoundsException(
+					"DirectedGraph: antalet noder måste vara 1 eller fler");
+		this.noOfNodes = noOfNodes;
+		edgeListArray = (ArrayList<E>[]) new ArrayList[noOfNodes];
+		edgeList = new ArrayList<E>();
 		for (int i = 0; i < noOfNodes; i++)
-			edgeListArray[i] = new ArrayList<E>();
-
-		/*
-		 * Revelation! NodeTable.java gör om alla nodnamn till heltal. Är det så
-		 * att de är från 0-nånting? I så fall blir det mycket snabbare, och
-		 * smidigare med ett fält eller en ArrayList. Testar det.
-		 */
+			edgeListArray[i] = new ArrayList<E>(); // Fyller listfältet med
+													// tomma listor
 	}
 
+	/**
+	 * Lägger till en ny båge, dels i efterföljarlistan och dels i listan som
+	 * innehåller alla bågar
+	 * 
+	 * @param e
+	 *            bågen som läggs till
+	 * @throws NullPointerException
+	 *             om e är null
+	 */
 	public void addEdge(E e) {
-		/*
-		 *TODO Ska man bara ta med båden om ingen kortare redan finns? Eller
-		 * tillåtervi flera bågar mellan samma noder?
-		 */
-		// int source = e.getSource();
+		if (e == null)
+			throw new NullPointerException(
+					"DirectedGraph - addEdge(E e): e får inte vara null");
 		edgeListArray[e.getSource()].add(e);
 		edgeList.add(e);
-		// nodeMap.putIfAbsent(source, new LinkedList<E>());
-		// nodeMap.get(source).add(e);
 	}
 
-	/*
-	 * Använda dijkstras
+	/**
+	 * Använder en variant av Dijkstras algoritm (en till en) för att hitta den
+	 * kortaste vägen mellan två noder. Den sparar de besökta noderna i ett
+	 * HashSet, mest för att uppslagning av contains() har komplexiteten O(1).
+	 * 
+	 * @param from
+	 *            startnoden
+	 * @param to
+	 *            slutnoden
+	 * @throws IndexOutOfBoundsException
+	 *             om from eller to är mindre än noll
+	 * @return en iterator över vägen från startnoden till slutnoden, eller null
+	 *         om ingen väg hittas
 	 */
 	public Iterator<E> shortestPath(int from, int to) {
-		//lägg (startnod, 0, tom väg) i en p-kö
-		
-		//behöver jag skapa en ny? ändra namn på denna som anv i minimunspanningtree
-		PriorityQueue<CompDijkstraPath<E>> 	dijkstraQueue 	= new PriorityQueue<CompDijkstraPath<E>>();
+		if (from < 0)
+			throw new IndexOutOfBoundsException(
+					"DirectedGraph - shortestPath(int from, int to): from får inte vara negativ");
+		else if (to < 0)
+			throw new IndexOutOfBoundsException(
+					"DirectedGraph - shortestPath(int from, int to): to får inte vara negativ");
+		// Variabeldeklaration
+		PriorityQueue<CompDijkstraPath<E>> dijkstraQueue = new PriorityQueue<CompDijkstraPath<E>>();
 		ArrayList<E> currentPath;
-		dijkstraQueue.add(new CompDijkstraPath<E>(from, 0, new ArrayList<E>()));//	dijsktraQueue.
-		
-		
-		
 		CompDijkstraPath<E> currentElement;
-		Set<Integer> visitedNodes = new HashSet<Integer>();	//contains är O(1) för hash set
-		
-		//While kön inte är tom
+		Set<Integer> visitedNodes = new HashSet<Integer>();
+
+		dijkstraQueue.add(new CompDijkstraPath<E>(from, 0, new ArrayList<E>())); // Lägg
+																					// till
+																					// startnoden
 		while (!dijkstraQueue.isEmpty()) {
-			currentElement = dijkstraQueue.poll(); 	//(nod, cost, path) = första elementet i p-kön
+			currentElement = dijkstraQueue.poll(); // Hämta elementet med
+													// kortast väg
 			int currentNode = currentElement.getNode();
-			if (!visitedNodes.contains(currentNode)){	//if nod ej besökt
-				if (currentNode==to)
-					return currentElement.getPath().iterator();//ifnod är slutpunkt returnera path
-				else{
-					visitedNodes.add(currentNode);	//else markera nod besökt
-					for(E e: edgeListArray[currentNode]){//for every v on EL(nod)
-						if(!visitedNodes.contains(e.getDest())){//if v ej besökt
-							currentPath =  new ArrayList<E>(currentElement.getPath());
-							currentPath.add(e);
-							dijkstraQueue.add(new CompDijkstraPath<E>(e.getDest(), e.getWeight()+currentElement.getCost(), currentPath)); 	//lägg in nytt köelement för v i p-kön						
+			if (!visitedNodes.contains(currentNode)) {
+				if (currentNode == to)
+					return currentElement.getPath().iterator(); // Har kommit
+																// fram,
+																// returnera
+																// vägen dit
+				else {
+					visitedNodes.add(currentNode);
+					for (E e : edgeListArray[currentNode]) {
+						if (!visitedNodes.contains(e.getDest())) {
+							currentPath = new ArrayList<E>(
+									currentElement.getPath()); // Kopiera vägen
+																// från
+																// elementet
+																// till en ny
+																// lista
+							currentPath.add(e); // Och lägg till den aktuella
+												// bågen
+							dijkstraQueue.add(new CompDijkstraPath<E>(e
+									.getDest(), e.getWeight()
+									+ currentElement.getCost(), currentPath)); // Lägg
+																				// till
+																				// köelementet
+																				// i
+																				// prioritetskön
 						}
-					}		
-				}			
-			}	
-		}
-		return null;
-	}
-	
-	public Iterator<E> minimumSpanningTree() {
-		PriorityQueue<E> 	edgeQueue 	= new PriorityQueue<E>(11, new CompKruskalEdge<E>());	//11 är standard för java. Använder sig av CompKruskalEdge som jämförare
-		List<E>[] 			cc 			= (LinkedList<E>[]) new LinkedList[noOfNodes];	//Listan cc. Består av en array av listor
-		List<E> 			smallList,
-							largeList,
-							sourceList,
-							destList;						
-		E 					currentEdge;
-		int					destListSize, sourceListSize, largeListSize,
-							minTreeSize 	= 0,
-							minTreeIndex	= 0;  
-		
-		edgeQueue.addAll(edgeList);		//Lägger till alla bågar i prioritetskön (enl. punkt 1)		
-		for (int i = 0; i < noOfNodes; i++){
-			cc[i] = new LinkedList<E>();			//Gör så att varje entry i arrayen cc fåren tom lista (enl. punkt 0)
-		}
-		while(!edgeQueue.isEmpty() && minTreeSize<noOfNodes){
-			currentEdge = 	edgeQueue.remove();	//Ta ut toppelementet ur prioritetskön
-			sourceList 	= 	cc[currentEdge.getSource()];
-			destList 	= 	cc[currentEdge.getDest()];		
-			
-			if(sourceList!=destList){ 				
-				destListSize=destList.size();
-				sourceListSize = sourceList.size();
-				if(destListSize>sourceListSize){	//Hitta vilken av listorna som är minst
-					smallList=sourceList;		
-					largeList=destList;
-					largeListSize = destListSize;			
+					}
 				}
-				else{
-					smallList=destList;
-					largeList=sourceList;	
-					largeListSize = sourceListSize;
-				}		
-				for(E e : smallList){
-					largeList.add(e);				//lägg till varje element i den stora listan från den lilla
-					cc[e.getSource()] 	=	cc[e.getDest()] =
-											largeList;
-				}			
+			}
+		}
+		return null; // Ingen väg funnen
+	}
+
+	/**
+	 * Hittar ett minsta uppspännande träd hos grafen med hjälp av Kruskals
+	 * algoritm Prioritetskön använder sig av CompKruskalEdge som jämförare. De
+	 * olika listornas storlekar sparas inte som variabeln då detta efter test
+	 * tycktes försvåra läsbarheten samtidigt oms .size() ändå på dessa går på
+	 * O(1) i tidskomplexitet.
+	 * 
+	 * @return	en iterator över bågarna som utgör trädet
+	 */
+	public Iterator<E> minimumSpanningTree() {
+		// Variabeldeklaration
+		PriorityQueue<E> edgeQueue = new PriorityQueue<E>(11,
+				new CompKruskalEdge<E>()); // 11 som startstorlek är standard
+											// för Java.
+		List<E>[] cc = (LinkedList<E>[]) new LinkedList[noOfNodes];
+		List<E> smallList, largeList, sourceList, destList;
+		E currentEdge;
+		int minTreeSize = 0, minTreeIndex = 0;
+
+		edgeQueue.addAll(edgeList); // Lägger till alla bågar i prioritetskön
+		for (int i = 0; i < noOfNodes; i++) {
+			cc[i] = new LinkedList<E>();
+		}
+		while (!edgeQueue.isEmpty() && minTreeSize < noOfNodes) {
+			currentEdge = edgeQueue.remove();
+			sourceList = cc[currentEdge.getSource()];
+			destList = cc[currentEdge.getDest()];
+
+			if (sourceList != destList) {
+				if (destList.size() > sourceList.size()) {
+					smallList = sourceList;
+					largeList = destList;
+				} else {
+					smallList = destList;
+					largeList = sourceList;
+				}
+
+				for (E e : smallList) { // Lägger till och pekar om
+					largeList.add(e);
+					cc[e.getSource()] = cc[e.getDest()] = largeList;
+				}
+
 				largeList.add(currentEdge);
-				
-				if(largeListSize>minTreeSize){
-					minTreeSize=largeListSize + 1;  //Since we just added one
-					minTreeIndex=currentEdge.getSource();
-				}		
-				cc[currentEdge.getSource()] = 	cc[currentEdge.getDest()] =		
-											largeList;	//peka om fältet så den pekar på den stora listan //TODO behövs?
-			}//if											
-		}//while
-		//TODO varna om inget uppspännande träd hittas?
+
+				if (largeList.size() > minTreeSize) {
+					minTreeSize = largeList.size();
+					minTreeIndex = currentEdge.getSource();
+				}
+				cc[currentEdge.getSource()] = cc[currentEdge.getDest()] = largeList;
+			}// if
+		}// while
+			// TODO varna om inget uppspännande träd hittas?
 		return cc[minTreeIndex].iterator();
 	}
 }

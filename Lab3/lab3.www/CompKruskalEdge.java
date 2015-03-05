@@ -3,33 +3,26 @@
 import java.util.Comparator;
 
 /**
- * A class which compares two edges.
+ * En klass som jämför två bågar för Kruskals algoritm
  * 
- * @author Erik
+ * @author Erik Öhrn & Paula Eriksson Imable
  *
  */
 
-/*
- * Okej Pow jag har det. Det den här klassen ska göra är att jämföra två bågar.
- * Det är nästan allt tror jag. Jag trodde att den skulle vara en slags edge,
- * som extends BusEdge, men det blev krångligt. Detta verkar funka. Sen
- * implementerar prioritetskön i DirectedGraph denna, vilket gör att den kan
- * sortera BusEdges. Blev tvungen att skriva implements Comparator<E> istället
- * för bra implements Comparator för att det skulle funka.
- */
 public class CompKruskalEdge<E extends Edge> implements Comparator<E> {
 
 	/**
 	 * Compares two edges
 	 * 
 	 * @param e1
-	 *            A class which extends Edge
+	 *            Instans av en klass som utökar Edge
 	 * @param e2
-	 *            A class which extends Edge
-	 * @returns 0 if the elements have the same weight, -1 if e1 is smaller than
-	 *          e2 or 1 if e1 is larger than e2
+	 *            Instans av en klass som utökar Edge
+	 * @returns 0 om elementen har samma vikt, ett ta mindre än noll om e1:s
+	 *          vikt är minst eller ett tal större än noll om e2:s vikt är
+	 *          minst.
 	 * @throws NullPointerException
-	 *             if either element is null.
+	 *             om något av elementen är null
 	 */
 	@Override
 	public int compare(E e1, E e2) {
