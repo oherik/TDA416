@@ -40,14 +40,11 @@ public class DirectedGraph<E extends Edge> {
 	 * Använda dijkstras
 	 */
 	public Iterator<E> shortestPath(int from, int to) {
-		//lägg (startnod, 0, tom väg) i en p-kö
 		
-		//behöver jag skapa en ny? ändra namn på denna som anv i minimunspanningtree
+		//lägg (startnod, 0, tom väg) i en p-kö
 		PriorityQueue<CompDijkstraPath<E>> 	dijkstraQueue 	= new PriorityQueue<CompDijkstraPath<E>>();
 		ArrayList<E> currentPath;
 		dijkstraQueue.add(new CompDijkstraPath<E>(from, 0, new ArrayList<E>()));//	dijsktraQueue.
-		
-		
 		
 		CompDijkstraPath<E> currentElement;
 		Set<Integer> visitedNodes = new HashSet<Integer>();	//contains är O(1) för hash set
@@ -58,7 +55,7 @@ public class DirectedGraph<E extends Edge> {
 			int currentNode = currentElement.getNode();
 			if (!visitedNodes.contains(currentNode)){	//if nod ej besökt
 				if (currentNode==to)
-					return currentElement.getPath().iterator();//ifnod är slutpunkt returnera path
+					return currentElement.getPath().iterator();//if nod är slutpunkt returnera path
 				else{
 					visitedNodes.add(currentNode);	//else markera nod besökt
 					for(E e: edgeListArray[currentNode]){//for every v on EL(nod)
