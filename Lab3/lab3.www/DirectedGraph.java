@@ -128,9 +128,8 @@ public class DirectedGraph<E extends Edge> {
 	 * algoritm Prioritetskön använder sig av CompKruskalEdge som jämförare. De
 	 * olika listornas storlekar sparas inte som variabeln då detta efter test
 	 * tycktes försvåra läsbarheten samtidigt oms .size() ändå på dessa går på
-	 * O(1) i tidskomplexitet.
-	 * 
-	 * @return	en iterator över bågarna som utgör trädet
+	 * O(1) i tidskomplexitet. Kräver en hel sammanbunden graf för att ge ett korrekt svar
+	 * @return en iterator över bågarna som utgör trädet
 	 */
 	public Iterator<E> minimumSpanningTree() {
 		// Variabeldeklaration
@@ -174,7 +173,6 @@ public class DirectedGraph<E extends Edge> {
 				cc[currentEdge.getSource()] = cc[currentEdge.getDest()] = largeList;
 			}// if
 		}// while
-			// TODO varna om inget uppspännande träd hittas?
 		return cc[minTreeIndex].iterator();
 	}
 }

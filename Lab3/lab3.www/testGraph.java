@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-public class testGraph {
+public class testGraph<E extends Edge>{
 
 	// Grafen som finns på
 	// http://www.geeksforgeeks.org/greedy-algorithms-set-2-kruskals-minimum-spanning-tree-mst/
@@ -27,7 +27,6 @@ public class testGraph {
 			DG.addEdge(e);
 		}
 		
-		DG.minimumSpanningTree();
 		
 		
 		
